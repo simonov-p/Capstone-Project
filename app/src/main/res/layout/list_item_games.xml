@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
+        <ImageView
+            android:layout_width="@dimen/logo_size"
+            android:id="@+id/list_item_logo_team_A"
+            android:src="@mipmap/ic_launcher"
+            android:layout_height="@dimen/logo_size" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="team A"
+            android:id="@+id/list_item_name_team_A"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/list_item_score"
+            android:text="0:0"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/list_item__date"
+            android:text="25 09 1987"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="@dimen/logo_size"
+            android:id="@+id/list_item_logo_team_B"
+            android:src="@mipmap/grizzles_logo"
+            android:layout_height="@dimen/logo_size" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/list_item_name_team_B"
+            android:layout_height="wrap_content"
+            android:text="team B" />
+    </LinearLayout>
+
+</LinearLayout>
