@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TeamFan</string>
     <string name="action_settings">Settings</string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">teamfan.simonov</string>
+    <string name="content_authority">simonov.teamfan</string>
 </resources>
