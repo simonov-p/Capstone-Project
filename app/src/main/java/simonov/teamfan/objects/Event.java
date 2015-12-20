@@ -9,19 +9,65 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Event {
 
+    @JsonProperty("event_id")
+    private String eventId;
+
     @JsonProperty("event_status")
     private String eventStatus;
 
-    @JsonProperty("start_date_time")
-    private String startDateTime;
+    @JsonProperty("event_start_date_time")
+    private String eventStartDateTime;
 
-    @JsonProperty("away_team")
-    private Team awayTeam;
+    @JsonProperty("event_season_type")
+    private String eventSeasonType;
 
-    @JsonProperty("home_team")
-    private Team homeTeam;
+    @JsonProperty("team_event_number_in_season")
+    private String teamEventNumberInSeason;
+
+    @JsonProperty("team_event_location_type")
+    private String teamEventLocationType;
+
+    @JsonProperty("team_points_scored")
+    private int teamPointsScored;
+
+    @JsonProperty("opponent_points_scored")
+    private int opponentPointsScored;
+
+    @JsonProperty("team")
+    private Team team;
+
+    public int getTeamPointsScored() {
+        return teamPointsScored;
+    }
+
+    public void setTeamPointsScored(int teamPointsScored) {
+        this.teamPointsScored = teamPointsScored;
+    }
+
+    public int getOpponentPointsScored() {
+        return opponentPointsScored;
+    }
+
+    public void setOpponentPointsScored(int opponentPointsScored) {
+        this.opponentPointsScored = opponentPointsScored;
+    }
+
+    @JsonProperty("opponent")
+
+    private Team opponent;
+
+    @JsonProperty("site")
+    private Site site;
 
     public Event() { }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
 
     public String getEventStatus() {
         return eventStatus;
@@ -31,28 +77,59 @@ public class Event {
         this.eventStatus = eventStatus;
     }
 
-    public String getStartDateTime() {
-        return startDateTime;
+    public String getEventStartDateTime() {
+        return eventStartDateTime;
     }
 
-    public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setEventStartDateTime(String eventStartDateTime) {
+        this.eventStartDateTime = eventStartDateTime;
     }
 
-    public Team getAwayTeam() {
-        return awayTeam;
+    public String getEventSeasonType() {
+        return eventSeasonType;
     }
 
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
+    public void setEventSeasonType(String eventSeasonType) {
+        this.eventSeasonType = eventSeasonType;
     }
 
-    public Team getHomeTeam() {
-        return homeTeam;
+    public String getTeamEventNumberInSeason() {
+        return teamEventNumberInSeason;
     }
 
-    public void setHomeTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
+    public void setTeamEventNumberInSeason(String teamEventNumberInSeason) {
+        this.teamEventNumberInSeason = teamEventNumberInSeason;
     }
 
+    public String getTeamEventLocationType() {
+        return teamEventLocationType;
+    }
+
+    public void setTeamEventLocationType(String teamEventLocationType) {
+        this.teamEventLocationType = teamEventLocationType;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Team getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(Team opponent) {
+        this.opponent = opponent;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
 }

@@ -8,7 +8,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +29,6 @@ import java.util.zip.GZIPInputStream;
 import simonov.teamfan.BuildConfig;
 import simonov.teamfan.R;
 import simonov.teamfan.objects.Event;
-import simonov.teamfan.objects.Events;
 
 /**
  * Created by petr on 17-Dec-15.
@@ -55,7 +53,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync0");
 
-        String teamName = "san-antonio-spurs";
+//        String teamName = "san-antonio-spurs";
+        String teamName = "miami-heat";
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -63,16 +62,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         String teamJsonStr = null;
 
         GetJson getJson = new GetJson();
-        getJson.init();
+        getJson.init(teamName);
 
-//        try {
-            final String BASE_URL = "/sport/results/";
-            Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                    .appendPath(teamName)
-                    .build();
-//            URL url = new URL(builtUri.toString()):
-
-//        }
         Log.d(TAG, "onPerformSync1");
 
     }
@@ -204,7 +195,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         static final String GZIP = "gzip";
 
         // For brevity, the url with api method, format, and parameters
-        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
+//        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
+        static final String REQUEST_URL = "https://erikberg.com/nba/results/";
 
         // Set the time zone to use for output
         static final String TIME_ZONE = "America/New_York";
@@ -213,21 +205,21 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         static final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
         static final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
 
-        public static void init() {
+        public static void init(String teamName) {
             Log.e(TAG,"init");
 
             InputStream in = null;
             try {
-                URL url = new URL(REQUEST_URL);
+                URL url = new URL(REQUEST_URL + teamName + ".json");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
                 // Set Authorization header
                 connection.setRequestProperty(AUTHORIZATION, BEARER);
+
                 // Set User agent header
                 connection.setRequestProperty(USER_AGENT, USER_AGENT_NAME);
                 // Tell server we can handle gzip content
                 connection.setRequestProperty(ACCEPT_ENCODING, GZIP);
-
-                Log.d(TAG,connection.toString());
 
                 // Check the HTTP status code for "200 OK"
                 int statusCode = connection.getResponseCode();
@@ -288,25 +280,28 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 // These two lines of code take the JSON string and return a POJO
                 // in this case, an Events object (https://erikberg.com/api/methods/events)
                 ObjectMapper mapper = new ObjectMapper();
-                Events events = mapper.readValue(data, Events.class);
 
-                Date date = XMLSTATS_DATE.parse(events.getEventsDate());
-                SimpleDateFormat full = new SimpleDateFormat("EEEE, MMMM d, yyyy");
-                Log.d(TAG, String.format("Events on %s%n%n", date));
-                Log.d(TAG, String.format("%-35s %5s %34s%n", "Time", "Event", "Status"));
+                Event[] events = mapper.readValue(data, Event[].class);
 
+//                Date date = XMLSTATS_DATE.parse(events.getEventsDate());
+//                SimpleDateFormat full = new SimpleDateFormat("EEEE, MMMM d, yyyy");
+//                Log.d(TAG, String.format("Events on %s%n%n", date));
+//                Log.d(TAG, String.format("%-35s %5s %34s%n", "Time", "Event", "Status"));
+//
                 // Set the time zone for output
                 TimeZone tz = TimeZone.getTimeZone(TIME_ZONE);
                 SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z");
                 sdf.setTimeZone(tz);
                 // Loop through each Event (https://erikberg.com/api/objects/event)
-                for (Event evt : events.getEventList()) {
-                    date = XMLSTATS_DATE.parse(evt.getStartDateTime());
-                    Log.d(TAG, String.format("%12s %24s vs. %-24s %9s%n",
+                for (Event evt : events) {
+                    Date date = XMLSTATS_DATE.parse(evt.getEventStartDateTime());
+                    Log.d(TAG, String.format("%12s %24s vs. %-24s %9s%n %-16s",
                             sdf.format(date),
-                            evt.getAwayTeam().getFullName(),
-                            evt.getHomeTeam().getFullName(),
-                            evt.getEventStatus()));
+                            evt.getTeam().getFullName() + evt.getTeamPointsScored(),
+                            evt.getOpponent().getFullName() + evt.getOpponentPointsScored(),
+                            evt.getEventStatus(),
+                            evt.getSite().getName()
+                            ));
                 }
             } catch (IOException | ParseException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());
