@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import simonov.teamfan.sync.GamesSyncAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,6 +34,8 @@ public class MainActivityFragment extends Fragment {
         mGamesAdapter = new GamesAdapter();
 
         mRecyclerView.setAdapter(mGamesAdapter);
+
+        GamesSyncAdapter.syncImmediately(getContext());
 
         return rootView;
     }
