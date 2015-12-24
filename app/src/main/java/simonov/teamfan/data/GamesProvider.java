@@ -15,6 +15,7 @@ import android.util.Log;
 public class GamesProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final String TAG = GamesProvider.class.getSimpleName();
 
     private GamesDbHelper mOpenHelper;
 
@@ -92,6 +93,8 @@ public class GamesProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
+        Log.e(TAG, "Try insert: " + values.length);
+
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         db.beginTransaction();
         int returnCount = 0;
@@ -107,6 +110,7 @@ public class GamesProvider extends ContentProvider {
             db.endTransaction();
         }
         getContext().getContentResolver().notifyChange(uri, null);
+        Log.e(TAG, "    insert: " + returnCount);
         return  returnCount;
     }
 }

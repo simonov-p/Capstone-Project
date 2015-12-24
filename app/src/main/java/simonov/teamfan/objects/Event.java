@@ -1,7 +1,11 @@
 package simonov.teamfan.objects;
 
+import android.content.ContentValues;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import simonov.teamfan.data.GamesContract;
 
 /**
  * @see Event object
@@ -131,5 +135,16 @@ public class Event {
 
     public void setSite(Site site) {
         this.site = site;
+    }
+
+    public ContentValues eventToCV(){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID, getEventId());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_DATE, getEventStartDateTime());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_HOME, getTeam().getFullName());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_AWAY, getOpponent().getFullName());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_HOME_SCORE, getTeamPointsScored());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_AWAY_SCORE, getOpponentPointsScored());
+        return contentValues;
     }
 }

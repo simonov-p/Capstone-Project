@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -24,10 +25,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
 import simonov.teamfan.BuildConfig;
 import simonov.teamfan.R;
+import simonov.teamfan.data.GamesContract;
 import simonov.teamfan.objects.Event;
 
 /**
@@ -175,37 +178,36 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "syncImmediately1");
 
     }
-    public static class GetJson {
-
+    public class GetJson {
         // Replace with your access token
-        static String ACCESS_TOKEN = BuildConfig.XMLSTATS_ACCESS_TOKEN;
+        String ACCESS_TOKEN = BuildConfig.XMLSTATS_ACCESS_TOKEN;
 
         // Replace with your bot name and email/website to contact if there is a
         // problem e.g., "mybot/0.1 (https://erikberg.com/)"
-        static final String USER_AGENT_NAME = "simonovP/0.1 (https://pk.simonov@gmail.com/)";
+        final String USER_AGENT_NAME = "simonovP/0.1 (https://pk.simonov@gmail.com/)";
 
-        static final String AUTHORIZATION = "Authorization";
+        final String AUTHORIZATION = "Authorization";
 
-        static final String BEARER = "Bearer " + ACCESS_TOKEN;
+        final String BEARER = "Bearer " + ACCESS_TOKEN;
 
-        static final String USER_AGENT = "User-agent";
+        final String USER_AGENT = "User-agent";
 
-        static final String ACCEPT_ENCODING = "Accept-encoding";
+        final String ACCEPT_ENCODING = "Accept-encoding";
 
-        static final String GZIP = "gzip";
+        final String GZIP = "gzip";
 
         // For brevity, the url with api method, format, and parameters
 //        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
-        static final String REQUEST_URL = "https://erikberg.com/nba/results/";
+        final String REQUEST_URL = "https://erikberg.com/nba/results/";
 
         // Set the time zone to use for output
-        static final String TIME_ZONE = "America/New_York";
+        final String TIME_ZONE = "America/New_York";
 
         // All date-time strings for xmlstats use the ISO 8601 format
-        static final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
-        static final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
+        final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
 
-        public static void init(String teamName) {
+        public void init(String teamName) {
             Log.e(TAG,"init");
 
             InputStream in = null;
@@ -249,7 +251,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
 
-        static String readHttpResponse(InputStream in, String encoding) {
+        private String readHttpResponse(InputStream in, String encoding) {
             StringBuilder sb = new StringBuilder();
             // Verify the response is compressed, before attempting to decompress it
             try {
@@ -275,7 +277,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
             return sb.toString();
         }
 
-        static void printResult(String data) {
+        void printResult(String data) {
             try {
                 // These two lines of code take the JSON string and return a POJO
                 // in this case, an Events object (https://erikberg.com/api/methods/events)
@@ -293,6 +295,9 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z");
                 sdf.setTimeZone(tz);
                 // Loop through each Event (https://erikberg.com/api/objects/event)
+
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
+
                 for (Event evt : events) {
                     Date date = XMLSTATS_DATE.parse(evt.getEventStartDateTime());
                     Log.d(TAG, String.format("%12s %24s vs. %-24s %9s%n %-16s",
@@ -302,6 +307,13 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                             evt.getEventStatus(),
                             evt.getSite().getName()
                             ));
+                    cVVector.add(evt.eventToCV());
+                }
+                if (cVVector.size() > 0) {
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
+                            cvArray);
                 }
             } catch (IOException | ParseException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());

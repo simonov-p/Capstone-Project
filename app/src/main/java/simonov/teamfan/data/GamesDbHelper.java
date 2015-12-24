@@ -21,7 +21,8 @@ public class GamesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_GAMES_TABLE = "CREATE TABLE " + GamesEntry.TABLE_NAME + " (" +
                 GamesEntry.COLUMN_GAME_ID + " INTEGER PRIMARY KEY," +
-                GamesEntry.COLUMN_DATA + " TEXT NOT NULL, " +
+                GamesEntry.COLUMN_GAME_NBA_ID + " TEXT NOT NULL," +
+                GamesEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                 GamesEntry.COLUMN_HOME + " TEXT NOT NULL, " +
                 GamesEntry.COLUMN_AWAY + " TEXT NOT NULL, " +
                 GamesEntry.COLUMN_HOME_SCORE + " TEXT NOT NULL, " +
