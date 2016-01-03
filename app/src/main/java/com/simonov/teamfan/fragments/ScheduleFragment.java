@@ -115,6 +115,22 @@ public class ScheduleFragment extends Fragment
         updateEmptyView();
         if (data.getCount() == 0) {
             getLoaderManager().initLoader(0,null,null);
+        } else {
+            String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
+
+            String whereClause = GamesContract.GamesEntry.COLUMN_TEAM_SCORE + " = -1";
+
+            Cursor c = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
+                    null,
+                    whereClause,
+                    null,
+                    sortOrder
+                    );
+            if (null != c && c.getCount() > 0) {
+                int lastGamePosition = data.getCount() - c.getCount();
+                if (lastGamePosition > 0) lastGamePosition--;
+                mRecyclerView.scrollToPosition(lastGamePosition);
+            }
         }
     }
 

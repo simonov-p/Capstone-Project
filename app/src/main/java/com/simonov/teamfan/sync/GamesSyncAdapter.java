@@ -200,13 +200,13 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         // For brevity, the url with api method, format, and parameters
 //        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
         final String REQUEST_URL = "https://erikberg.com/nba/results/";
-
-        // Set the time zone to use for output
-        final String TIME_ZONE = "America/New_York";
-
-        // All date-time strings for xmlstats use the ISO 8601 format
-        final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
-        final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
+//
+//        // Set the time zone to use for output
+//        final String TIME_ZONE = "America/New_York";
+//
+//        // All date-time strings for xmlstats use the ISO 8601 format
+//        final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+//        final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
 
         public void init(String teamName) {
             Log.e(TAG,"init");
@@ -286,23 +286,14 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Event[] events = mapper.readValue(data, Event[].class);
 
-//                Date date = XMLSTATS_DATE.parse(events.getEventsDate());
-//                SimpleDateFormat full = new SimpleDateFormat("EEEE, MMMM d, yyyy");
-//                Log.d(TAG, String.format("Events on %s%n%n", date));
-//                Log.d(TAG, String.format("%-35s %5s %34s%n", "Time", "Event", "Status"));
-//
-                // Set the time zone for output
-                TimeZone tz = TimeZone.getTimeZone(TIME_ZONE);
-                SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z");
-                sdf.setTimeZone(tz);
+
                 // Loop through each Event (https://erikberg.com/api/objects/event)
 
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
 
                 for (Event evt : events) {
-                    Date date = XMLSTATS_DATE.parse(evt.getEventStartDateTime());
                     Log.d(TAG, String.format("%12s %24s vs. %-24s %9s%n %-16s",
-                            sdf.format(date),
+                            Utilities.convertDate(evt.getEventStartDateTime()),
                             evt.getTeam().getFullName() + evt.getTeamPointsScored(),
                             evt.getOpponent().getFullName() + evt.getOpponentPointsScored(),
                             evt.getEventStatus(),

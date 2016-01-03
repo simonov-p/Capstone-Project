@@ -101,9 +101,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             holder.mTextScore.setText(text4);
 
             final String text =  "GAME_ID:" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)) +
-                    "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID))
-
-                    ;
+                    "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
 
             holder.mTextScore.setOnClickListener(new View.OnClickListener() {
                 @Override
