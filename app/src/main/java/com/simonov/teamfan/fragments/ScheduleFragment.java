@@ -1,4 +1,4 @@
-package com.simonov.teamfan;
+package com.simonov.teamfan.fragments;
 
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
 /**
@@ -51,7 +52,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         String s = "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg";
         myDataset = s.toCharArray();
 
-        mAdapter = new ScheduleAdapter(myDataset);
+        mAdapter = new ScheduleAdapter(getContext(), myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "onCreateView1");

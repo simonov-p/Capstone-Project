@@ -1,4 +1,4 @@
-package com.simonov.teamfan;
+package com.simonov.teamfan.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.simonov.teamfan.R;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
 
 public class MainActivity extends AppCompatActivity {

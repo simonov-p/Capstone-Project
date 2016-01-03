@@ -1,5 +1,6 @@
-package com.simonov.teamfan;
+package com.simonov.teamfan.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
 /**
@@ -18,6 +21,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private char[] mDataset;
 
     private Cursor mCursor;
+    final private Context mContext;
 
     public void swapCursor(Cursor cursor) {
         Log.e("mytag", "swapCursor, count:" + cursor.getCount());
@@ -30,7 +34,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         public TextView mTextTeam;
         public TextView mTextOpponent;
@@ -42,12 +46,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             mTextOpponent = (TextView) v.findViewById(R.id.list_item_name_team_B);
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
             mTextScore = (TextView) v.findViewById(R.id.list_item_score);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(mContext,"click",Toast.LENGTH_SHORT).show();
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ScheduleAdapter(char[] myDataset) {
+    public ScheduleAdapter(Context context, char[] myDataset) {
         mDataset = myDataset;
+        mContext = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -78,6 +89,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             holder.mTextOpponent.setText(text2);
             holder.mTextDate.setText(text3);
             holder.mTextScore.setText(text4);
+
+            final String text =  "GAME_ID:" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)) +
+                    "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID))
+
+                    ;
+
+            holder.mTextScore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+                }
+            });
             Log.d("mytag","1:" + "n"  + String.valueOf(mDataset[position]) + " 2:"  + String.valueOf(position));
         } catch (NullPointerException e) {
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
@@ -85,6 +108,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             Log.e("mytag", "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
         }
     }
+
+    private View.OnClickListener mOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
