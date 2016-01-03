@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.utils.Utilities;
 
 /**
  * Created by petr on 03.01.2016.
@@ -42,6 +45,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public TextView mTextDate;
         public TextView mTextScore;
         public TextView mTextNumberGame;
+        public ImageView mImageTeam;
+        public ImageView mImageOpponent;
         public ViewHolder(View v) {
             super(v);
             mTextTeam = (TextView) v.findViewById(R.id.list_item_name_team_A);
@@ -49,6 +54,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
             mTextScore = (TextView) v.findViewById(R.id.list_item_score);
             mTextNumberGame = (TextView) v.findViewById(R.id.list_item_number_of_game);
+            mImageTeam = (ImageView) v.findViewById(R.id.list_item_logo_team_A);
+            mImageOpponent = (ImageView) v.findViewById(R.id.list_item_logo_team_B);
             v.setOnClickListener(this);
         }
 
@@ -89,16 +96,29 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
         try {
             mCursor.moveToPosition(position);
-            String text1 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
-            String text2 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
-            String text3 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
-            String text4 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE))
+
+            String teamName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
+            String opponentName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
+            String dateText = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
+            String gameScore = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE))
                     + ":" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
 
-            holder.mTextTeam.setText(text1);
-            holder.mTextOpponent.setText(text2);
-            holder.mTextDate.setText(text3);
-            holder.mTextScore.setText(text4);
+            Glide.with(mContext)
+                    .load(Utilities.getTeamLogo(mContext, teamName))
+                    .error(R.mipmap.ic_launcher)
+                    .crossFade()
+                    .into(holder.mImageTeam);
+
+            Glide.with(mContext)
+                    .load(Utilities.getTeamLogo(mContext, opponentName))
+                    .error(R.mipmap.ic_launcher)
+                    .crossFade()
+                    .into(holder.mImageOpponent);
+
+            holder.mTextTeam.setText(teamName);
+            holder.mTextOpponent.setText(opponentName);
+            holder.mTextDate.setText(dateText);
+            holder.mTextScore.setText(gameScore);
 
             final String text =  "GAME_ID:" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)) +
                     "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
