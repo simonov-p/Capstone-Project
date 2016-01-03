@@ -1,9 +1,13 @@
 package com.simonov.teamfan.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+implements ScheduleFragment.Callback{
 
     private String mTeam;
 
@@ -73,5 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
             mTeam = team;
         }
+    }
+
+    @Override
+    public void onItemSelected(Uri gameUri, ScheduleAdapter.ViewHolder vh) {
+        Intent intent = new Intent(this, DetailActivity.class)
+                .setData(gameUri);
+
+        ActivityOptionsCompat activityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                        new Pair<View, String>(vh.mImageTeam, getString(R.string.detail_icon_transition_name)));
+        ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
     }
 }

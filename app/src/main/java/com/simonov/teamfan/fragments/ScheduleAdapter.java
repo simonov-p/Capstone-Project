@@ -3,6 +3,7 @@ package com.simonov.teamfan.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private Cursor mCursor;
     private TextView mEmptyView;
     final private Context mContext;
+    private ScheduleAdapterOnClickHandler mClickHandler;
+    final private ItemChoiceManager mICM;
 
     public void swapCursor(Cursor cursor) {
 //        Log.e("mytag", "swapCursor, count:" + cursor.getCount());
@@ -61,15 +64,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(mContext,"click",Toast.LENGTH_SHORT).show();
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+            mClickHandler.onClick(mCursor.getLong(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)), this);
+            mICM.onClick(this);
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public ScheduleAdapter(Context context, TextView emptyView) {
-//        mDataset = myDataset;
+    public ScheduleAdapter(Context context, ScheduleAdapterOnClickHandler handler, TextView emptyView, int choiceMode) {
         mContext = context;
         mEmptyView = emptyView;
+        mClickHandler = handler;
+        mICM = new ItemChoiceManager(this);
+        mICM.setChoiceMode(choiceMode);
     }
 
     // Create new views (invoked by the layout manager)
@@ -78,7 +85,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
+                .inflate(R.layout.list_item_games, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -123,13 +130,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             final String text =  "GAME_ID:" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)) +
                     "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
 
-            holder.mTextScore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
-                }
-            });
             Log.d("mytag","1:" + "n"  + String.valueOf(mDataset[position]) + " 2:"  + String.valueOf(position));
+            mICM.onBindViewHolder(holder, position);
+
         } catch (NullPointerException e) {
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
         } catch (CursorIndexOutOfBoundsException c) {
@@ -137,18 +140,24 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         }
     }
 
-    private View.OnClickListener mOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         if ( null == mCursor ) return 0;
         return mCursor.getCount();
+    }
+    public static interface ScheduleAdapterOnClickHandler {
+        void onClick(Long game, ViewHolder vh);
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mICM.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        mICM.onSaveInstanceState(outState);
+    }
+
+    public int getSelectedItemPosition() {
+        return mICM.getSelectedItemPosition();
     }
 }
 

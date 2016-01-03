@@ -2,6 +2,7 @@ package com.simonov.teamfan.fragments;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -13,10 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.utils.Utilities;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -30,6 +33,8 @@ public class ScheduleFragment extends Fragment
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ScheduleAdapter mAdapter;
+    private int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
+
 
     public ScheduleFragment() {
     }
@@ -58,12 +63,33 @@ public class ScheduleFragment extends Fragment
 //        myDataset = s.toCharArray();
 
         TextView emptyView = (TextView) root.findViewById(R.id.empty_text_view);
-        mAdapter = new ScheduleAdapter(getContext(), emptyView);
+        mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
+            @Override
+            public void onClick(Long game, ScheduleAdapter.ViewHolder vh) {
+                String team = Utilities.getPreferredTeam(getActivity());
+                ((Callback) getActivity())
+                        .onItemSelected(GamesContract.GamesEntry.buildGameUriWithId(
+                                        game),
+                                vh
+                        );
+            }
+        }, emptyView, mChoiceMode);
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "onCreateView1");
+
+        if (savedInstanceState != null) {
+            mAdapter.onRestoreInstanceState(savedInstanceState);
+        }
         return root;
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        mAdapter.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     private static final String[] GAMES_COLUMNS = {
@@ -177,5 +203,17 @@ public class ScheduleFragment extends Fragment
 
     public void onTeamChanged() {
         getLoaderManager().restartLoader(0,null,this);
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri gameUri, ScheduleAdapter.ViewHolder vh);
     }
 }
