@@ -25,18 +25,14 @@ public class GamesContract {
 
         public static final String COLUMN_GAME_ID = "_id";
         public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_HOME = "home";
-        public static final String COLUMN_AWAY = "away";
-        public static final String COLUMN_HOME_SCORE = "home_score";
-        public static final String COLUMN_AWAY_SCORE = "away_score";
+        public static final String COLUMN_TEAM_NAME = "team";
+        public static final String COLUMN_OPPONENT_NAME = "opponent";
+        public static final String COLUMN_TEAM_SCORE = "team_score";
+        public static final String COLUMN_OPPONENT_SCORE = "opponent_score";
         public static final String COLUMN_GAME_NBA_ID = "game_id";
 
         public static Uri buildGamesUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        public static Uri buildGameUri(Long game) {
-            return ContentUris.withAppendedId(CONTENT_URI, game);
         }
     }
 }

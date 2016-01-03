@@ -18,8 +18,6 @@ import android.widget.TextView;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
-import org.w3c.dom.Text;
-
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -71,10 +69,10 @@ public class ScheduleFragment extends Fragment
     private static final String[] GAMES_COLUMNS = {
             GamesContract.GamesEntry.TABLE_NAME + "." + GamesContract.GamesEntry.COLUMN_GAME_ID,
             GamesContract.GamesEntry.COLUMN_DATE,
-            GamesContract.GamesEntry.COLUMN_HOME,
-            GamesContract.GamesEntry.COLUMN_AWAY,
-            GamesContract.GamesEntry.COLUMN_HOME_SCORE,
-            GamesContract.GamesEntry.COLUMN_AWAY_SCORE,
+            GamesContract.GamesEntry.COLUMN_TEAM_NAME,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_NAME,
+            GamesContract.GamesEntry.COLUMN_TEAM_SCORE,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE,
             GamesContract.GamesEntry.COLUMN_GAME_NBA_ID
     };
     static final int COL_GAME_ID = 0;
@@ -113,10 +111,11 @@ public class ScheduleFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d(TAG, "onLoadFinished0 data:" + data.getCount());
-
         mAdapter.swapCursor(data);
         updateEmptyView();
-
+        if (data.getCount() == 0) {
+            getLoaderManager().initLoader(0,null,null);
+        }
     }
 
     @Override
@@ -158,5 +157,9 @@ public class ScheduleFragment extends Fragment
         if (null != mRecyclerView) {
             mRecyclerView.clearOnScrollListeners();
         }
+    }
+
+    public void onTeamChanged() {
+        getLoaderManager().restartLoader(0,null,this);
     }
 }

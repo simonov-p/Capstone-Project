@@ -1,13 +1,18 @@
 package com.simonov.teamfan.activities;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
 
 public class SettingsActivity extends PreferenceActivity
@@ -30,7 +35,12 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d("mytag", "onSharedPreferenceChanged0 key:" + key);
+        getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,null,null);
         GamesSyncAdapter.syncImmediately(this);
+        Log.d("mytag", "onSharedPreferenceChanged key:" + key);
+
+        getContentResolver().notifyChange(GamesContract.GamesEntry.CONTENT_URI, null);
     }
 
     /**
@@ -40,6 +50,8 @@ public class SettingsActivity extends PreferenceActivity
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
+        Log.d("mytag", "bindPreferenceSummaryToValue key: " + preference.getKey());
+
         preference.setOnPreferenceChangeListener(this);
 
         // Set the preference summaries
@@ -52,7 +64,6 @@ public class SettingsActivity extends PreferenceActivity
     private void setPreferenceSummary(Preference preference, Object value) {
         String stringValue = value.toString();
         String key = preference.getKey();
-
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).
@@ -62,9 +73,27 @@ public class SettingsActivity extends PreferenceActivity
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
         }
-        else {
-            // For other preferences, set the summary to the value's simple string representation.
-            preference.setSummary(stringValue);
-        }
+    }
+
+    // Registers a shared preference change listener that gets notified when preferences change
+    @Override
+    protected void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    // Unregisters a shared preference change listener
+    @Override
+    protected void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public Intent getParentActivityIntent() {
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 }

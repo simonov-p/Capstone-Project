@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by petr on 03.01.2016.
  */
@@ -27,7 +25,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     final private Context mContext;
 
     public void swapCursor(Cursor cursor) {
-        Log.e("mytag", "swapCursor, count:" + cursor.getCount());
+//        Log.e("mytag", "swapCursor, count:" + cursor.getCount());
         mCursor = cursor;
 
         notifyDataSetChanged();
@@ -91,11 +89,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
         try {
             mCursor.moveToPosition(position);
-            String text1 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_HOME));
-            String text2 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_AWAY));
+            String text1 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
+            String text2 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
             String text3 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
-            String text4 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_HOME_SCORE))
-                    + ":" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_AWAY_SCORE));
+            String text4 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE))
+                    + ":" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
 
             holder.mTextTeam.setText(text1);
             holder.mTextOpponent.setText(text2);

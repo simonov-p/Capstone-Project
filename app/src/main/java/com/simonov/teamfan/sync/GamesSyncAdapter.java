@@ -57,8 +57,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync0");
 
-        String teamName = "san-antonio-spurs";
-//        String teamName = Utilities.getPreferredTeam(getContext());
+//        String teamName = "san-antonio-spurs";
+        String teamName = Utilities.getPreferredTeam(getContext());
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;

@@ -141,10 +141,10 @@ public class Event {
         ContentValues contentValues = new ContentValues();
         contentValues.put(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID, getEventId());
         contentValues.put(GamesContract.GamesEntry.COLUMN_DATE, getEventStartDateTime());
-        contentValues.put(GamesContract.GamesEntry.COLUMN_HOME, getTeam().getFullName());
-        contentValues.put(GamesContract.GamesEntry.COLUMN_AWAY, getOpponent().getFullName());
-        contentValues.put(GamesContract.GamesEntry.COLUMN_HOME_SCORE, getTeamPointsScored());
-        contentValues.put(GamesContract.GamesEntry.COLUMN_AWAY_SCORE, getOpponentPointsScored());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_NAME, getTeam().getFullName());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME, getOpponent().getFullName());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_SCORE, getTeamPointsScored());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE, getOpponentPointsScored());
         return contentValues;
     }
 }

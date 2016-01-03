@@ -11,9 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
+import com.simonov.teamfan.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity {
+
+    private String mTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +58,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String team = Utilities.getPreferredTeam(this);
+        // update the location in our second pane using the fragment manager
+        if (team != null && !team.equals(mTeam)) {
+            ScheduleFragment scheduleFragment = (ScheduleFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
+            if ( null != scheduleFragment ) {
+                scheduleFragment.onTeamChanged();
+            }
+
+            mTeam = team;
+        }
     }
 }

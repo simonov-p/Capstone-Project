@@ -23,10 +23,10 @@ public class GamesDbHelper extends SQLiteOpenHelper {
                 GamesEntry.COLUMN_GAME_ID + " INTEGER PRIMARY KEY," +
                 GamesEntry.COLUMN_GAME_NBA_ID + " TEXT NOT NULL," +
                 GamesEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                GamesEntry.COLUMN_HOME + " TEXT NOT NULL, " +
-                GamesEntry.COLUMN_AWAY + " TEXT NOT NULL, " +
-                GamesEntry.COLUMN_HOME_SCORE + " TEXT NOT NULL, " +
-                GamesEntry.COLUMN_AWAY_SCORE + " TEXT NOT NULL " +
+                GamesEntry.COLUMN_TEAM_NAME + " TEXT NOT NULL, " +
+                GamesEntry.COLUMN_OPPONENT_NAME + " TEXT NOT NULL, " +
+                GamesEntry.COLUMN_TEAM_SCORE + " TEXT NOT NULL, " +
+                GamesEntry.COLUMN_OPPONENT_SCORE + " TEXT NOT NULL " +
                 " );";
         db.execSQL(SQL_CREATE_GAMES_TABLE);
     }
