@@ -3,7 +3,7 @@
     <ListPreference
         android:title="@string/pref_choose_team_label"
         android:key="@string/pref_choose_team_key"
-        android:defaultValue="@string/lac"
+        android:defaultValue="@string/los_angeles_clippers"
         android:entryValues="@array/pref_teams_values"
         android:entries="@array/pref_teams_entries" />
 </PreferenceScreen>
