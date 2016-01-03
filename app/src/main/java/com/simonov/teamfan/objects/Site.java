@@ -1,4 +1,5 @@
-package simonov.teamfan.objects;
+package com.simonov.teamfan.objects;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

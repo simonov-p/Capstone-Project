@@ -1,10 +1,10 @@
-package simonov.teamfan.data;
+package com.simonov.teamfan.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import simonov.teamfan.data.GamesContract.GamesEntry;
+import com.simonov.teamfan.data.GamesContract.GamesEntry;
 
 /**
  * Created by petr on 20-Dec-15.

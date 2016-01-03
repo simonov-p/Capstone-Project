@@ -1,4 +1,5 @@
-package simonov.teamfan.sync;
+package com.simonov.teamfan.sync;
+
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -14,6 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simonov.teamfan.BuildConfig;
+import com.simonov.teamfan.R;
+import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.objects.Event;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,11 +33,6 @@ import java.util.TimeZone;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
-import simonov.teamfan.BuildConfig;
-import simonov.teamfan.R;
-import simonov.teamfan.data.GamesContract;
-import simonov.teamfan.objects.Event;
-
 /**
  * Created by petr on 17-Dec-15.
  */
@@ -40,7 +40,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = GamesSyncAdapter.class.getSimpleName();
 
     public static final String ACTION_DATA_UPDATED =
-            "teamfan.simonov.ACTION_DATA_UPDATED";
+            "com.simonov.teamfan.ACTION_DATA_UPDATED";
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
@@ -314,6 +314,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     cVVector.toArray(cvArray);
                     getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
                             cvArray);
+                    Log.e(TAG, "Parse JSON elements: " + cvArray.length);
+
                 }
             } catch (IOException | ParseException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());

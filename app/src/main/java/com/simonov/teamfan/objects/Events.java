@@ -1,8 +1,9 @@
-package simonov.teamfan.objects;
+package com.simonov.teamfan.objects;
 
-import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 
 /**
  * @see Events

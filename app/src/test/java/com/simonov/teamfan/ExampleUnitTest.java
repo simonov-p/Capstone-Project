@@ -1,4 +1,4 @@
-package simonov.teamfan;
+package com.simonov.teamfan;
 
 import org.junit.Test;
 

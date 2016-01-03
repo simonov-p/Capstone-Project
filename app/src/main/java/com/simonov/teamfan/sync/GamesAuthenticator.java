@@ -1,4 +1,5 @@
-package simonov.teamfan.sync;
+package com.simonov.teamfan.sync;
+
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

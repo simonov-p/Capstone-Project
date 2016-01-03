@@ -1,4 +1,4 @@
-package simonov.teamfan;
+package com.simonov.teamfan;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

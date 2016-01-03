@@ -1,11 +1,11 @@
-package simonov.teamfan.objects;
+package com.simonov.teamfan.objects;
+
 
 import android.content.ContentValues;
 
+import com.simonov.teamfan.data.GamesContract;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import simonov.teamfan.data.GamesContract;
 
 /**
  * @see Event object

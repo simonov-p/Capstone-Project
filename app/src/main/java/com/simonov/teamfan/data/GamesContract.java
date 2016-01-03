@@ -1,4 +1,5 @@
-package simonov.teamfan.data;
+package com.simonov.teamfan.data;
+
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -9,7 +10,7 @@ import android.provider.BaseColumns;
  * Created by petr on 20-Dec-15.
  */
 public class GamesContract {
-    public static final String CONTENT_AUTHORITY = "simonov.teamfan";
+    public static final String CONTENT_AUTHORITY = "teamfan.simonov.com";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_GAMES = "games";
 
