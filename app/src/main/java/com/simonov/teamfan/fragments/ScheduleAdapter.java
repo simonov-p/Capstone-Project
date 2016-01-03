@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by petr on 03.01.2016.
  */
@@ -21,6 +23,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private char[] mDataset;
 
     private Cursor mCursor;
+    private TextView mEmptyView;
     final private Context mContext;
 
     public void swapCursor(Cursor cursor) {
@@ -40,12 +43,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public TextView mTextOpponent;
         public TextView mTextDate;
         public TextView mTextScore;
+        public TextView mTextNumberGame;
         public ViewHolder(View v) {
             super(v);
             mTextTeam = (TextView) v.findViewById(R.id.list_item_name_team_A);
             mTextOpponent = (TextView) v.findViewById(R.id.list_item_name_team_B);
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
             mTextScore = (TextView) v.findViewById(R.id.list_item_score);
+            mTextNumberGame = (TextView) v.findViewById(R.id.list_item_number_of_game);
             v.setOnClickListener(this);
         }
 
@@ -56,9 +61,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ScheduleAdapter(Context context, char[] myDataset) {
-        mDataset = myDataset;
+    public ScheduleAdapter(Context context, TextView emptyView) {
+//        mDataset = myDataset;
         mContext = context;
+        mEmptyView = emptyView;
     }
 
     // Create new views (invoked by the layout manager)
@@ -77,6 +83,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        if (null == mCursor) {
+            Log.e("mytag", "onBindViewHolder Cursor is null, position " + position);
+            return;
+        }
+        holder.mTextNumberGame.setText(String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
+
         try {
             mCursor.moveToPosition(position);
             String text1 = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_HOME));
@@ -119,7 +131,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        if ( null == mCursor ) return 0;
+        return mCursor.getCount();
     }
 }
 

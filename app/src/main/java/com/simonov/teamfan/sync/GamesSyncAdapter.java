@@ -19,6 +19,7 @@ import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
+import com.simonov.teamfan.utils.Utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,8 +57,8 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync0");
 
-//        String teamName = "san-antonio-spurs";
-        String teamName = "miami-heat";
+        String teamName = "san-antonio-spurs";
+//        String teamName = Utilities.getPreferredTeam(getContext());
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -315,6 +316,12 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
                             cvArray);
                     Log.e(TAG, "Parse JSON elements: " + cvArray.length);
+
+                    // delete old data for update the schedule
+
+//                    getContext().getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,
+//                            GamesContract.GamesEntry.COLUMN_DATE " <= ?",
+//                            null);
 
                 }
             } catch (IOException | ParseException ex) {

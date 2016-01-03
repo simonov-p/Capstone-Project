@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_teams_values">
+        <item>@string/query_lac</item>
+        <item>@string/query_lal</item>
+        <item>@string/query_mia</item>
+        <item>@string/query_sas</item>
+    </string-array>
+    <string-array name="pref_teams_entries">
+        <item>@string/lac</item>
+        <item>@string/lal</item>
+        <item>@string/mia</item>
+        <item>@string/sas</item>
+    </string-array>
+</resources>

@@ -1,8 +1,24 @@
 <resources>
     <string name="app_name">#TeamFan</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_change_team">Change team</string>
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type">com.simonov.teamfan</string>
     <string name="content_authority">teamfan.simonov.com</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="pref_choose_team_label">Choose team</string>
+    <string name="pref_choose_team_key">choose_team_key</string>
+    <string name="pref_choose_team_default">miami-heat</string>
+
+    <!--Teams Name-->
+    <string name="lac">Los Angeles Clippers</string>
+    <string name="lal">Los Angeles Lakers</string>
+    <string name="mia">Miami Heat</string>
+    <string name="sas">San Antonio Spurs</string>
+
+    <!--Teams Query-->
+    <string name="query_lac">los-angeles-clippers</string>
+    <string name="query_lal">los-angeles-lakers</string>
+    <string name="query_mia">miami-heat</string>
+    <string name="query_sas">san-antonio-spurs</string>
 </resources>

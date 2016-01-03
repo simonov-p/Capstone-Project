@@ -1,5 +1,6 @@
 package com.simonov.teamfan.fragments;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,14 +13,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 
+import org.w3c.dom.Text;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ScheduleFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+        SharedPreferences.OnSharedPreferenceChangeListener
+{
     private static final String TAG = ScheduleFragment.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
@@ -47,12 +54,13 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        char[] myDataset;
-        String s = "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg";
-        myDataset = s.toCharArray();
+//        // specify an adapter (see also next example)
+//        char[] myDataset;
+//        String s = "izhorec";
+//        myDataset = s.toCharArray();
 
-        mAdapter = new ScheduleAdapter(getContext(), myDataset);
+        TextView emptyView = (TextView) root.findViewById(R.id.empty_text_view);
+        mAdapter = new ScheduleAdapter(getContext(), emptyView);
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "onCreateView1");
@@ -107,6 +115,8 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         Log.d(TAG, "onLoadFinished0 data:" + data.getCount());
 
         mAdapter.swapCursor(data);
+        updateEmptyView();
+
     }
 
     @Override
@@ -122,5 +132,31 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
         getLoaderManager().initLoader(0, savedInstanceState, this);
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_choose_team_key))) {
+            updateEmptyView();
+        }
+    }
+
+    private void updateEmptyView() {
+        if (mAdapter.getItemCount() == 0) {
+            TextView textView = (TextView) getView().findViewById(R.id.empty_text_view);
+            if (null != textView){
+                String message = "something wrong";
+                textView.setText(message);
+
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != mRecyclerView) {
+            mRecyclerView.clearOnScrollListeners();
+        }
     }
 }
