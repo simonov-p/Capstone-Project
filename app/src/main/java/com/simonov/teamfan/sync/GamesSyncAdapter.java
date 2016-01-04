@@ -21,6 +21,10 @@ import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,6 +204,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         // For brevity, the url with api method, format, and parameters
 //        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
         final String REQUEST_URL = "https://erikberg.com/nba/results/";
+//        final String REQUEST_URL = "https://erikberg.com/nba/boxscore/20160102-milwaukee-bucks-at-minnesota-timberwolves.json";
 //
 //        // Set the time zone to use for output
 //        final String TIME_ZONE = "America/New_York";
@@ -214,6 +219,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
             InputStream in = null;
             try {
                 URL url = new URL(REQUEST_URL + teamName + ".json");
+//                URL url = new URL(REQUEST_URL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                 // Set Authorization header
@@ -280,9 +286,18 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
         void printResult(String data) {
             try {
+                Log.d("mytag data", data);
                 // These two lines of code take the JSON string and return a POJO
                 // in this case, an Events object (https://erikberg.com/api/methods/events)
                 ObjectMapper mapper = new ObjectMapper();
+                try {
+                    JSONArray array = new JSONArray(data);
+                    Log.d("mytag", "json:" + array.get(49).toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
                 Event[] events = mapper.readValue(data, Event[].class);
 
@@ -292,13 +307,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
 
                 for (Event evt : events) {
-                    Log.d(TAG, String.format("%12s %24s vs. %-24s %9s%n %-16s",
-                            Utilities.convertDate(evt.getEventStartDateTime()),
-                            evt.getTeam().getFullName() + evt.getTeamPointsScored(),
-                            evt.getOpponent().getFullName() + evt.getOpponentPointsScored(),
-                            evt.getEventStatus(),
-                            evt.getSite().getName()
-                            ));
+                    Log.d(TAG, " event id:" + evt.getEventId());
                     cVVector.add(evt.eventToCV());
                 }
                 if (cVVector.size() > 0) {
@@ -315,7 +324,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 //                            null);
 
                 }
-            } catch (IOException | ParseException ex) {
+            } catch (IOException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());
             }
         }

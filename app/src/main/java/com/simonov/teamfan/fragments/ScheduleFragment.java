@@ -124,7 +124,6 @@ public class ScheduleFragment extends Fragment
 //                "");
 //        if (null != c) Log.d(TAG, "onCreateLoader0 c:" + c.getCount());
 
-
         return new CursorLoader(getActivity(),
                 GamesContract.GamesEntry.buildGamesUri(id),
                 GAMES_COLUMNS,

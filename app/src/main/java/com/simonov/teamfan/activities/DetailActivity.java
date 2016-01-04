@@ -1,8 +1,11 @@
 package com.simonov.teamfan.activities;
 
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -11,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,17 +23,32 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.api.GameApi;
+import com.simonov.teamfan.fragments.GameInfoMain;
+import com.simonov.teamfan.objects.Game;
+import com.simonov.teamfan.objects.Player;
+
+import retrofit.Callback;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private static final String TAG = DetailActivity.class.getSimpleName();
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * {@link FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -38,10 +57,70 @@ public class DetailActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    static String s = "none";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        Uri uri = getIntent().getData();
+        Log.d(TAG, "uri:" + uri.toString());
+        s = uri.toString();
+
+        final RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint("https://erikberg.com")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestInterceptor.RequestFacade request) {
+                        request.addHeader("Accept", "application/json;versions=1");
+                        request.addHeader("Authorization", "Bearer " + BuildConfig.XMLSTATS_ACCESS_TOKEN);
+
+                    }
+                })
+                .build();
+
+        GameApi gameApi = adapter.create(GameApi.class);
+
+        gameApi.getGameStats(
+                "20160102-milwaukee-bucks-at-minnesota-timberwolves",
+                new Callback<Game>() {
+                    @Override
+                    public void success(Game game, Response response) {
+                        Log.d("mytag response:getUrl", response.getUrl());
+                        Log.d("mytag response:getBody().toString", response.getBody().toString());
+                        Log.d("mytag response:getBody().mimeType", response.getBody().mimeType());
+                        Log.d("mytag response:getReason", response.getReason());
+                        Log.d("mytag response:getHeaders().toString", response.getHeaders().toString());
+                        Player bestAwayPlayer = game.away_stats.get(0);
+                        for (Player player : game.away_stats){
+                            Log.d("mytag away player:", player.toString());
+                            if (player.points > bestAwayPlayer.points) bestAwayPlayer = player;
+                        }
+                        Player bestHomePlayer = game.home_stats.get(0);
+                        for (Player player : game.home_stats){
+                            Log.d("mytag home player:", player.toString());
+                            if (player.points > bestAwayPlayer.points) bestHomePlayer = player;
+                        }
+                        Log.d("mytag best home player:", bestHomePlayer.toString());
+                        Log.d("mytag best away player:", bestAwayPlayer.toString());
+
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("mytag error", error.toString());
+                        Log.d("mytag error.getUrl", error.getUrl().toString());
+
+                    }
+                });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,6 +145,9 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -90,6 +172,47 @@ public class DetailActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "Detail Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.simonov.teamfan.activities/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "Detail Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.simonov.teamfan.activities/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
+    }
+
 
     /**
      * A placeholder fragment containing a simple view.
@@ -121,7 +244,7 @@ public class DetailActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(s);
             return rootView;
         }
     }
@@ -140,24 +263,25 @@ public class DetailActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            if (position == 0) {
+                return new GameInfoMain();
+            }
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "MAIN";
                 case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    return "LEADERS";
             }
             return null;
         }
