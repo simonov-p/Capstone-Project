@@ -24,14 +24,12 @@ public class GamesProvider extends ContentProvider {
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher =  new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(GamesContract.CONTENT_AUTHORITY, GamesContract.PATH_GAMES, GAMES);
-
         return matcher;
     }
 
     @Override
     public boolean onCreate() {
         mOpenHelper = new GamesDbHelper(getContext());
-        Log.d("mytag", "provider create");
         return true;
     }
 
@@ -58,7 +56,6 @@ public class GamesProvider extends ContentProvider {
         } else {
             throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-
     }
 
     @Nullable

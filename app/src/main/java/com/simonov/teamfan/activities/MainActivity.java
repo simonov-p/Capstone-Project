@@ -77,7 +77,6 @@ implements ScheduleFragment.DetailFragmentCallback {
             if ( null != scheduleFragment ) {
                 scheduleFragment.onTeamChanged();
             }
-
             mTeam = team;
         }
     }

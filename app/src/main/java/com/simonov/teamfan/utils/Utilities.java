@@ -6,10 +6,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.objects.Player;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -109,5 +111,13 @@ public class Utilities {
         } else {
             return R.mipmap.ic_launcher;
         }
+    }
+
+    public static Player getBestPlayer (List<Player> players){
+        Player bestPlayer = players.get(0);
+        for (Player player : players){
+            if (player.points > bestPlayer.points) bestPlayer = player;
+        }
+        return bestPlayer;
     }
 }

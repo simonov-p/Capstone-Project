@@ -33,8 +33,7 @@ public class GameInfoMainFragment extends Fragment {
     TextView mTeamScore;
     TextView mOpponentScore;
 
-    public GameInfoMainFragment() {
-    }
+    public GameInfoMainFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class GameInfoMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_game_info_main, container, false);
         mTeamLogo = (ImageView) root.findViewById(R.id.team_logo);
         mOpponentLogo = (ImageView) root.findViewById(R.id.opponent_logo);
@@ -67,9 +65,8 @@ public class GameInfoMainFragment extends Fragment {
                 .error(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(mOpponentLogo);
-//        mTeamScore.setText(String.format("%d:%d", event.getTeamPointsScored(), event.getOpponentPointsScored()));
+
         mTeamScore.setText(String.valueOf(event.getTeamPointsScored()));
         mOpponentScore.setText(String.valueOf(event.getOpponentPointsScored()));
     }
-
 }

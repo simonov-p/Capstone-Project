@@ -34,9 +34,5 @@ public class GamesContract {
         public static Uri buildGamesUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
-
-        public static Uri buildGameUriWithId(long game) {
-            return CONTENT_URI.buildUpon().appendPath(String.valueOf(game)).build();
-        }
     }
 }

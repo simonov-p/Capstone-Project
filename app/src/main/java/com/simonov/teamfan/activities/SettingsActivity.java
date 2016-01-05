@@ -35,12 +35,9 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d("mytag", "onSharedPreferenceChanged0 key:" + key);
         getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,null,null);
         GamesSyncAdapter.syncImmediately(this);
-        Log.d("mytag", "onSharedPreferenceChanged key:" + key);
-
-        getContentResolver().notifyChange(GamesContract.GamesEntry.CONTENT_URI, null);
+//        getContentResolver().notifyChange(GamesContract.GamesEntry.CONTENT_URI, null);
     }
 
     /**
@@ -50,8 +47,6 @@ public class SettingsActivity extends PreferenceActivity
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
-        Log.d("mytag", "bindPreferenceSummaryToValue key: " + preference.getKey());
-
         preference.setOnPreferenceChangeListener(this);
 
         // Set the preference summaries
@@ -63,7 +58,6 @@ public class SettingsActivity extends PreferenceActivity
 
     private void setPreferenceSummary(Preference preference, Object value) {
         String stringValue = value.toString();
-        String key = preference.getKey();
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).

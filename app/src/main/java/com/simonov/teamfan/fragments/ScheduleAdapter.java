@@ -23,8 +23,6 @@ import com.simonov.teamfan.utils.Utilities;
  * Created by petr on 03.01.2016.
  */
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
-    private char[] mDataset;
-
     private Cursor mCursor;
     private TextView mEmptyView;
     final private Context mContext;
@@ -37,9 +35,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         public TextView mTextTeam;
@@ -80,8 +75,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+    public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_games, parent, false);
@@ -92,8 +86,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         if (null == mCursor) {
             Log.e("mytag", "onBindViewHolder Cursor is null, position " + position);
             return;
@@ -126,10 +118,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             holder.mTextDate.setText(dateText);
             holder.mTextScore.setText(gameScore);
 
-            final String text =  "GAME_ID:" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)) +
-                    "COLUMN_GAME_NBA_ID:" +  mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
-
-            Log.d("mytag","1:" + "n"  + String.valueOf(mDataset[position]) + " 2:"  + String.valueOf(position));
             mICM.onBindViewHolder(holder, position);
 
         } catch (NullPointerException e) {
@@ -144,7 +132,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         if ( null == mCursor ) return 0;
         return mCursor.getCount();
     }
-    public static interface ScheduleAdapterOnClickHandler {
+    public interface ScheduleAdapterOnClickHandler {
         void onClick(Event gameEvent, ViewHolder vh);
     }
     public void onRestoreInstanceState(Bundle savedInstanceState) {

@@ -15,6 +15,6 @@ import retrofit.Callback;
  */
 public interface GameApi {
     @GET("/nba/boxscore/{event_id}.json")
-    void getGameStats(@Path("event_id") String groupId, Callback<Game> response);
+    void getGameStats(@Path("event_id") String eventId, Callback<Game> response);
 
 }

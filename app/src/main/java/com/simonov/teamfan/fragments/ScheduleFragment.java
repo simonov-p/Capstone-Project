@@ -42,26 +42,20 @@ public class ScheduleFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView0");
-
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
+        mRecyclerView.setHasFixedSize(true);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         TextView emptyView = (TextView) root.findViewById(R.id.empty_text_view);
+
         mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
             @Override
             public void onClick(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
-                String team = Utilities.getPreferredTeam(getActivity());
                 ((DetailFragmentCallback) getActivity())
                         .onGameSelected(gameEvent,
                                 vh
@@ -69,8 +63,6 @@ public class ScheduleFragment extends Fragment
             }
         }, emptyView, mChoiceMode);
         mRecyclerView.setAdapter(mAdapter);
-
-        Log.d(TAG, "onCreateView1");
 
         if (savedInstanceState != null) {
             mAdapter.onRestoreInstanceState(savedInstanceState);
@@ -98,8 +90,6 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(TAG, "onCreateLoader0");
-        Log.d(TAG, "onCreateLoader0 id:" + id);
 
         String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
 
@@ -114,7 +104,7 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(TAG, "onLoadFinished0 data:" + data.getCount());
+
         mAdapter.swapCursor(data);
         updateEmptyView();
         if (data.getCount() == 0) {
@@ -140,15 +130,11 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.d(TAG, "onLoaderReset0");
-
         mAdapter.swapCursor(null);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated. Start loader.");
-
         getLoaderManager().initLoader(0, savedInstanceState, this);
         super.onActivityCreated(savedInstanceState);
     }

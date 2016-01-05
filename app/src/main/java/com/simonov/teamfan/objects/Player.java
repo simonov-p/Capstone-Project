@@ -6,7 +6,7 @@ package com.simonov.teamfan.objects;
 public class Player {
     String last_name;
     String first_name;
-    String display_name;
+    public String display_name;
     String position;
     float minutes;
     public int points;

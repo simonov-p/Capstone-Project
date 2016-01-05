@@ -1,26 +1,20 @@
 package com.simonov.teamfan.activities;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
 import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.api.GameApi;
@@ -28,7 +22,7 @@ import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
-import com.simonov.teamfan.objects.Player;
+import com.simonov.teamfan.utils.Utilities;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -37,33 +31,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class DetailActivity extends AppCompatActivity {
-    private Event mGameEvent;
-
     private static final String TAG = DetailActivity.class.getSimpleName();
-    /**
-     * The {@link PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link FragmentStatePagerAdapter}.
-     */
+
+    private Event mGameEvent;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
-
-    static String s = "none";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private GameInfoLeadersFragment mLeadersFragment;
     private GameInfoMainFragment mMainFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +73,6 @@ public class DetailActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -156,9 +126,9 @@ public class DetailActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "MAIN";
+                    return getString(R.string.label_main_info_fragment);
                 case 1:
-                    return "LEADERS";
+                    return getString(R.string.label_leaders_fragment);
             }
             return null;
         }
@@ -166,7 +136,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void getGameInfo(String gameIdNBA){
         final RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("https://erikberg.com")
+                .setEndpoint(getString(R.string.base_url))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestInterceptor.RequestFacade request) {
@@ -184,34 +154,16 @@ public class DetailActivity extends AppCompatActivity {
                 new Callback<Game>() {
                     @Override
                     public void success(Game game, Response response) {
-                        Log.d("mytag response:game", game.toString());
-                        Log.d("mytag response:game", new Gson().toJson(game));
-                        Log.d("mytag response:getUrl", response.getUrl());
-                        Log.d("mytag response:getBody().toString", response.getBody().toString());
-                        Log.d("mytag response:getBody().mimeType", response.getBody().mimeType());
-                        Log.d("mytag response:getReason", response.getReason());
-                        Log.d("mytag response:getHeaders().toString", response.getHeaders().toString());
-                        Player bestAwayPlayer = game.away_stats.get(0);
-                        for (Player player : game.away_stats){
-                            Log.d("mytag away player:", player.toString());
-                            if (player.points > bestAwayPlayer.points) bestAwayPlayer = player;
-                        }
-                        Player bestHomePlayer = game.home_stats.get(0);
-                        for (Player player : game.home_stats){
-                            Log.d("mytag home player:", player.toString());
-                            if (player.points > bestAwayPlayer.points) bestHomePlayer = player;
-                        }
-                        Log.d("mytag best home player:", bestHomePlayer.toString());
-                        Log.d("mytag best away player:", bestAwayPlayer.toString());
-
+                        Log.d("mytag best home player:", Utilities.getBestPlayer(game.home_stats).toString());
+                        Log.d("mytag best away player:", Utilities.getBestPlayer(game.away_stats).toString());
                         mMainFragment.fillViews(mGameEvent, game);
+                        mLeadersFragment.fillViews(game);
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         Log.d("mytag error", error.toString());
                         Log.d("mytag error.getUrl", error.getUrl().toString());
-
                     }
                 });
     }
