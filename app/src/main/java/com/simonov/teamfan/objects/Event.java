@@ -107,6 +107,8 @@ public class Event implements Parcelable {
         out.writeString(eventStartDateTime);
         out.writeInt(teamPointsScored);
         out.writeInt(opponentPointsScored);
+        out.writeString(team.getFullName());
+        out.writeString(opponent.getFullName());
     }
 
     public static final Parcelable.Creator<Event> CREATOR
@@ -125,5 +127,9 @@ public class Event implements Parcelable {
         eventStartDateTime = in.readString();
         teamPointsScored = in.readInt();
         opponentPointsScored = in.readInt();
+        teamName = in.readString();
+        opponentName = in.readString();
     }
+    public String teamName;
+    public String opponentName;
 }

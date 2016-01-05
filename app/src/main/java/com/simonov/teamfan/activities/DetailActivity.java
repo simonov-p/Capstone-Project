@@ -20,6 +20,7 @@ import com.simonov.teamfan.R;
 import com.simonov.teamfan.api.GameApi;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
+import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
@@ -36,20 +37,25 @@ public class DetailActivity extends AppCompatActivity {
     private Event mGameEvent;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private GameInfoLeadersFragment mLeadersFragment;
+    private Fragment mSecondaryFragment;
     private GameInfoMainFragment mMainFragment;
+    private boolean mGameFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        mLeadersFragment = new GameInfoLeadersFragment();
-        mMainFragment = new GameInfoMainFragment();
-
         mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
-        Log.d(TAG, "gameIdNBA:" + mGameEvent.getEventId());
-        getGameInfo(mGameEvent.getEventId());
+        mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime());
+        if (mGameFinished) {
+            mMainFragment = new GameInfoMainFragment();
+            mSecondaryFragment = new GameInfoLeadersFragment();
+            getGameInfo(mGameEvent.getEventId());
+        } else {
+            mMainFragment = new GameInfoMainFragment();
+            mSecondaryFragment = new GameInfoPreviousFragment(mGameEvent);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +81,6 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -94,7 +99,6 @@ public class DetailActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -111,7 +115,7 @@ public class DetailActivity extends AppCompatActivity {
             if (position == 0) {
                 return mMainFragment;
             } else if (position == 1){
-                return mLeadersFragment;
+                return mSecondaryFragment;
             }
             return mMainFragment;
         }
@@ -128,7 +132,7 @@ public class DetailActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.label_main_info_fragment);
                 case 1:
-                    return getString(R.string.label_leaders_fragment);
+                    return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_previous_games_fragment) ;
             }
             return null;
         }
@@ -142,7 +146,6 @@ public class DetailActivity extends AppCompatActivity {
                     public void intercept(RequestInterceptor.RequestFacade request) {
                         request.addHeader("Accept", "application/json;versions=1");
                         request.addHeader("Authorization", "Bearer " + BuildConfig.XMLSTATS_ACCESS_TOKEN);
-
                     }
                 })
                 .build();
@@ -154,10 +157,8 @@ public class DetailActivity extends AppCompatActivity {
                 new Callback<Game>() {
                     @Override
                     public void success(Game game, Response response) {
-                        Log.d("mytag best home player:", Utilities.getBestPlayer(game.home_stats).toString());
-                        Log.d("mytag best away player:", Utilities.getBestPlayer(game.away_stats).toString());
                         mMainFragment.fillViews(mGameEvent, game);
-                        mLeadersFragment.fillViews(game);
+                        ((GameInfoLeadersFragment) mSecondaryFragment).fillViews(game);
                     }
 
                     @Override
