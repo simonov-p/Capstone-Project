@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
 
@@ -82,9 +83,9 @@ implements ScheduleFragment.DetailFragmentCallback {
     }
 
     @Override
-    public void onGameSelected(String gameIdNBA, ScheduleAdapter.ViewHolder vh) {
+    public void onGameSelected(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
         Intent intent = new Intent(this, DetailActivity.class)
-                .putExtra(SEND_GAME_ID, gameIdNBA);
+                .putExtra(SEND_GAME_ID, gameEvent);
 
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,

@@ -25,4 +25,8 @@ public class Team {
     public String getFullName() {
         return full_name;
     }
+
+    public Team(String full_name) {
+        this.full_name = full_name;
+    }
 }

@@ -14,13 +14,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +26,7 @@ import com.simonov.teamfan.R;
 import com.simonov.teamfan.api.GameApi;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.objects.Player;
 
@@ -40,7 +37,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class DetailActivity extends AppCompatActivity {
-    private String mGameId;
+    private Event mGameEvent;
 
     private static final String TAG = DetailActivity.class.getSimpleName();
     /**
@@ -76,9 +73,9 @@ public class DetailActivity extends AppCompatActivity {
         mLeadersFragment = new GameInfoLeadersFragment();
         mMainFragment = new GameInfoMainFragment();
 
-        mGameId = getIntent().getStringExtra(MainActivity.SEND_GAME_ID);
-        Log.d(TAG, "gameIdNBA:" + mGameId);
-        getGameInfo(mGameId);
+        mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
+        Log.d(TAG, "gameIdNBA:" + mGameEvent.getEventId());
+        getGameInfo(mGameEvent.getEventId());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -207,7 +204,7 @@ public class DetailActivity extends AppCompatActivity {
                         Log.d("mytag best home player:", bestHomePlayer.toString());
                         Log.d("mytag best away player:", bestAwayPlayer.toString());
 
-                        mMainFragment.fillViews(game);
+                        mMainFragment.fillViews(mGameEvent, game);
                     }
 
                     @Override

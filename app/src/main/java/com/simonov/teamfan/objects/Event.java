@@ -2,6 +2,9 @@ package com.simonov.teamfan.objects;
 
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.simonov.teamfan.data.GamesContract;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @see Event object
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Event {
+public class Event implements Parcelable {
 
     @JsonProperty("event_id")
     private String eventId;
@@ -44,16 +47,8 @@ public class Event {
         return teamPointsScored;
     }
 
-    public void setTeamPointsScored(int teamPointsScored) {
-        this.teamPointsScored = teamPointsScored;
-    }
-
     public int getOpponentPointsScored() {
         return opponentPointsScored;
-    }
-
-    public void setOpponentPointsScored(int opponentPointsScored) {
-        this.opponentPointsScored = opponentPointsScored;
     }
 
     @JsonProperty("opponent")
@@ -69,72 +64,17 @@ public class Event {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getEventStatus() {
-        return eventStatus;
-    }
-
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus;
-    }
 
     public String getEventStartDateTime() {
         return eventStartDateTime;
-    }
-
-    public void setEventStartDateTime(String eventStartDateTime) {
-        this.eventStartDateTime = eventStartDateTime;
-    }
-
-    public String getEventSeasonType() {
-        return eventSeasonType;
-    }
-
-    public void setEventSeasonType(String eventSeasonType) {
-        this.eventSeasonType = eventSeasonType;
-    }
-
-    public String getTeamEventNumberInSeason() {
-        return teamEventNumberInSeason;
-    }
-
-    public void setTeamEventNumberInSeason(String teamEventNumberInSeason) {
-        this.teamEventNumberInSeason = teamEventNumberInSeason;
-    }
-
-    public String getTeamEventLocationType() {
-        return teamEventLocationType;
-    }
-
-    public void setTeamEventLocationType(String teamEventLocationType) {
-        this.teamEventLocationType = teamEventLocationType;
     }
 
     public Team getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
     public Team getOpponent() {
         return opponent;
-    }
-
-    public void setOpponent(Team opponent) {
-        this.opponent = opponent;
-    }
-
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
     }
 
     public ContentValues eventToCV(){
@@ -146,5 +86,44 @@ public class Event {
         contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_SCORE, getTeamPointsScored());
         contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE, getOpponentPointsScored());
         return contentValues;
+    }
+
+    public Event (Cursor cursor){
+        this.eventId = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
+        this.eventStartDateTime = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
+        this.team = new Team(cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)));
+        this.opponent = new Team(cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)));
+        this.teamPointsScored = cursor.getInt(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE));
+        this.opponentPointsScored = cursor.getInt(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
+    }
+
+    // parcelable data
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(eventId);
+        out.writeString(eventStartDateTime);
+        out.writeInt(teamPointsScored);
+        out.writeInt(opponentPointsScored);
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR
+            = new Parcelable.Creator<Event>() {
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+
+    private Event(Parcel in) {
+        eventId = in.readString();
+        eventStartDateTime = in.readString();
+        teamPointsScored = in.readInt();
+        opponentPointsScored = in.readInt();
     }
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
 /**
@@ -56,18 +57,13 @@ public class ScheduleFragment extends Fragment
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-//        // specify an adapter (see also next example)
-//        char[] myDataset;
-//        String s = "izhorec";
-//        myDataset = s.toCharArray();
-
         TextView emptyView = (TextView) root.findViewById(R.id.empty_text_view);
         mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
             @Override
-            public void onClick(String gameIdNBA, ScheduleAdapter.ViewHolder vh) {
+            public void onClick(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
                 String team = Utilities.getPreferredTeam(getActivity());
                 ((DetailFragmentCallback) getActivity())
-                        .onGameSelected(gameIdNBA,
+                        .onGameSelected(gameEvent,
                                 vh
                         );
             }
@@ -99,13 +95,6 @@ public class ScheduleFragment extends Fragment
             GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE,
             GamesContract.GamesEntry.COLUMN_GAME_NBA_ID
     };
-    static final int COL_GAME_ID = 0;
-    static final int COL_DATE = 1;
-    static final int COL_HOME = 2;
-    static final int COL_AWAY = 3;
-    static final int COL_HOME_SCORE = 4;
-    static final int COL_AWAY_SCORE = 5;
-    static final int COL_GAME_NBA_ID = 6;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -113,14 +102,6 @@ public class ScheduleFragment extends Fragment
         Log.d(TAG, "onCreateLoader0 id:" + id);
 
         String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
-
-//        Cursor c = getContext().getContentResolver().query(
-//                GamesContract.GamesEntry.buildGamesUri(id),
-//                null,
-//                null,
-//                null,
-//                "");
-//        if (null != c) Log.d(TAG, "onCreateLoader0 c:" + c.getCount());
 
         return new CursorLoader(getActivity(),
                 GamesContract.GamesEntry.buildGamesUri(id),
@@ -211,6 +192,6 @@ public class ScheduleFragment extends Fragment
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onGameSelected(String gameIdNBA, ScheduleAdapter.ViewHolder vh);
+        public void onGameSelected(Event gameEvent, ScheduleAdapter.ViewHolder vh);
     }
 }

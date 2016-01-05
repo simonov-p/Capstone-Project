@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
 /**
@@ -31,11 +32,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     final private ItemChoiceManager mICM;
 
     public void swapCursor(Cursor cursor) {
-//        Log.e("mytag", "swapCursor, count:" + cursor.getCount());
         mCursor = cursor;
 
         notifyDataSetChanged();
-
     }
 
     // Provide a reference to the views for each data item
@@ -66,7 +65,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            mClickHandler.onClick(mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID)), this);
+            mClickHandler.onClick(new Event(mCursor), this);
             mICM.onClick(this);
         }
     }
@@ -146,7 +145,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         return mCursor.getCount();
     }
     public static interface ScheduleAdapterOnClickHandler {
-        void onClick(String gameIdNBA, ViewHolder vh);
+        void onClick(Event gameEvent, ViewHolder vh);
     }
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         mICM.onRestoreInstanceState(savedInstanceState);

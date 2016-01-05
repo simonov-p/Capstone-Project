@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.api.GameApi;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.objects.Player;
 import com.simonov.teamfan.utils.Utilities;
@@ -30,6 +31,7 @@ public class GameInfoMainFragment extends Fragment {
     ImageView mTeamLogo;
     ImageView mOpponentLogo;
     TextView mTeamScore;
+    TextView mOpponentScore;
 
     public GameInfoMainFragment() {
     }
@@ -48,14 +50,12 @@ public class GameInfoMainFragment extends Fragment {
         mOpponentLogo = (ImageView) root.findViewById(R.id.opponent_logo);
 
         mTeamScore = (TextView) root.findViewById(R.id.team_score);
+        mOpponentScore = (TextView) root.findViewById(R.id.opponent_score);
 
         return root;
     }
 
-    public void fillViews(Game game){
-        Log.d("mytag mGame.home_team.getFullName():", game.home_team.getFullName());
-        Log.d("mytag mGame.away_team.getFullName():", game.away_team.getFullName());
-
+    public void fillViews(Event event, Game game){
         Glide.with(getContext())
                 .load(Utilities.getTeamLogo(getContext(), game.home_team.getFullName()))
                 .error(R.mipmap.ic_launcher)
@@ -67,7 +67,9 @@ public class GameInfoMainFragment extends Fragment {
                 .error(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(mOpponentLogo);
-        mTeamScore.setText(String.format("%d:%d", game.away_period_scores.get(0), game.home_period_scores.get(0)));
+//        mTeamScore.setText(String.format("%d:%d", event.getTeamPointsScored(), event.getOpponentPointsScored()));
+        mTeamScore.setText(String.valueOf(event.getTeamPointsScored()));
+        mOpponentScore.setText(String.valueOf(event.getOpponentPointsScored()));
     }
 
 }
