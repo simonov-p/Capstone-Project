@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.simonov.teamfan.fragments.GameInfoMain">
+    tools:context=".fragments.GameInfoMainFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -13,11 +13,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
             <ImageView
                 android:id="@+id/team_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                />
             <TextView
                 android:id="@+id/team_score"
                 android:layout_width="wrap_content"
@@ -30,11 +33,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
             <ImageView
                 android:id="@+id/opponent_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                />
             <TextView
                 android:id="@+id/opponent_score"
                 android:layout_width="wrap_content"

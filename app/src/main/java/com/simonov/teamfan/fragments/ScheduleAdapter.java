@@ -66,7 +66,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            mClickHandler.onClick(mCursor.getLong(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_ID)), this);
+            mClickHandler.onClick(mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID)), this);
             mICM.onClick(this);
         }
     }
@@ -146,7 +146,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         return mCursor.getCount();
     }
     public static interface ScheduleAdapterOnClickHandler {
-        void onClick(Long game, ViewHolder vh);
+        void onClick(String gameIdNBA, ViewHolder vh);
     }
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         mICM.onRestoreInstanceState(savedInstanceState);

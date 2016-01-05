@@ -2,7 +2,6 @@ package com.simonov.teamfan.fragments;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -65,11 +64,10 @@ public class ScheduleFragment extends Fragment
         TextView emptyView = (TextView) root.findViewById(R.id.empty_text_view);
         mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
             @Override
-            public void onClick(Long game, ScheduleAdapter.ViewHolder vh) {
+            public void onClick(String gameIdNBA, ScheduleAdapter.ViewHolder vh) {
                 String team = Utilities.getPreferredTeam(getActivity());
-                ((Callback) getActivity())
-                        .onItemSelected(GamesContract.GamesEntry.buildGameUriWithId(
-                                        game),
+                ((DetailFragmentCallback) getActivity())
+                        .onGameSelected(gameIdNBA,
                                 vh
                         );
             }
@@ -209,10 +207,10 @@ public class ScheduleFragment extends Fragment
      * implement. This mechanism allows activities to be notified of item
      * selections.
      */
-    public interface Callback {
+    public interface DetailFragmentCallback {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri gameUri, ScheduleAdapter.ViewHolder vh);
+        public void onGameSelected(String gameIdNBA, ScheduleAdapter.ViewHolder vh);
     }
 }

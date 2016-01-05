@@ -1,7 +1,6 @@
 package com.simonov.teamfan.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,8 +20,9 @@ import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity
-implements ScheduleFragment.Callback{
+implements ScheduleFragment.DetailFragmentCallback {
 
+    public static String SEND_GAME_ID = "send_game_id";
     private String mTeam;
 
     @Override
@@ -82,9 +82,9 @@ implements ScheduleFragment.Callback{
     }
 
     @Override
-    public void onItemSelected(Uri gameUri, ScheduleAdapter.ViewHolder vh) {
+    public void onGameSelected(String gameIdNBA, ScheduleAdapter.ViewHolder vh) {
         Intent intent = new Intent(this, DetailActivity.class)
-                .setData(gameUri);
+                .putExtra(SEND_GAME_ID, gameIdNBA);
 
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,

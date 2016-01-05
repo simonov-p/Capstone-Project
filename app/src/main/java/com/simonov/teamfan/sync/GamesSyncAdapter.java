@@ -205,6 +205,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 //        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
         final String REQUEST_URL = "https://erikberg.com/nba/results/";
 //        final String REQUEST_URL = "https://erikberg.com/nba/boxscore/20160102-milwaukee-bucks-at-minnesota-timberwolves.json";
+//        final String REQUEST_URL = "https://erikberg.com/nba/boxscore/20160110-new-orleans-pelicans-at-los-angeles-clippers.json";
 //
 //        // Set the time zone to use for output
 //        final String TIME_ZONE = "America/New_York";
