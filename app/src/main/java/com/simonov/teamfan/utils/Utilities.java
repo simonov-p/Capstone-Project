@@ -28,7 +28,7 @@ public class Utilities {
                 context.getString(R.string.pref_choose_team_default));
     }
 
-    public static String convertDate(String s) throws ParseException {
+    public static String convertDate(String s) {
         // Set the time zone to use for output
         String TIME_ZONE = "America/New_York";
 
@@ -38,10 +38,15 @@ public class Utilities {
 
         // Set the time zone for output
         TimeZone tz = TimeZone.getTimeZone(TIME_ZONE);
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z");
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z dd.MM.yy");
         sdf.setTimeZone(tz);
 
-        Date date = simpleDateFormat.parse(s);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Log.d("mytag:string:", s + " format:" + sdf.format(date));
         Log.d("mytag:date:", String.valueOf(date.after(new Date())));

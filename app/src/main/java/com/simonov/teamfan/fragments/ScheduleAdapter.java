@@ -42,7 +42,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public TextView mAwayTeamName;
         public TextView mHomeTeamName;
         public TextView mTextDate;
-        public TextView mTextScore;
         public TextView mTextNumberGame;
         public ImageView mAwayTeamLogo;
         public ImageView mHomeTeamLogo;
@@ -53,7 +52,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             mAwayTeamScore = (TextView) v.findViewById(R.id.list_item_score_away_team);
             mHomeTeamScore = (TextView) v.findViewById(R.id.list_item_score_home_team);
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
-            mTextNumberGame = (TextView) v.findViewById(R.id.list_item_number_of_game);
             mAwayTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_away_team);
             mHomeTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_home_team);
             v.setOnClickListener(this);
@@ -93,8 +91,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             Log.e("mytag", "onBindViewHolder Cursor is null, position " + position);
             return;
         }
-        holder.mTextNumberGame.setText(String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
-
         try {
             mCursor.moveToPosition(position);
 
@@ -120,7 +116,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                         holder);
             }
 
-            holder.mTextDate.setText(dateText);
+            holder.mTextDate.setText(Utilities.convertDate(dateText) + " temp:" +
+                    String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
 
             mICM.onBindViewHolder(holder, position);
 
@@ -138,9 +135,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .crossFade()
                 .into(holder.mAwayTeamLogo);
         holder.mAwayTeamName.setText(teamFullName);
-        if (!score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mAwayTeamScore.setText(score);
+        if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
+            holder.mAwayTeamScore.setVisibility(View.GONE);
+        } else {
             holder.mAwayTeamScore.setVisibility(View.VISIBLE);
+            holder.mAwayTeamScore.setText(score);
         }
     }
     private void fillHomeTeam(String teamFullName, String score, ViewHolder holder){
@@ -150,9 +149,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .crossFade()
                 .into(holder.mHomeTeamLogo);
         holder.mHomeTeamName.setText(teamFullName);
-        if (!score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mHomeTeamScore.setText(score);
+        if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
+            holder.mHomeTeamScore.setVisibility(View.GONE);
+            holder.mHomeTeamScore.setText("");
+        } else {
             holder.mHomeTeamScore.setVisibility(View.VISIBLE);
+            holder.mHomeTeamScore.setText(score);
         }
     }
 
