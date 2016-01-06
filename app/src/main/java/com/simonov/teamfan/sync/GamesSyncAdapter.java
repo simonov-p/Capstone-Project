@@ -314,6 +314,9 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 if (cVVector.size() > 0) {
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
                     cVVector.toArray(cvArray);
+
+                    getContext().getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI, null, null); // try to remove multiply db rows
+
                     getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
                             cvArray);
                     Log.e(TAG, "Parse JSON elements: " + cvArray.length);

@@ -1,12 +1,16 @@
 package com.simonov.teamfan.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +25,8 @@ import com.simonov.teamfan.api.GameApi;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
+import com.simonov.teamfan.fragments.ScheduleAdapter;
+import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
@@ -31,7 +37,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity
+implements ScheduleFragment.DetailFragmentCallback{
     private static final String TAG = DetailActivity.class.getSimpleName();
 
     private Event mGameEvent;
@@ -40,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     private Fragment mSecondaryFragment;
     private GameInfoMainFragment mMainFragment;
     private boolean mGameFinished;
+    private GameInfoPreviousFragment mThirdFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +55,12 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
+        Log.d("mytag", mGameEvent.getEventId());
         mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime());
         if (mGameFinished) {
             mMainFragment = new GameInfoMainFragment();
             mSecondaryFragment = new GameInfoLeadersFragment();
+//            mThirdFragment = new GameInfoPreviousFragment(mGameEvent);
             getGameInfo(mGameEvent.getEventId());
         } else {
             mMainFragment = new GameInfoMainFragment();
@@ -102,6 +112,19 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static String SEND_GAME_ID = "send_game_id";
+
+    @Override
+    public void onGameSelected(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
+        Intent intent = new Intent(this, DetailActivity.class)
+                .putExtra(SEND_GAME_ID, gameEvent);
+
+        ActivityOptionsCompat activityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                        new Pair<View, String>(vh.mImageTeam, getString(R.string.detail_icon_transition_name)));
+        ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -117,12 +140,16 @@ public class DetailActivity extends AppCompatActivity {
             } else if (position == 1){
                 return mSecondaryFragment;
             }
+//            else if (mGameFinished && position == 3) {
+//                return mThirdFragment;
+//            }
             return mMainFragment;
         }
 
         @Override
         public int getCount() {
             // Show 2 total pages.
+//            if (mGameFinished) return 3;
             return 2;
         }
 
@@ -132,8 +159,13 @@ public class DetailActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.label_main_info_fragment);
                 case 1:
-                    return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_previous_games_fragment) ;
+                    return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_previous_games_fragment);
+
             }
+//            if (mGameFinished && position == 2) {
+//                return getString(R.string.label_previous_games_fragment);
+//            }
+
             return null;
         }
     }
