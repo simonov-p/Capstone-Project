@@ -88,8 +88,21 @@
     <!-- For Shared Element Transitions -->
     <string name="detail_icon_transition_name" translatable="false">TN_DetailIcon</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_previous_games_fragment">Previous games</string>
     <string name="default_text">default text</string>
+
+    <string name="win_loss">W-L</string>
+    <string name="turnovers">TO</string>
+    <string name="field_goal_per">FG %</string>
+    <string name="three_point_per">3P %</string>
+    <string name="field_goal">FG</string>
+    <string name="three_point">3P</string>
+    <string name="free_throws">FT</string>
+    <string name="free_throws_per">FT %</string>
+    <string name="rebounds">R</string>
+    <string name="assists">A</string>
+    <string name="steals">S</string>
+    <string name="blocks">B</string>
+    <string name="fouls">F</string>
+    <string name="minutes">min</string>
 </resources>

@@ -293,7 +293,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     JSONArray array = new JSONArray(data);
-                    Log.d("mytag", "json:" + array.get(49).toString());
+                    Log.d("mytag", "json:" + array.get(56).toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -307,8 +307,11 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
 
+                int i = 0;
                 for (Event evt : events) {
-                    Log.d(TAG, " event id:" + evt.getEventId());
+                    i++;
+                    Log.d(TAG, String.valueOf(i) + " event:" + evt.teamEventLocationType +  " won:" + evt.team_events_won +":" + evt.team_events_lost +"   " + evt.opponent_events_won + ":" + evt.opponent_events_lost +
+                     " id:" + evt.getEventId());
                     cVVector.add(evt.eventToCV());
                 }
                 if (cVVector.size() > 0) {

@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Event implements Parcelable {
 
+    //https://erikberg.com/api/methods/team-results
+
     @JsonProperty("event_id")
     private String eventId;
 
@@ -33,10 +35,22 @@ public class Event implements Parcelable {
     private String teamEventNumberInSeason;
 
     @JsonProperty("team_event_location_type")
-    private String teamEventLocationType;
+    public String teamEventLocationType;
 
     @JsonProperty("team_points_scored")
     private int teamPointsScored;
+
+    @JsonProperty("team_events_won")
+    public String team_events_won;
+
+    @JsonProperty("team_events_lost")
+    public String team_events_lost;
+
+    @JsonProperty("opponent_events_lost")
+    public String opponent_events_lost;
+
+    @JsonProperty("opponent_events_won")
+    public String opponent_events_won;
 
     @JsonProperty("opponent_points_scored")
     private int opponentPointsScored;
@@ -86,6 +100,11 @@ public class Event implements Parcelable {
         contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME, getOpponent().getFullName());
         contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_SCORE, getTeamPointsScored());
         contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE, getOpponentPointsScored());
+        contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON, this.team_events_won);
+        contentValues.put(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST, this.team_events_lost);
+        contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON, this.opponent_events_won);
+        contentValues.put(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST, this.opponent_events_lost);
+        contentValues.put(GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE, this.teamEventLocationType);
         return contentValues;
     }
 
@@ -96,6 +115,11 @@ public class Event implements Parcelable {
         this.opponent = new Team(cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)));
         this.teamPointsScored = cursor.getInt(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE));
         this.opponentPointsScored = cursor.getInt(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
+        this.team_events_won = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON));
+        this.team_events_lost = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST));
+        this.opponent_events_won = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON));
+        this.opponent_events_lost = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST));
+        this.teamEventLocationType = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE));
     }
 
     // parcelable data
@@ -110,6 +134,11 @@ public class Event implements Parcelable {
         out.writeInt(opponentPointsScored);
         out.writeString(team.getFullName());
         out.writeString(opponent.getFullName());
+        out.writeString(team_events_won);
+        out.writeString(team_events_lost);
+        out.writeString(opponent_events_won);
+        out.writeString(opponent_events_lost);
+        out.writeString(teamEventLocationType);
     }
 
     public static final Parcelable.Creator<Event> CREATOR
@@ -130,10 +159,12 @@ public class Event implements Parcelable {
         opponentPointsScored = in.readInt();
         teamName = in.readString();
         opponentName = in.readString();
+        team_events_won = in.readString();
+        team_events_lost = in.readString();
+        opponent_events_won = in.readString();
+        opponent_events_lost = in.readString();
+        teamEventLocationType = in.readString();
     }
     public String teamName;
     public String opponentName;
-
-
-
 }

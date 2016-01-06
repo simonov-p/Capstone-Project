@@ -85,7 +85,12 @@ public class ScheduleFragment extends Fragment
             GamesContract.GamesEntry.COLUMN_OPPONENT_NAME,
             GamesContract.GamesEntry.COLUMN_TEAM_SCORE,
             GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE,
-            GamesContract.GamesEntry.COLUMN_GAME_NBA_ID
+            GamesContract.GamesEntry.COLUMN_GAME_NBA_ID,
+            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON,
+            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST,
+            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE
     };
 
     @Override

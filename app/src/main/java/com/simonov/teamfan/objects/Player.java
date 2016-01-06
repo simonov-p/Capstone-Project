@@ -8,56 +8,25 @@ public class Player {
     String first_name;
     public String display_name;
     String position;
-    float minutes;
+    public float minutes;
     public int points;
-    int assists;
-    int turnovers;
-    int steals;
-    int blocks;
-    int rebounds;
-    int field_goals_attempted;
-    int field_goals_made;
-    int three_point_field_attempted;
-    int three_point_field_made;
-    int free_throws_attempted;
-    int free_throws_made;
-    int defensive_rebounds;
-    int offensive_rebounds;
-    int personal_fauls;
+    public int assists;
+    public int turnovers;
+    public int steals;
+    public int blocks;
+    public int rebounds;
+    public int field_goals_attempted;
+    public int field_goals_made;
+    public int three_point_field_attempted;
+    public int three_point_field_made;
+    public int free_throws_attempted;
+    public int free_throws_made;
+    public int defensive_rebounds;
+    public int offensive_rebounds;
+    public int personal_fauls;
     String team_abbreviation;
     boolean is_starter;
-    float field_goal_percentage;
-    float three_point_percentage;
-    float free_point_percentage;
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "last_name='" + last_name + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", display_name='" + display_name + '\'' +
-                ", position='" + position + '\'' +
-                ", minutes=" + minutes +
-                ", points=" + points +
-                ", assists=" + assists +
-                ", turnovers=" + turnovers +
-                ", steals=" + steals +
-                ", blocks=" + blocks +
-                ", rebounds=" + rebounds +
-                ", field_goals_attempted=" + field_goals_attempted +
-                ", field_goals_made=" + field_goals_made +
-                ", three_point_field_attempted=" + three_point_field_attempted +
-                ", three_point_field_made=" + three_point_field_made +
-                ", free_throws_attempted=" + free_throws_attempted +
-                ", free_throws_made=" + free_throws_made +
-                ", defensive_rebounds=" + defensive_rebounds +
-                ", offensive_rebounds=" + offensive_rebounds +
-                ", personal_fauls=" + personal_fauls +
-                ", team_abbreviation='" + team_abbreviation + '\'' +
-                ", is_starter=" + is_starter +
-                ", field_goal_percentage=" + field_goal_percentage +
-                ", three_point_percentage=" + three_point_percentage +
-                ", free_point_percentage=" + free_point_percentage +
-                '}';
-    }
+    public float field_goal_percentage;
+    public float three_point_percentage;
+    public float free_point_percentage;
 }

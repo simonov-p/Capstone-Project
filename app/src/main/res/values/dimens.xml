@@ -2,14 +2,19 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="logo_size">150dp</dimen>
+    <dimen name="logo_small_size">80dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
     <dimen name="small_margin">4dp</dimen>
 
     <dimen name="big_text_size">30sp</dimen>
+    <dimen name="biggest_text_size">40sp</dimen>
     <dimen name="middle_text_size">16sp</dimen>
+    <dimen name="small_text_size">10sp</dimen>
     <dimen name="small_offset">4dp</dimen>
     <dimen name="middle_offset">8dp</dimen>
     <dimen name="big_offset">16dp</dimen>
     <dimen name="cardview_radius">6dp</dimen>
+
+
 </resources>

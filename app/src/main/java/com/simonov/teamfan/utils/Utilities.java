@@ -156,4 +156,9 @@ public class Utilities {
         }
         return eventHomeTeam.toString().trim().equals(teamFullName);
     }
+
+    public static int getDensSize(float size, Context context) {
+//        return (int) (size * context.getResources().getDisplayMetrics().density);
+        return (int) (size / context.getResources().getDisplayMetrics().density);
+    }
 }

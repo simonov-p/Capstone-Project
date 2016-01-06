@@ -73,8 +73,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="@dimen/big_text_size"
-                android:visibility="gone" />
+                android:textSize="@dimen/big_text_size" />
 
             <TextView
                 android:id="@+id/list_item_score_home_team"
@@ -82,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="@dimen/big_text_size"
-                android:visibility="gone" />
+                android:textSize="@dimen/big_text_size" />
         </LinearLayout>
 
         <TextView

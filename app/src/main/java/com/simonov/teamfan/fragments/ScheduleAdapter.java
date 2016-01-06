@@ -6,6 +6,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public TextView mAwayTeamName;
         public TextView mHomeTeamName;
         public TextView mTextDate;
-        public TextView mTextNumberGame;
         public ImageView mAwayTeamLogo;
         public ImageView mHomeTeamLogo;
         public ViewHolder(View v) {
@@ -103,17 +103,29 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             if (Utilities.isHomeGame(event, teamName)){
                 fillAwayTeam(opponentName,
                         mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
-                        holder);
+                        holder,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON)),
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST))
+                );
                 fillHomeTeam(teamName,
                         mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
-                        holder);
+                        holder,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON)),
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST))
+                );
             } else {
                 fillAwayTeam(teamName,
                         mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
-                        holder);
+                        holder,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON)),
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST))
+                );
                 fillHomeTeam(opponentName,
                         mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
-                        holder);
+                        holder,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON)),
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST))
+                );
             }
 
             holder.mTextDate.setText(Utilities.convertDate(dateText) + " temp:" +
@@ -125,10 +137,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
         } catch (CursorIndexOutOfBoundsException c) {
             Log.e("mytag", "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
+//        } catch (IllegalStateException e){
+//            Log.e("mytag", "Illegal exception:" + String.valueOf(position) + "  " + e.getMessage());
+
         }
     }
 
-    private void fillAwayTeam(String teamFullName, String score, ViewHolder holder){
+    private void fillAwayTeam(String teamFullName, String score, ViewHolder holder, String gamesWon, String gamesLost){
         Glide.with(mContext)
                 .load(Utilities.getTeamLogo(mContext, teamFullName))
                 .error(R.mipmap.ic_launcher)
@@ -136,13 +151,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .into(holder.mAwayTeamLogo);
         holder.mAwayTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mAwayTeamScore.setVisibility(View.GONE);
+            holder.mAwayTeamScore.setText(String.format("%s-%s", gamesWon, gamesLost));
+            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
         } else {
-            holder.mAwayTeamScore.setVisibility(View.VISIBLE);
             holder.mAwayTeamScore.setText(score);
+            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
         }
     }
-    private void fillHomeTeam(String teamFullName, String score, ViewHolder holder){
+    private void fillHomeTeam(String teamFullName, String score, ViewHolder holder, String gamesWon, String gamesLost){
         Glide.with(mContext)
                 .load(Utilities.getTeamLogo(mContext, teamFullName))
                 .error(R.mipmap.ic_launcher)
@@ -150,11 +166,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .into(holder.mHomeTeamLogo);
         holder.mHomeTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mHomeTeamScore.setVisibility(View.GONE);
-            holder.mHomeTeamScore.setText("");
+            holder.mHomeTeamScore.setText(String.format("%s-%s",gamesWon,gamesLost));
+            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
         } else {
-            holder.mHomeTeamScore.setVisibility(View.VISIBLE);
             holder.mHomeTeamScore.setText(score);
+            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
         }
     }
 
