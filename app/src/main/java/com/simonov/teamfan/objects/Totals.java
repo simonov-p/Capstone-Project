@@ -20,10 +20,10 @@ public class Totals {
     int three_point_field_goals_attempted;
     int rebounds;
     int steals;
-    String field_goal_percentage_string;
+    public String field_goal_percentage_string;
     public int turnovers;
     int defensive_rebounds;
-    int points;
+    public int points;
     int field_goals_attempted;
     int minutes;
 }

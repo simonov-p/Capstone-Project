@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
-import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.objects.Player;
 import com.simonov.teamfan.utils.Utilities;
@@ -33,8 +32,8 @@ public class GameInfoLeadersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_game_info_leaders, container, false);
 
-        mTeamLogo = (ImageView) root.findViewById(R.id.team_logo);
-        mOpponentLogo = (ImageView) root.findViewById(R.id.opponent_logo);
+        mTeamLogo = (ImageView) root.findViewById(R.id.home_logo);
+        mOpponentLogo = (ImageView) root.findViewById(R.id.away_logo);
 
         mTeamPlayer = (TextView) root.findViewById(R.id.team_player_name);
         mOpponentPlayer = (TextView) root.findViewById(R.id.opponent_player_name);

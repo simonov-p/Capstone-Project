@@ -9,65 +9,79 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <LinearLayout
+
+        <ImageView
+            android:id="@+id/home_logo"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/team_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
-                />
-            <TextView
-                android:id="@+id/team_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/team_games_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:id="@+id/away_logo"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/opponent_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
-                />
-            <TextView
-                android:id="@+id/opponent_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/opponent_games_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:scaleType="centerInside" />
     </LinearLayout>
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TableRow>
+
+            <TextView
+                android:id="@+id/away_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/big_text_size" />
+
+            <TextView
+                android:id="@+id/home_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/big_text_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/away_games_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/home_games_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+
             <TextView android:id="@+id/team_FG_per" />
+
             <TextView android:text="FG %" />
+
             <TextView android:id="@+id/opponent_FG_per" />
         </TableRow>
+
         <TableRow>
+
             <TextView android:id="@+id/team_3P_per" />
+
             <TextView android:text="3P %" />
+
             <TextView android:id="@+id/opponent_3P_per" />
         </TableRow>
+
         <TableRow>
+
             <TextView android:id="@+id/team_TO_per" />
+
             <TextView android:text="TO %" />
+
             <TextView android:id="@+id/opponent_TO_per" />
         </TableRow>
     </TableLayout>
-
 </LinearLayout>
