@@ -63,6 +63,8 @@ public class Utilities {
         return date.before(today);
     }
 
+
+
     public static int getTeamLogo(Context context, String team) {
         if (team.equals(context.getResources().getString(R.string.atlanta_hawks))) {
             return R.mipmap.atlanta_hawks;

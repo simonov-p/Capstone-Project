@@ -22,6 +22,7 @@ import android.view.View;
 import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.api.GameApi;
+import com.simonov.teamfan.api.RestError;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
@@ -176,8 +177,9 @@ implements ScheduleFragment.DetailFragmentCallback{
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestInterceptor.RequestFacade request) {
-                        request.addHeader("Accept", "application/json;versions=1");
                         request.addHeader("Authorization", "Bearer " + BuildConfig.XMLSTATS_ACCESS_TOKEN);
+                        request.addHeader("User-agent", "simonovP/0.1 (https://pk.simonov@gmail.com/)");
+//                        request.addHeader("Accept-encoding", "gzip"); //com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
                     }
                 })
                 .build();
@@ -197,6 +199,13 @@ implements ScheduleFragment.DetailFragmentCallback{
                     public void failure(RetrofitError error) {
                         Log.d("mytag error", error.toString());
                         Log.d("mytag error.getUrl", error.getUrl().toString());
+//                        Log.d("mytag error.getBody().toString", error.getBody().toString());
+                        Log.d("mytag error.getMessage", error.getMessage());
+//                        Log.d("mytag error.getLocalizedMessage", error.getLocalizedMessage());
+//                        Log.d("mytag error.getResponse().toString", error.getResponse().toString());
+//                        Log.d("mytag error.getResponse().getReason", error.getResponse().getReason());
+                        RestError body = (RestError) error.getBodyAs(RestError.class);
+                        Log.d("mytag error.body.errorDetails", body.error.description);
                     }
                 });
     }

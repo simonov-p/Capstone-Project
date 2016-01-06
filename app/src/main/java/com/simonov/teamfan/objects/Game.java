@@ -16,7 +16,4 @@ public class Game {
     public Totals away_totals;
     public Totals home_totals;
 //  event_information //{u'status': u'completed', u'start_date_time': u'2016-01-04T19:30:00-05:00', u'attendance': 19874, u'temperature': 0, u'season_type': u'regular', u'site': {u'city': u'Miami', u'state': u'Florida', u'capacity': 19600, u'name': u'AmericanAirlines Arena', u'surface': u'Hardwood'}, u'duration': u'2:38'}
-
-
-
 }
