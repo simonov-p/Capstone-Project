@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.data.GamesContract;
+import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Player;
 
 import java.text.ParseException;
@@ -133,5 +135,18 @@ public class Utilities {
             if (player.points > bestPlayer.points) bestPlayer = player;
         }
         return bestPlayer;
+    }
+
+    public static boolean isHomeGame(String eventId, String teamFullName){
+        String[] eventTeams = eventId.split("-at-");
+        StringBuffer eventHomeTeam = new StringBuffer();
+        String[] strArr = eventTeams[1].split("-");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+            eventHomeTeam.append(str).append(" ");
+        }
+        return eventHomeTeam.toString().trim().equals(teamFullName);
     }
 }

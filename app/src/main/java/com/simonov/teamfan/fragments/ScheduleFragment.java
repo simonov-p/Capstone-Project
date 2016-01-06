@@ -104,7 +104,7 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        Log.d("mytag", "onLoadFinished0");
         mAdapter.swapCursor(data);
         updateEmptyView();
         if (data.getCount() == 0) {

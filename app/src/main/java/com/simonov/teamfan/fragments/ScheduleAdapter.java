@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
@@ -33,26 +32,30 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         mCursor = cursor;
 
         notifyDataSetChanged();
+        Log.d("mytag", "onLoadFinished-notifyDataSetChanged");
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        // each data item is just a string in this case
-        public TextView mTextTeam;
-        public TextView mTextOpponent;
+        public TextView mAwayTeamScore;
+        public TextView mHomeTeamScore;
+        public TextView mAwayTeamName;
+        public TextView mHomeTeamName;
         public TextView mTextDate;
         public TextView mTextScore;
         public TextView mTextNumberGame;
-        public ImageView mImageTeam;
-        public ImageView mImageOpponent;
+        public ImageView mAwayTeamLogo;
+        public ImageView mHomeTeamLogo;
         public ViewHolder(View v) {
             super(v);
-            mTextTeam = (TextView) v.findViewById(R.id.list_item_name_team_A);
-            mTextOpponent = (TextView) v.findViewById(R.id.list_item_name_team_B);
+            mAwayTeamName = (TextView) v.findViewById(R.id.list_item_name_away_team);
+            mHomeTeamName = (TextView) v.findViewById(R.id.list_item_name_home_team);
+            mAwayTeamScore = (TextView) v.findViewById(R.id.list_item_score_away_team);
+            mHomeTeamScore = (TextView) v.findViewById(R.id.list_item_score_home_team);
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
-            mTextScore = (TextView) v.findViewById(R.id.list_item_score);
             mTextNumberGame = (TextView) v.findViewById(R.id.list_item_number_of_game);
-            mImageTeam = (ImageView) v.findViewById(R.id.list_item_logo_team_A);
-            mImageOpponent = (ImageView) v.findViewById(R.id.list_item_logo_team_B);
+            mAwayTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_away_team);
+            mHomeTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_home_team);
             v.setOnClickListener(this);
         }
 
@@ -98,25 +101,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             String teamName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
             String opponentName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
             String dateText = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
-            String gameScore = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE))
-                    + ":" + mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
 
-            Glide.with(mContext)
-                    .load(Utilities.getTeamLogo(mContext, teamName))
-                    .error(R.mipmap.ic_launcher)
-                    .crossFade()
-                    .into(holder.mImageTeam);
+            String event = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_GAME_NBA_ID));
 
-            Glide.with(mContext)
-                    .load(Utilities.getTeamLogo(mContext, opponentName))
-                    .error(R.mipmap.ic_launcher)
-                    .crossFade()
-                    .into(holder.mImageOpponent);
+            if (Utilities.isHomeGame(event, teamName)){
+                fillAwayTeam(opponentName,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
+                        holder);
+                fillHomeTeam(teamName,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
+                        holder);
+            } else {
+                fillAwayTeam(teamName,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
+                        holder);
+                fillHomeTeam(opponentName,
+                        mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
+                        holder);
+            }
 
-            holder.mTextTeam.setText(teamName);
-            holder.mTextOpponent.setText(opponentName);
             holder.mTextDate.setText(dateText);
-            holder.mTextScore.setText(gameScore);
 
             mICM.onBindViewHolder(holder, position);
 
@@ -124,6 +128,31 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
         } catch (CursorIndexOutOfBoundsException c) {
             Log.e("mytag", "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
+        }
+    }
+
+    private void fillAwayTeam(String teamFullName, String score, ViewHolder holder){
+        Glide.with(mContext)
+                .load(Utilities.getTeamLogo(mContext, teamFullName))
+                .error(R.mipmap.ic_launcher)
+                .crossFade()
+                .into(holder.mAwayTeamLogo);
+        holder.mAwayTeamName.setText(teamFullName);
+        if (!score.equals(GamesContract.GamesEntry.NO_SCORE)){
+            holder.mAwayTeamScore.setText(score);
+            holder.mAwayTeamScore.setVisibility(View.VISIBLE);
+        }
+    }
+    private void fillHomeTeam(String teamFullName, String score, ViewHolder holder){
+        Glide.with(mContext)
+                .load(Utilities.getTeamLogo(mContext, teamFullName))
+                .error(R.mipmap.ic_launcher)
+                .crossFade()
+                .into(holder.mHomeTeamLogo);
+        holder.mHomeTeamName.setText(teamFullName);
+        if (!score.equals(GamesContract.GamesEntry.NO_SCORE)){
+            holder.mHomeTeamScore.setText(score);
+            holder.mHomeTeamScore.setVisibility(View.VISIBLE);
         }
     }
 

@@ -88,7 +88,7 @@ implements ScheduleFragment.DetailFragmentCallback {
 
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        new Pair<View, String>(vh.mImageTeam, getString(R.string.detail_icon_transition_name)));
+                        new Pair<View, String>(vh.mAwayTeamLogo, getString(R.string.detail_icon_transition_name)));
         ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
     }
 }

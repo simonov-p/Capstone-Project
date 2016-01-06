@@ -31,6 +31,8 @@ public class GamesContract {
         public static final String COLUMN_OPPONENT_SCORE = "opponent_score";
         public static final String COLUMN_GAME_NBA_ID = "game_id";
 
+        public static final String NO_SCORE = "-1";
+
         public static Uri buildGamesUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

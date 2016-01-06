@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.simonov.teamfan.data.GamesContract;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -132,4 +133,7 @@ public class Event implements Parcelable {
     }
     public String teamName;
     public String opponentName;
+
+
+
 }

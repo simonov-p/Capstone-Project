@@ -54,6 +54,7 @@ public class GameInfoMainFragment extends Fragment {
     }
 
     public void fillViews(Event event, Game game){
+        Log.d("mytag,fill", event.getEventId());
         Glide.with(getContext())
                 .load(Utilities.getTeamLogo(getContext(), game.home_team.getFullName()))
                 .error(R.mipmap.ic_launcher)
