@@ -61,7 +61,7 @@ public class ScheduleFragment extends Fragment
                                 vh
                         );
             }
-        }, emptyView, mChoiceMode);
+        }, emptyView, mChoiceMode, false);
         mRecyclerView.setAdapter(mAdapter);
 
         if (savedInstanceState != null) {

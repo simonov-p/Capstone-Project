@@ -57,7 +57,7 @@ public class GameInfoPreviousFragment extends Fragment {
                                 vh
                         );
             }
-        }, emptyView, mChoiceMode);
+        }, emptyView, mChoiceMode, true);
         fillAdapter();
         mRecyclerView.setAdapter(mAdapter);
 

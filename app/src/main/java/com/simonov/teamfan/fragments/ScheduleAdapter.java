@@ -23,6 +23,7 @@ import com.simonov.teamfan.utils.Utilities;
  * Created by petr on 03.01.2016.
  */
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
+    private boolean mIsSmallIcons;
     private Cursor mCursor;
     private TextView mEmptyView;
     final private Context mContext;
@@ -66,12 +67,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         }
     }
 
-    public ScheduleAdapter(Context context, ScheduleAdapterOnClickHandler handler, TextView emptyView, int choiceMode) {
+    public ScheduleAdapter(Context context, ScheduleAdapterOnClickHandler handler, TextView emptyView,
+                           int choiceMode, boolean smallIcons) {
         mContext = context;
         mEmptyView = emptyView;
         mClickHandler = handler;
         mICM = new ItemChoiceManager(this);
         mICM.setChoiceMode(choiceMode);
+        mIsSmallIcons = smallIcons;
     }
 
     // Create new views (invoked by the layout manager)
@@ -93,6 +96,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         }
         try {
             mCursor.moveToPosition(position);
+
+
 
             String teamName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
             String opponentName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
@@ -132,6 +137,21 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                     String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
 
             mICM.onBindViewHolder(holder, position);
+
+            if (mIsSmallIcons){
+                holder.mHomeTeamName.setVisibility(View.GONE);
+                holder.mAwayTeamName.setVisibility(View.GONE);
+                holder.mHomeTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
+                holder.mAwayTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
+                holder.mTextDate.setText(Utilities.convertDateToDate(dateText));
+                if (holder.mAwayTeamScore.getText().toString().contains("-")){
+                    holder.mHomeTeamScore.setVisibility(View.GONE);
+                    holder.mAwayTeamScore.setVisibility(View.GONE);
+                } else {
+                    holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+                    holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+                }
+            }
 
         } catch (NullPointerException e) {
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
