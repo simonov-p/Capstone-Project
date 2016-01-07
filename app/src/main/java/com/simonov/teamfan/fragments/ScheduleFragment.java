@@ -1,12 +1,16 @@
 package com.simonov.teamfan.fragments;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,6 +71,45 @@ public class ScheduleFragment extends Fragment
         if (savedInstanceState != null) {
             mAdapter.onRestoreInstanceState(savedInstanceState);
         }
+        // paralax land
+//        final View parallaxView = root.findViewById(R.id.parallax_bar);
+//        if (null != parallaxView) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//                    @Override
+//                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                        super.onScrolled(recyclerView, dx, dy);
+//                        int max = parallaxView.getHeight();
+//                        if (dy > 0) {
+//                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2));
+//                        } else {
+//                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
+//                        }
+//                    }
+//                });
+//            }
+//        }
+
+        final AppBarLayout appbarView = (AppBarLayout) root.findViewById(R.id.appbar);
+        if (null != appbarView) {
+            ViewCompat.setElevation(appbarView, 0);
+            Log.d("mytag app", "here");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        if (0 == mRecyclerView.computeVerticalScrollOffset()) {
+                            appbarView.setElevation(0);
+                        } else {
+                            appbarView.setElevation(appbarView.getTargetElevation());
+                        }
+                    }
+                });
+            }
+        }
+
         return root;
 
     }
