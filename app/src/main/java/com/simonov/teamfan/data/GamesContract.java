@@ -34,6 +34,7 @@ public class GamesContract {
         public static final String COLUMN_OPPONENT_EVENTS_WON = "opponent_events_won";
         public static final String COLUMN_OPPONENT_EVENTS_LOST = "opponent_events_lost";
         public static final String COLUMN_EVENT_LOCATION_TYPE = "event_location_type";
+        public static final String COLUMN_EVENT_LOCATION_NAME = "event_location_name";
         public static final String COLUMN_GAME_NBA_ID = "game_id";
 
         public static final String NO_SCORE = "-1";

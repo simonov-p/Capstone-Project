@@ -90,7 +90,8 @@ public class ScheduleFragment extends Fragment
             GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST,
             GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON,
             GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST,
-            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE
+            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE,
+            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_NAME
     };
 
     @Override

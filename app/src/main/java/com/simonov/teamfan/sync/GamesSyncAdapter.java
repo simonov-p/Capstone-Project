@@ -307,11 +307,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
 
-                int i = 0;
                 for (Event evt : events) {
-                    i++;
-                    Log.d(TAG, String.valueOf(i) + " event:" + evt.teamEventLocationType +  " won:" + evt.team_events_won +":" + evt.team_events_lost +"   " + evt.opponent_events_won + ":" + evt.opponent_events_lost +
-                     " id:" + evt.getEventId());
                     cVVector.add(evt.eventToCV());
                 }
                 if (cVVector.size() > 0) {

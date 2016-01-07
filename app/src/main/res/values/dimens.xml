@@ -11,10 +11,11 @@
     <dimen name="biggest_text_size">40sp</dimen>
     <dimen name="middle_text_size">16sp</dimen>
     <dimen name="small_text_size">10sp</dimen>
+
     <dimen name="small_offset">4dp</dimen>
     <dimen name="middle_offset">8dp</dimen>
     <dimen name="big_offset">16dp</dimen>
+    <dimen name="fab_bottom_offset">70dp</dimen>
+
     <dimen name="cardview_radius">6dp</dimen>
-
-
 </resources>

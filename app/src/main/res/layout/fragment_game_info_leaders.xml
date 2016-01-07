@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="@dimen/middle_offset"
     tools:context="com.simonov.teamfan.fragments.GameInfoLeadersFragment">
 
     <LinearLayout
@@ -12,343 +13,412 @@
 
         <ImageView
             android:id="@+id/away_logo"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:scaleType="centerInside" />
 
         <ImageView
             android:id="@+id/home_logo"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:scaleType="centerInside" />
     </LinearLayout>
 
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:stretchColumns="0,2"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/small_offset"
         android:layout_height="wrap_content">
 
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
 
-            <TextView
-                android:id="@+id/away_player_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/big_text_size"
-                android:layout_column="0"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_column="2"
-                android:id="@+id/home_player_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/big_text_size"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/away_score"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/biggest_text_size"
-                android:layout_column="0"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_column="2"
-                android:id="@+id/home_score"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/biggest_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView android:id="@+id/away_minutes"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-
-            <TextView android:text="@string/minutes"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-
-            <TextView android:id="@+id/home_minutes"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/away_field_goal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center"
-                android:layout_column="0" />
-            <TextView android:text="@string/field_goal"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-            <TextView
-                android:layout_column="2"
-                android:textSize="@dimen/middle_text_size"
-                android:id="@+id/home_field_goal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow android:layout_gravity="center"
-            android:gravity="center"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/small_offset"
+            android:gravity="center"
+            android:stretchColumns="0,2">
 
-            <TextView android:id="@+id/away_FG_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center" />
+                android:gravity="center">
 
-            <TextView android:text="@string/field_goal_per"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/middle_text_size"
+                <TextView
+                    android:id="@+id/away_player_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:textSize="@dimen/big_text_size" />
+
+                <TextView
+                    android:id="@+id/home_player_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:gravity="center"
+                    android:textSize="@dimen/big_text_size" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center" />
+                android:gravity="center">
 
-            <TextView android:id="@+id/home_FG_per"
-                android:layout_width="0dp"
-                android:text="2"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/away_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:textSize="@dimen/biggest_text_size" />
 
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/home_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:gravity="center"
+                    android:textSize="@dimen/biggest_text_size" />
+            </TableRow>
 
-            <TextView android:id="@+id/away_3P"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:text="@string/three_point"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/away_minutes"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/home_3P"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/minutes"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_3P_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_minutes"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:text="@string/three_point_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:id="@+id/home_3P_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/away_field_goal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/field_goal"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_FT"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_field_goal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:text="@string/free_throws"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:id="@+id/home_FT"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/away_FG_per"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_FT_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/field_goal_per"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:text="@string/free_throws_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_FG_per"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:id="@+id/home_FT_per"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:id="@+id/away_rebounds"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/away_3P"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:text="@string/rebounds"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/three_point"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/home_rebounds"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/home_3P"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:id="@+id/away_assists"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:text="@string/assists"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/away_3P_per"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/home_assists"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/three_point_per"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_steals"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_3P_per"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:text="@string/steals"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:id="@+id/home_steals"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/away_FT"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_blocks"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/free_throws"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:text="@string/blocks"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_FT"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:id="@+id/home_blocks"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/away_FT_per"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/away_TO"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/free_throws_per"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:text="@string/turnovers"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/home_FT_per"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-            <TextView android:id="@+id/home_TO"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
-        <TableRow android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-            <TextView android:id="@+id/away_fouls"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/away_rebounds"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:text="@string/fouls"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/rebounds"
+                    android:textSize="@dimen/middle_text_size" />
 
-            <TextView android:id="@+id/home_fouls"
-                android:layout_width="0dp"
-                android:textSize="@dimen/middle_text_size"
-                android:gravity="center" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/home_rebounds"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
 
-    </TableLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/away_assists"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/assists"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:id="@+id/home_assists"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/away_steals"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/steals"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:id="@+id/home_steals"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/away_blocks"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/blocks"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:id="@+id/home_blocks"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/away_TO"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/turnovers"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:id="@+id/home_TO"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/away_fouls"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:text="@string/fouls"
+                    android:textSize="@dimen/middle_text_size" />
+
+                <TextView
+                    android:id="@+id/home_fouls"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/middle_text_size" />
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.simonov.teamfan.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -25,12 +26,15 @@ import com.simonov.teamfan.api.GameApi;
 import com.simonov.teamfan.api.RestError;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
+import com.simonov.teamfan.fragments.GameInfoPreviewFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
 import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
+
+import java.util.Calendar;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -46,7 +50,7 @@ implements ScheduleFragment.DetailFragmentCallback{
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private Fragment mSecondaryFragment;
-    private GameInfoMainFragment mMainFragment;
+    private Fragment mMainFragment;
     private boolean mGameFinished;
     private GameInfoPreviousFragment mThirdFragment;
 
@@ -64,7 +68,7 @@ implements ScheduleFragment.DetailFragmentCallback{
 //            mThirdFragment = new GameInfoPreviousFragment(mGameEvent);
             getGameInfo(mGameEvent.getEventId());
         } else {
-            mMainFragment = new GameInfoMainFragment();
+            mMainFragment = new GameInfoPreviewFragment(mGameEvent);
             mSecondaryFragment = new GameInfoPreviousFragment(mGameEvent);
         }
 
@@ -81,15 +85,8 @@ implements ScheduleFragment.DetailFragmentCallback{
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
+
     }
 
     @Override
@@ -158,10 +155,9 @@ implements ScheduleFragment.DetailFragmentCallback{
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.label_main_info_fragment);
+                    return mGameFinished ? getString(R.string.label_main_info_fragment) : getString(R.string.label_preview_game_fragment);
                 case 1:
                     return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_previous_games_fragment);
-
             }
 //            if (mGameFinished && position == 2) {
 //                return getString(R.string.label_previous_games_fragment);
@@ -191,7 +187,7 @@ implements ScheduleFragment.DetailFragmentCallback{
                 new Callback<Game>() {
                     @Override
                     public void success(Game game, Response response) {
-                        mMainFragment.fillViews(mGameEvent, game);
+                        ((GameInfoMainFragment) mMainFragment).fillViews(mGameEvent, game);
                         ((GameInfoLeadersFragment) mSecondaryFragment).fillViews(game);
                     }
 

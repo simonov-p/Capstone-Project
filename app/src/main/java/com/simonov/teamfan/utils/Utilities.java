@@ -53,6 +53,85 @@ public class Utilities {
 
         return sdf.format(date);
     }
+    public static String convertDateToDate(String s) {
+        // Set the time zone to use for output
+        String TIME_ZONE = "America/New_York";
+
+        // All date-time strings for xmlstats use the ISO 8601 format
+        String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FMT);
+
+        // Set the time zone for output
+        TimeZone tz = TimeZone.getTimeZone(TIME_ZONE);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
+        sdf.setTimeZone(tz);
+
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdf.format(date);
+    }
+
+    public static long convertDateToMillis(String s) {
+        // Set the time zone to use for output
+        String TIME_ZONE = "America/New_York";
+
+        // All date-time strings for xmlstats use the ISO 8601 format
+        String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FMT);
+
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date != null ? date.getTime() : 0;
+    }
+
+    public static long convertDateEndGameToMillis(String s) {
+        // Set the time zone to use for output
+        String TIME_ZONE = "America/New_York";
+
+        long gameTime = 3*60*60*1000;
+
+        // All date-time strings for xmlstats use the ISO 8601 format
+        String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FMT);
+
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date != null ? date.getTime() + gameTime : 0;
+    }
+
+    public static String convertDateToTime(String s) {
+        // Set the time zone to use for output
+        String TIME_ZONE = "America/New_York";
+
+        // All date-time strings for xmlstats use the ISO 8601 format
+        String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FMT);
+
+        // Set the time zone for output
+        TimeZone tz = TimeZone.getTimeZone(TIME_ZONE);
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z");
+        sdf.setTimeZone(tz);
+
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdf.format(date);
+    }
 
     public static boolean compareDate(String s) {
         // All date-time strings for xmlstats use the ISO 8601 format
@@ -156,8 +235,11 @@ public class Utilities {
         }
         return eventHomeTeam.toString().trim().equals(teamFullName);
     }
+    public static boolean isHomeGame(Event event) {
+        return isHomeGame(event.getEventId(), event.teamName);
+    }
 
-    public static int getDensSize(float size, Context context) {
+        public static int getDensSize(float size, Context context) {
 //        return (int) (size * context.getResources().getDisplayMetrics().density);
         return (int) (size / context.getResources().getDisplayMetrics().density);
     }

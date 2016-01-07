@@ -8,57 +8,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Site {
     @JsonProperty("capacity")
-    private int capacity;
+    public int capacity;
 
     @JsonProperty("surface")
-    private String surface;
+    public String surface;
 
     @JsonProperty("name")
-    private String name;
+    public String name;
 
     @JsonProperty("city")
-    private String city;
+    public String city;
 
     @JsonProperty("state")
-    private String state;
+    public String state;
 
-    public int getCapacity() {
-        return capacity;
-    }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public String getSurface() {
-        return surface;
-    }
-
-    public void setSurface(String surface) {
-        this.surface = surface;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
 }

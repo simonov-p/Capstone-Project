@@ -31,7 +31,8 @@ public class GamesDbHelper extends SQLiteOpenHelper {
                 GamesEntry.COLUMN_TEAM_EVENTS_LOST + " TEXT NOT NULL, " +
                 GamesEntry.COLUMN_OPPONENT_EVENTS_WON + " TEXT NOT NULL, " +
                 GamesEntry.COLUMN_OPPONENT_EVENTS_LOST + " TEXT NOT NULL, " +
-                GamesEntry.COLUMN_EVENT_LOCATION_TYPE + " TEXT NOT NULL " +
+                GamesEntry.COLUMN_EVENT_LOCATION_TYPE + " TEXT NOT NULL, " +
+                GamesEntry.COLUMN_EVENT_LOCATION_NAME + " TEXT NOT NULL " +
                 " );";
         db.execSQL(SQL_CREATE_GAMES_TABLE);
     }

@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/middle_offset"
+    tools:context=".fragments.GameInfoPreviewFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/logo_container"
+        android:layout_height="@dimen/logo_small_size"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/away_logo"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:id="@+id/home_logo"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/status_container"
+        android:layout_below="@id/logo_container"
+        android:padding="@dimen/middle_offset"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/away_games_status"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/big_text_size"
+            android:gravity="center"/>
+        <TextView
+            android:textSize="@dimen/big_text_size"
+            android:id="@+id/home_games_status"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+    </LinearLayout>
+    <TextView
+        android:textSize="@dimen/biggest_text_size"
+        android:id="@+id/game_date"
+        android:layout_below="@+id/status_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+    <TextView
+        android:layout_below="@+id/game_date"
+        android:textSize="@dimen/big_text_size"
+        android:id="@+id/game_time"
+        android:padding="@dimen/middle_offset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+    <TextView
+        android:layout_below="@+id/game_time"
+        android:textSize="@dimen/big_text_size"
+        android:id="@+id/game_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/fab_bottom_offset"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add" />
+
+</RelativeLayout>
