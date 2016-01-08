@@ -3,15 +3,19 @@ package com.simonov.teamfan.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,20 +25,14 @@ import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
@@ -42,15 +40,28 @@ import java.util.zip.GZIPInputStream;
  * Created by petr on 17-Dec-15.
  */
 public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
+
     private static final String TAG = GamesSyncAdapter.class.getSimpleName();
 
     public static final String ACTION_DATA_UPDATED =
             "com.simonov.teamfan.ACTION_DATA_UPDATED";
+
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+
+    private String mTeamQuery;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({GAMES_STATUS_OK, GAMES_STATUS_SERVER_DOWN, GAMES_STATUS_SERVER_INVALID, GAMES_STATUS_UNKNOWN, GAMES_STATUS_INVALID})
+    public @interface LocationStatus {}
+    public static final int GAMES_STATUS_OK = 0;
+    public static final int GAMES_STATUS_SERVER_DOWN = 1;
+    public static final int GAMES_STATUS_SERVER_INVALID = 2;
+    public static final int GAMES_STATUS_UNKNOWN = 3;
+    public static final int GAMES_STATUS_INVALID = 4;
 
     public GamesSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -60,17 +71,11 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync0");
-
-//        String teamName = "san-antonio-spurs";
         String teamName = Utilities.getPreferredTeam(getContext());
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-
-        String teamJsonStr = null;
-
+        mTeamQuery = teamName;
         GetJson getJson = new GetJson();
-        getJson.init(teamName);
+
+        getJson.init();
 
         Log.d(TAG, "onPerformSync1");
 
@@ -183,52 +188,32 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "syncImmediately1");
 
     }
+
     public class GetJson {
-        // Replace with your access token
         String ACCESS_TOKEN = BuildConfig.XMLSTATS_ACCESS_TOKEN;
-
-        // Replace with your bot name and email/website to contact if there is a
-        // problem e.g., "mybot/0.1 (https://erikberg.com/)"
         final String USER_AGENT_NAME = "simonovP/0.1 (https://pk.simonov@gmail.com/)";
-
         final String AUTHORIZATION = "Authorization";
-
         final String BEARER = "Bearer " + ACCESS_TOKEN;
-
         final String USER_AGENT = "User-agent";
-
         final String ACCEPT_ENCODING = "Accept-encoding";
-
         final String GZIP = "gzip";
 
-        // For brevity, the url with api method, format, and parameters
 //        static final String REQUEST_URL = "https://erikberg.com/events.json?sport=nba&date=20151220";
         final String REQUEST_URL = "https://erikberg.com/nba/results/";
 //        final String REQUEST_URL = "https://erikberg.com/nba/boxscore/20160102-milwaukee-bucks-at-minnesota-timberwolves.json";
 //        final String REQUEST_URL = "https://erikberg.com/nba/boxscore/20160110-new-orleans-pelicans-at-los-angeles-clippers.json";
-//
-//        // Set the time zone to use for output
-//        final String TIME_ZONE = "America/New_York";
-//
-//        // All date-time strings for xmlstats use the ISO 8601 format
-//        final String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
-//        final SimpleDateFormat XMLSTATS_DATE = new SimpleDateFormat(ISO_8601_FMT);
 
-        public void init(String teamName) {
+        public void init() {
             Log.e(TAG,"init");
-
             InputStream in = null;
             try {
-                URL url = new URL(REQUEST_URL + teamName + ".json");
+                URL url = new URL(REQUEST_URL + mTeamQuery + ".json");
 //                URL url = new URL(REQUEST_URL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                // Set Authorization header
+                // Set Authorization header, User agent header. Tell server we can handle gzip content
                 connection.setRequestProperty(AUTHORIZATION, BEARER);
-
-                // Set User agent header
                 connection.setRequestProperty(USER_AGENT, USER_AGENT_NAME);
-                // Tell server we can handle gzip content
                 connection.setRequestProperty(ACCEPT_ENCODING, GZIP);
 
                 // Check the HTTP status code for "200 OK"
@@ -252,13 +237,15 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                         String response = readHttpResponse(in, encoding);
                         Log.e("Response:",response);
                     }
-                    System.exit(1);
+                    setGamesStatus(getContext(), GAMES_STATUS_SERVER_DOWN);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
+                setGamesStatus(getContext(), GAMES_STATUS_SERVER_DOWN);
             }
         }
 
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         private String readHttpResponse(InputStream in, String encoding) {
             StringBuilder sb = new StringBuilder();
             // Verify the response is compressed, before attempting to decompress it
@@ -267,9 +254,9 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     in = new GZIPInputStream(in);
                 }
             } catch (IOException ex) {
-                Log.e(TAG,"Error trying to read gzip data.");
+                Log.e(TAG, "Error trying to read gzip data.");
                 ex.printStackTrace();
-                System.exit(1);
+                setGamesStatus(getContext(), GAMES_STATUS_SERVER_DOWN);
             }
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
@@ -278,9 +265,9 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     sb.append(line);
                 }
             } catch (IOException ex) {
-                Log.e(TAG,"Error reading response.");
+                Log.e(TAG, "Error reading response.");
                 ex.printStackTrace();
-                System.exit(1);
+                setGamesStatus(getContext(), GAMES_STATUS_SERVER_DOWN);
             }
             return sb.toString();
         }
@@ -291,20 +278,9 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                 // These two lines of code take the JSON string and return a POJO
                 // in this case, an Events object (https://erikberg.com/api/methods/events)
                 ObjectMapper mapper = new ObjectMapper();
-                try {
-                    JSONArray array = new JSONArray(data);
-                    Log.d("mytag", "json:" + array.get(56).toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
                 Event[] events = mapper.readValue(data, Event[].class);
 
-
                 // Loop through each Event (https://erikberg.com/api/objects/event)
-
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(events.length);
 
                 for (Event evt : events) {
@@ -314,22 +290,27 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
                     cVVector.toArray(cvArray);
 
-                    getContext().getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI, null, null); // try to remove multiply db rows
+                    // remove old db rows
+                    String whereClause = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +  Utilities.getFullNameFromQuery(mTeamQuery) + "'";
+                    getContext().getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI, whereClause, null);
 
                     getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
                             cvArray);
                     Log.e(TAG, "Parse JSON elements: " + cvArray.length);
-
-                    // delete old data for update the schedule
-
-//                    getContext().getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,
-//                            GamesContract.GamesEntry.COLUMN_DATE " <= ?",
-//                            null);
-
                 }
+                setGamesStatus(getContext(), GAMES_STATUS_OK);
             } catch (IOException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());
+                setGamesStatus(getContext(), GAMES_STATUS_SERVER_INVALID);
             }
         }
     }
+
+    private void setGamesStatus(Context c, @LocationStatus int gamesStatus){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor spe = sp.edit();
+        spe.putInt(c.getString(R.string.pref_games_status_key), gamesStatus);
+        spe.commit();
+    }
+
 }

@@ -29,9 +29,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_games_list"
+        android:gravity="center_horizontal"
+        app:layout_anchor="@+id/my_recycler_view"
+        app:layout_anchorGravity="fill"
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/empty_text_view"/>
 
     <android.support.v7.widget.RecyclerView

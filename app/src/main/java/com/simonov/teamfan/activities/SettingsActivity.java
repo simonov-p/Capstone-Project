@@ -35,7 +35,7 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,null,null);
+//        getContentResolver().delete(GamesContract.GamesEntry.CONTENT_URI,null,null);
         GamesSyncAdapter.syncImmediately(this);
 //        getContentResolver().notifyChange(GamesContract.GamesEntry.CONTENT_URI, null);
     }

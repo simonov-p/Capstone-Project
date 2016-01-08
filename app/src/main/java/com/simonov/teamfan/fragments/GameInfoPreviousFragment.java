@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
+import com.simonov.teamfan.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,17 +70,16 @@ public class GameInfoPreviousFragment extends Fragment {
 
     private void fillAdapter(){
         String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
-
-        String oppName = mEvent.opponentName;
-//        String whereClause = GamesContract.GamesEntry.COLUMN_TEAM_SCORE + " = -1";
-        String whereClause = GamesContract.GamesEntry.COLUMN_OPPONENT_NAME + " = " + "'" + oppName + "'";
-
-        Cursor c = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
+        String selectionAllGames = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +
+                Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
+        String selectionWithOpponent = selectionAllGames + " and " +
+                GamesContract.GamesEntry.COLUMN_OPPONENT_NAME + " = " + "'" + mEvent.opponentName + "'";
+        Cursor cursorWithOpponent = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
                 null,
-                whereClause,
+                selectionWithOpponent,
                 null,
                 sortOrder
         );
-        mAdapter.swapCursor(c);
+        mAdapter.swapCursor(cursorWithOpponent);
     }
 }

@@ -107,7 +107,8 @@ public class GamesProvider extends ContentProvider {
             db.endTransaction();
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        Log.e(TAG, "    insert: " + returnCount);
+        Log.e(TAG, "    insert: " + returnCount + " uri:" + uri);
+        Log.e(TAG, "    getContext().getContentResolver: " + getContext().getContentResolver().toString());
         return  returnCount;
     }
 }

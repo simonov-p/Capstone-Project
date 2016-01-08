@@ -106,7 +106,17 @@
     <string name="fouls">F</string>
     <string name="minutes">min</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_preview_game_fragment">Preview</string>
+
+    <!-- Error get information -->
+    <string name="empty_games_list">No games information available</string>
+    <string name="empty_games_list_no_network">No games information available. The network is not available to fetch games data.</string>
+    <string name="empty_games_list_server_down">No games information available. The server is not returning data.</string>
+    <string name="empty_games_list_server_error">No games information available. The server is not returning valid data. Please check for an updated version of TeamFan.</string>
+    <string name="empty_games_list_invalid_team">No games information available. The team in settings is not recognized by the games server.</string>
+    <string name="pref_games_status_key">games-status</string>
+    <string name="error_update_games_list_no_network">Error update games schedule. The network is not available to fetch games data.</string>
+
+
+
 </resources>

@@ -97,8 +97,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         try {
             mCursor.moveToPosition(position);
 
-
-
             String teamName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
             String opponentName = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
             String dateText = mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE));
@@ -133,7 +131,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 );
             }
 
-            holder.mTextDate.setText(Utilities.convertDate(dateText) + " temp:" +
+            holder.mTextDate.setText(Utilities.convertDate(dateText) + " game:" +
                     String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
 
             mICM.onBindViewHolder(holder, position);
@@ -213,5 +211,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public int getSelectedItemPosition() {
         return mICM.getSelectedItemPosition();
     }
+
 }
 

@@ -46,4 +46,12 @@
         <!--android:layout_margin="@dimen/fab_margin"-->
         <!--android:src="@android:drawable/ic_menu_my_calendar" />-->
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_games_list"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:id="@+id/empty_text_view"/>
+
 </android.support.design.widget.CoordinatorLayout>

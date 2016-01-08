@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
@@ -33,6 +34,8 @@ import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -53,11 +56,14 @@ implements ScheduleFragment.DetailFragmentCallback{
     private Fragment mMainFragment;
     private boolean mGameFinished;
     private GameInfoPreviousFragment mThirdFragment;
+    private TextView mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        mEmptyView = (TextView) findViewById(R.id.empty_text_view);
 
         mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
         Log.d("mytag", mGameEvent.getEventId());
@@ -66,7 +72,11 @@ implements ScheduleFragment.DetailFragmentCallback{
             mMainFragment = new GameInfoMainFragment();
             mSecondaryFragment = new GameInfoLeadersFragment();
 //            mThirdFragment = new GameInfoPreviousFragment(mGameEvent);
-            getGameInfo(mGameEvent.getEventId());
+            if (Utilities.isNetworkAvailable(this)){
+                getGameInfo(mGameEvent.getEventId());
+            } else {
+                updateEmptyView();
+            }
         } else {
             mMainFragment = new GameInfoPreviewFragment(mGameEvent);
             mSecondaryFragment = new GameInfoPreviousFragment(mGameEvent);
@@ -86,7 +96,11 @@ implements ScheduleFragment.DetailFragmentCallback{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+    }
 
+    private void updateEmptyView() {
+        mEmptyView.setVisibility(View.VISIBLE);
+        mEmptyView.setText(Utilities.getErrorMessage(this));
     }
 
     @Override
@@ -201,6 +215,7 @@ implements ScheduleFragment.DetailFragmentCallback{
 //                        Log.d("mytag error.getResponse().toString", error.getResponse().toString());
 //                        Log.d("mytag error.getResponse().getReason", error.getResponse().getReason());
                         RestError body = (RestError) error.getBodyAs(RestError.class);
+                        Log.d("mytag error.body.code", body.error.code);
                         Log.d("mytag error.body.errorDetails", body.error.description);
                     }
                 });

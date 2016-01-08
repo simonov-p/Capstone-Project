@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
+import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
 
 /**
@@ -141,11 +143,13 @@ public class ScheduleFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
+        String selection = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +
+                Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
 
         return new CursorLoader(getActivity(),
                 GamesContract.GamesEntry.buildGamesUri(id),
-                GAMES_COLUMNS,
                 null,
+                selection,
                 null,
                 sortOrder
         );
@@ -153,27 +157,39 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("mytag", "onLoadFinished0");
+        Log.d("mytag", "onLoadFinished0 data:" + data.getCount());
         mAdapter.swapCursor(data);
         updateEmptyView();
         if (data.getCount() == 0) {
-            getLoaderManager().initLoader(0,null,null);
+            getLoaderManager().initLoader(0, null, null);
         } else {
-            String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
 
-            String whereClause = GamesContract.GamesEntry.COLUMN_TEAM_SCORE + " = -1";
+        }
+        scrollToLastGame();
+    }
 
-            Cursor c = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
-                    null,
-                    whereClause,
-                    null,
-                    sortOrder
-                    );
-            if (null != c && c.getCount() > 0) {
-                int lastGamePosition = data.getCount() - c.getCount();
-                if (lastGamePosition > 0) lastGamePosition--;
-                mRecyclerView.scrollToPosition(lastGamePosition);
-            }
+    private void scrollToLastGame(){
+        String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
+        String selectionAllGames = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +
+                Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
+        String selectionUnfinished = selectionAllGames + " and " + GamesContract.GamesEntry.COLUMN_TEAM_SCORE + " = -1";
+
+        Cursor cursorUnfinishedGames = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
+                null,
+                selectionUnfinished,
+                null,
+                sortOrder
+        );
+        Cursor cursorAllGames = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
+                null,
+                selectionAllGames,
+                null,
+                sortOrder
+        );
+        if (null != cursorUnfinishedGames && cursorUnfinishedGames.getCount() > 0) {
+            int lastGamePosition = cursorAllGames.getCount() - cursorUnfinishedGames.getCount();
+            if (lastGamePosition > 0) lastGamePosition--;
+            mRecyclerView.scrollToPosition(lastGamePosition);
         }
     }
 
@@ -195,14 +211,31 @@ public class ScheduleFragment extends Fragment
         }
     }
 
-    private void updateEmptyView() {
-        if (mAdapter.getItemCount() == 0) {
-            TextView textView = (TextView) getView().findViewById(R.id.empty_text_view);
-            if (null != textView){
-                String message = "something wrong";
-                textView.setText(message);
+    @Override
+    public void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    private void updateEmptyView() {
+        TextView textView = (TextView) getView().findViewById(R.id.empty_text_view);
+        if (mAdapter.getItemCount() == 0) {
+            if (null != textView) {
+                // if cursor is empty, why? do we have an invalid location
+                 textView.setText(Utilities.getErrorMessage(getContext()));
+                textView.setVisibility(View.VISIBLE);
             }
+        } else {
+            Utilities.isNetworkAvailable(getActivity());
+            textView.setVisibility(View.GONE);
         }
     }
 
