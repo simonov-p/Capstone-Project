@@ -119,7 +119,5 @@ public class GameInfoLeadersFragment extends Fragment {
                 homePlayer.points,
                 awayPlayer.display_name,
                 awayPlayer.points));
-        Log.d("mytag players1", awayPlayer.toString());
-        Log.d("mytag players2", homePlayer.toString());
     }
 }
