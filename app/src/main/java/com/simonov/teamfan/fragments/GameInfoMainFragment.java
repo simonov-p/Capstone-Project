@@ -33,6 +33,7 @@ public class GameInfoMainFragment extends Fragment {
     @Bind(R.id.home_FG_per) TextView mHomeFGP;
     @Bind(R.id.home_3P_per) TextView mHome3PP;
     @Bind(R.id.home_TO_per) TextView mHomeTO;
+    View mMainLayout;
 
     public GameInfoMainFragment() {}
 
@@ -44,10 +45,10 @@ public class GameInfoMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_game_info_main, container, false);
-        ButterKnife.bind(this, root);
+        mMainLayout = inflater.inflate(R.layout.fragment_game_info_main, container, false);
+        ButterKnife.bind(this, mMainLayout);
 
-        return root;
+        return mMainLayout;
     }
 
     public void fillViews(Event event, Game game){
@@ -64,27 +65,34 @@ public class GameInfoMainFragment extends Fragment {
                 .into(mAwayLogo);
 
         mHomeScore.setText(String.valueOf(game.home_totals.points));
-        mHomeFGP.setText(String.valueOf(game.home_totals.field_goal_percentage));
-        mHome3PP.setText(String.valueOf(game.home_totals.three_point_percentage));
+        mHomeFGP.setText(String.valueOf((int) (game.home_totals.field_goal_percentage * 100)));
+        mHome3PP.setText(String.valueOf((int) (game.home_totals.field_goal_percentage * 100)));
         mHomeTO.setText(String.valueOf(game.home_totals.turnovers));
 
         mAwayScore.setText(String.valueOf(game.away_totals.points));
-        mAwayFGP.setText(String.valueOf(game.away_totals.field_goal_percentage));
-        mAway3PP.setText(String.valueOf(game.away_totals.three_point_percentage));
+        mAwayFGP.setText(String.valueOf((int) (game.away_totals.field_goal_percentage * 100)));
+        mAway3PP.setText(String.valueOf((int) (game.away_totals.three_point_percentage * 100)));
         mAwayTO.setText(String.valueOf(game.away_totals.turnovers));
 
         if (event.opponentName.equals(game.away_team.getFullName())){
-            mAwayTeamStatus.setText(String.format("%s-%s", event.opponent_events_won, event.opponent_events_lost));
-            mHomeTeamStatus.setText(String.format("%s-%s", event.team_events_won, event.team_events_lost));
+            mAwayTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.opponent_events_won, event.opponent_events_lost));
+            mHomeTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.team_events_won, event.team_events_lost));
         } else {
-            mAwayTeamStatus.setText(String.format("%s-%s", event.team_events_won, event.team_events_lost));
-            mHomeTeamStatus.setText(String.format("%s-%s", event.opponent_events_won, event.opponent_events_lost));
+            mAwayTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.team_events_won, event.team_events_lost));
+            mHomeTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.opponent_events_won, event.opponent_events_lost));
         }
         int ii = 0;
         for (int i : game.away_period_scores){
             ii++;
             Log.d("mytag", " "+ ii+":" + i + "-" + game.home_period_scores.get(ii-1));
-
         }
+        mMainLayout.setContentDescription(String.format(getString(R.string.content_description_main_game_info),
+                game.away_team.getFullName(),
+                game.home_team.getFullName(),
+                (int) (game.home_totals.field_goal_percentage * 100),
+                game.home_team.getFullName(),
+                (int) (game.away_totals.field_goal_percentage * 100),
+                game.away_team.getFullName()
+        ));
     }
 }

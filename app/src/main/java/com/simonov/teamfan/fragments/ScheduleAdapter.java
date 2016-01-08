@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
@@ -46,6 +47,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public TextView mTextDate;
         public ImageView mAwayTeamLogo;
         public ImageView mHomeTeamLogo;
+        public CardView mCard;
         public ViewHolder(View v) {
             super(v);
             mAwayTeamName = (TextView) v.findViewById(R.id.list_item_name_away_team);
@@ -55,6 +57,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             mTextDate = (TextView) v.findViewById(R.id.list_item__date);
             mAwayTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_away_team);
             mHomeTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_home_team);
+            mCard = (CardView) v.findViewById(R.id.card_view);
             v.setOnClickListener(this);
         }
 
@@ -171,9 +174,24 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
             holder.mAwayTeamScore.setText(String.format("%s-%s", gamesWon, gamesLost));
             holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+
+            holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game start at %s",
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)),
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE))
+                    ));
         } else {
             holder.mAwayTeamScore.setText(score);
             holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
+
+            holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game score %d %s %d %s",
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)),
+                    mCursor.getInt(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
+                    mCursor.getInt(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
+                    mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME))
+                    ));
         }
     }
     private void fillHomeTeam(String teamFullName, String score, ViewHolder holder, String gamesWon, String gamesLost){

@@ -17,16 +17,30 @@ public class Player {
     public int rebounds;
     public int field_goals_attempted;
     public int field_goals_made;
-    public int three_point_field_attempted;
-    public int three_point_field_made;
+    public int three_point_field_goals_attempted;
+    public int three_point_field_goals_made;
     public int free_throws_attempted;
     public int free_throws_made;
     public int defensive_rebounds;
     public int offensive_rebounds;
-    public int personal_fauls;
+    public int personal_fouls;
     String team_abbreviation;
     boolean is_starter;
     public float field_goal_percentage;
     public float three_point_percentage;
-    public float free_point_percentage;
+    public float free_throw_percentage;
+
+    @Override
+    public String toString() {
+        return "Player{" + display_name +
+                "three_point_field_goals_attempted=" + three_point_field_goals_attempted +
+                ", three_point_field_goals_made=" + three_point_field_goals_made +
+                ", free_throws_attempted=" + free_throws_attempted +
+                ", free_throw_percentage=" + free_throw_percentage +
+                ", three_point_percentage=" + three_point_percentage +
+                ", field_goal_percentage=" + field_goal_percentage +
+                ", free_throws_made=" + free_throws_made +
+                ", personal_fouls=" + personal_fouls +
+                '}';
+    }
 }

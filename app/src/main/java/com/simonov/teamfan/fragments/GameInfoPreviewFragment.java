@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
@@ -46,7 +47,7 @@ public class GameInfoPreviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_game_info_preview, container, false);
 
-        ButterKnife.bind(this,root);
+        ButterKnife.bind(this, root);
 
         mGameDate.setText(Utilities.convertDateToDate(mEvent.getEventStartDateTime()));
         mGameTime.setText(Utilities.convertDateToTime(mEvent.getEventStartDateTime()));
@@ -63,8 +64,8 @@ public class GameInfoPreviewFragment extends Fragment {
                     .error(R.mipmap.ic_launcher)
                     .crossFade()
                     .into(mAwayLogo);
-            mHomeTeamStatus.setText(String.format("%s-%s", mEvent.team_events_won, mEvent.team_events_lost));
-            mAwayTeamStatus.setText(String.format("%s-%s", mEvent.opponent_events_won, mEvent.opponent_events_lost));
+            mHomeTeamStatus.setText(String.format(getString(R.string.win_loss_divider), mEvent.team_events_won, mEvent.team_events_lost));
+            mAwayTeamStatus.setText(String.format(getString(R.string.win_loss_divider), mEvent.opponent_events_won, mEvent.opponent_events_lost));
         } else {
             Glide.with(getContext())
                     .load(Utilities.getTeamLogo(getContext(), mEvent.opponentName))
@@ -76,28 +77,27 @@ public class GameInfoPreviewFragment extends Fragment {
                     .error(R.mipmap.ic_launcher)
                     .crossFade()
                     .into(mAwayLogo);
-            mHomeTeamStatus.setText(String.format("%s-%s", mEvent.opponent_events_won, mEvent.opponent_events_lost));
-            mAwayTeamStatus.setText(String.format("%s-%s", mEvent.team_events_won, mEvent.team_events_lost));
+            mHomeTeamStatus.setText(String.format(getString(R.string.win_loss_divider), mEvent.opponent_events_won, mEvent.opponent_events_lost));
+            mAwayTeamStatus.setText(String.format(getString(R.string.win_loss_divider), mEvent.team_events_won, mEvent.team_events_lost));
         }
 
         mFloatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Calendar beginTime = Calendar.getInstance();
-//                beginTime.set(2016, 0, 10, 7, 30);
-//                Calendar endTime = Calendar.getInstance();
-//                endTime.set(2016, 0, 10, 8, 30);
                 Intent intent = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, Utilities.convertDateToMillis(mEvent.getEventStartDateTime()))
                         .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Utilities.convertDateEndGameToMillis(mEvent.getEventStartDateTime()))
                         .putExtra(CalendarContract.Events.TITLE, mEvent.getEventId())
-                        .putExtra(CalendarContract.Events.DESCRIPTION, "NBA")
+                        .putExtra(CalendarContract.Events.DESCRIPTION, getString(R.string.app_name))
                         .putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.eventLocationName)
                         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
                 startActivity(intent);
             }
         });
+        mFloatButton.setContentDescription(getString(R.string.content_description_add_event_to_calendar));
+        root.setContentDescription(String.format(getString(R.string.content_description_preview_game),
+                mEvent.getEventStartDateTime()));
 
         return root;
     }

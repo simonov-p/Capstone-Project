@@ -117,6 +117,11 @@
     <string name="pref_games_status_key">games-status</string>
     <string name="error_update_games_list_no_network">Error update games schedule. The network is not available to fetch games data.</string>
 
-
+    <string name="content_description_add_event_to_calendar">Add event to your calendar</string>
+    <string name="content_description_preview_game" formatted="false">\"Game will start %s\"</string>
+    <string name="win_loss_divider" formatted="false">%s-%s</string>
+    <string name="content_description_best_players" formatted="false">Game leaders %s %d points and %s %d points</string>
+    <string name="shot_made_attempted_divider" formatted="false">%d/%d</string>
+    <string name="content_description_main_game_info" formatted="false">NBA event %s at %s. Field goal percent %d %s, %d %s.</string>
 
 </resources>
