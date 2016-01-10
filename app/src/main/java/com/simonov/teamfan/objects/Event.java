@@ -122,6 +122,10 @@ public class Event implements Parcelable {
         this.opponent_events_lost = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST));
         this.teamEventLocationType = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE));
         this.eventLocationName = cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_NAME));
+        this.eventLocationNameTeam = teamEventLocationType.equals("h") ? cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME))
+                : cursor.getString(cursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
+        Log.d("mytag.eventLocationNameTeam" , eventLocationNameTeam);
+        Log.d("mytag.teamEventLocationType" , teamEventLocationType);
     }
 
     // parcelable data
@@ -142,6 +146,8 @@ public class Event implements Parcelable {
         out.writeString(opponent_events_lost);
         out.writeString(teamEventLocationType);
         out.writeString(eventLocationName);
+        out.writeString(eventLocationNameTeam);
+
     }
 
     public static final Parcelable.Creator<Event> CREATOR
@@ -168,8 +174,10 @@ public class Event implements Parcelable {
         opponent_events_lost = in.readString();
         teamEventLocationType = in.readString();
         eventLocationName = in.readString();
+        eventLocationNameTeam = in.readString();
     }
     public String teamName;
     public String opponentName;
     public String eventLocationName;
+    public String eventLocationNameTeam;
 }

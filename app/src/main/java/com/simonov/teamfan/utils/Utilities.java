@@ -164,6 +164,9 @@ public class Utilities {
     }
 
     public static int getTeamLogo(Context context, String team) {
+        if (team == null){
+            return R.mipmap.ic_launcher;
+        }
         if (team.equals(context.getResources().getString(R.string.atlanta_hawks))) {
             return R.mipmap.atlanta_hawks;
         } else if (team.equals(context.getResources().getString(R.string.boston_celtics))) {
@@ -225,7 +228,7 @@ public class Utilities {
         } else if (team.equals(context.getResources().getString(R.string.washington_wizards))) {
             return R.mipmap.washington_capitals;
         } else {
-            return R.mipmap.utah_jazz;
+            return R.mipmap.ic_launcher;
         }
     }
 

@@ -1,5 +1,9 @@
 package com.simonov.teamfan.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -12,10 +16,13 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.objects.Event;
+import com.simonov.teamfan.utils.Utilities;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +48,9 @@ public class GamesInfoMapFragment extends Fragment {
         if (Geocoder.isPresent()) {
             try {
                 Geocoder gc = new Geocoder(getContext());
+                String title = mEvent.eventLocationName.split(",")[0];
                 Log.d("mytag:eventLocationName:",mEvent.eventLocationName.split(",")[0]);
+                Log.d("mytag.eventLocationNameTeam" , mEvent.eventLocationNameTeam);
 
                 List<Address> addresses = gc.getFromLocationName(mEvent.eventLocationName.split(",")[0], 5); // get the found Address Objects
 
@@ -57,6 +66,17 @@ public class GamesInfoMapFragment extends Fragment {
                     Log.d("mytag:LatLng:", latLng.toString());
                     CameraPosition target = CameraPosition.builder().target(latLng).zoom(16).build();
                     mMap.moveCamera((CameraUpdateFactory.newCameraPosition(target)));
+
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), Utilities.getTeamLogo(getContext(), mEvent.eventLocationNameTeam));
+
+                    Bitmap bhalfsize = Bitmap.createScaledBitmap(b, b.getWidth() / 6, b.getHeight() / 6, false);
+
+                    MarkerOptions marker = new MarkerOptions()
+                            .position(latLng)
+                            .title(title)
+                            .icon(BitmapDescriptorFactory.fromBitmap(bhalfsize));
+
+                    mMap.addMarker(marker);
                 }
             } catch (IOException e) {
                 // handle the exception
