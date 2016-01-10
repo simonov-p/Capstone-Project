@@ -21,6 +21,10 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
@@ -39,6 +43,7 @@ public class ScheduleFragment extends Fragment
     private LinearLayoutManager mLayoutManager;
     private ScheduleAdapter mAdapter;
     private int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
+    private InterstitialAd mInterstitialAd;
 
 
     public ScheduleFragment() {
@@ -48,6 +53,17 @@ public class ScheduleFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+        });
+        requestNewInterstitial();
 
         mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
@@ -61,10 +77,14 @@ public class ScheduleFragment extends Fragment
         mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
             @Override
             public void onClick(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
-                ((DetailFragmentCallback) getActivity())
-                        .onGameSelected(gameEvent,
-                                vh
-                        );
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    ((DetailFragmentCallback) getActivity())
+                            .onGameSelected(gameEvent,
+                                    vh
+                            );
+                }
             }
         }, emptyView, mChoiceMode, false);
         mRecyclerView.setAdapter(mAdapter);
@@ -112,6 +132,14 @@ public class ScheduleFragment extends Fragment
 
         return root;
 
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(getString(R.string.device_id))
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override

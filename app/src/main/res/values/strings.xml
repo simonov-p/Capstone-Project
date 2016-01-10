@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">#TeamFan</string>
+    <string name="app_name">Team Fan</string>
     <string name="action_change_team">Change team</string>
 
     <!-- SyncAdapter related -->
@@ -125,9 +125,19 @@
     <string name="content_description_best_players" formatted="false">Game leaders %s %d points and %s %d points</string>
     <string name="shot_made_attempted_divider" formatted="false">%d/%d</string>
     <string name="content_description_main_game_info" formatted="false">NBA event %s at %s. Field goal percent %d %s, %d %s.</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
+
+    <!--widget-->
     <string name="add_widget">Add widget</string>
     <string name="title_widget_next_game">#Next Game</string>
+
+    <!--admob-->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1651911101126569/5713715133</string>
+    <string name="banner_ad_unit_name" translatable="false">Banner on Detail</string>
+    <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-1651911101126569/7190448334</string>
+    <string name="interstitial_ad_unit_name" translatable="false">At Detail</string>
+    <string name="device_id">33a771c405438d23</string>
+    <string name="server_url">http://10.0.2.2:8080/_ah/api/</string>
+
+
 
 </resources>
