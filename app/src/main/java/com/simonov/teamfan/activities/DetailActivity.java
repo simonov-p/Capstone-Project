@@ -70,43 +70,12 @@ implements ScheduleFragment.DetailFragmentCallback {
                 .addTestDevice(getString(R.string.device_id))
                 .build();
         mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                Toast.makeText(DetailActivity.this,"onAdClosed",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                super.onAdFailedToLoad(errorCode);
-                Toast.makeText(DetailActivity.this,"onAdFailedToLoad",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                super.onAdLeftApplication();
-                Toast.makeText(DetailActivity.this,"onAdLeftApplication",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-                Toast.makeText(DetailActivity.this,"onAdOpened",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                Toast.makeText(DetailActivity.this,"onAdLoaded",Toast.LENGTH_SHORT).show();
-            }
-        });
 
         mEmptyView = (TextView) findViewById(R.id.empty_text_view);
 
         mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
         Log.d("mytag", mGameEvent.getEventId());
-        mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime());
+        mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime()) && mGameEvent.getOpponentPointsScored() >= 0;
         if (mGameFinished) {
             mListFragment.add(new GameInfoMainFragment());
             mListFragment.add(new GameInfoLeadersFragment());
