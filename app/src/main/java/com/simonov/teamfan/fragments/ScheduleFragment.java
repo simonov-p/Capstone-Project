@@ -77,14 +77,14 @@ public class ScheduleFragment extends Fragment
         mAdapter = new ScheduleAdapter(getContext(), new ScheduleAdapter.ScheduleAdapterOnClickHandler() {
             @Override
             public void onClick(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                } else {
+//                if (mInterstitialAd.isLoaded()) {
+////                    mInterstitialAd.show();
+//                } else {
                     ((DetailFragmentCallback) getActivity())
                             .onGameSelected(gameEvent,
                                     vh
                             );
-                }
+//                }
             }
         }, emptyView, mChoiceMode, false);
         mRecyclerView.setAdapter(mAdapter);

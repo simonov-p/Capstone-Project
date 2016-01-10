@@ -28,6 +28,7 @@ import com.simonov.teamfan.fragments.GameInfoMainFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviewFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.fragments.GamesInfoMapFragment;
 import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.api.GameApi;
@@ -35,6 +36,8 @@ import com.simonov.teamfan.api.RestError;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
+
+import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -49,13 +52,13 @@ implements ScheduleFragment.DetailFragmentCallback {
     private Event mGameEvent;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private Fragment mSecondaryFragment;
-    private Fragment mMainFragment;
     private boolean mGameFinished;
-    private GameInfoPreviousFragment mThirdFragment;
     private TextView mEmptyView;
 
     private AdView mAdView;
+
+    private ArrayList<Fragment> mListFragment = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,18 +108,19 @@ implements ScheduleFragment.DetailFragmentCallback {
         Log.d("mytag", mGameEvent.getEventId());
         mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime());
         if (mGameFinished) {
-            mMainFragment = new GameInfoMainFragment();
-            mSecondaryFragment = new GameInfoLeadersFragment();
-//            mThirdFragment = new GameInfoPreviousFragment(mGameEvent);
+            mListFragment.add(new GameInfoMainFragment());
+            mListFragment.add(new GameInfoLeadersFragment());
             if (Utilities.isNetworkAvailable(this)){
                 getGameInfo(mGameEvent.getEventId());
             } else {
                 updateEmptyView();
             }
         } else {
-            mMainFragment = new GameInfoPreviewFragment(mGameEvent);
-            mSecondaryFragment = new GameInfoPreviousFragment(mGameEvent);
+            mListFragment.add(new GameInfoPreviewFragment(mGameEvent));
+            mListFragment.add(new GamesInfoMapFragment(mGameEvent));
         }
+        mListFragment.add(new GameInfoPreviousFragment(mGameEvent));
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -181,24 +185,12 @@ implements ScheduleFragment.DetailFragmentCallback {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position == 0) {
-                return mMainFragment;
-            } else if (position == 1){
-                return mSecondaryFragment;
-            }
-//            else if (mGameFinished && position == 3) {
-//                return mThirdFragment;
-//            }
-            return mMainFragment;
+            return mListFragment.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-//            if (mGameFinished) return 3;
-            return 2;
+            return mListFragment.size();
         }
 
         @Override
@@ -207,12 +199,10 @@ implements ScheduleFragment.DetailFragmentCallback {
                 case 0:
                     return mGameFinished ? getString(R.string.label_main_info_fragment) : getString(R.string.label_preview_game_fragment);
                 case 1:
-                    return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_previous_games_fragment);
+                    return mGameFinished ? getString(R.string.label_leaders_fragment) : getString(R.string.label_map_game_fragment);
+                case 2:
+                    return getString(R.string.label_previous_games_fragment);
             }
-//            if (mGameFinished && position == 2) {
-//                return getString(R.string.label_previous_games_fragment);
-//            }
-
             return null;
         }
     }
@@ -237,8 +227,8 @@ implements ScheduleFragment.DetailFragmentCallback {
                 new Callback<Game>() {
                     @Override
                     public void success(Game game, Response response) {
-                        ((GameInfoMainFragment) mMainFragment).fillViews(mGameEvent, game);
-                        ((GameInfoLeadersFragment) mSecondaryFragment).fillViews(game);
+                        ((GameInfoMainFragment) mListFragment.get(0)).fillViews(mGameEvent, game);
+                        ((GameInfoLeadersFragment) mListFragment.get(1)).fillViews(game);
                     }
 
                     @Override
