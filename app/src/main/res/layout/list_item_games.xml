@@ -38,8 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_margin="@dimen/small_offset"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -71,24 +71,24 @@
                 android:id="@+id/list_item_score_away_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textSize="@dimen/big_text_size" />
 
             <TextView
                 android:id="@+id/list_item_score_home_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textSize="@dimen/big_text_size" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/list_item__date"
-            android:layout_margin="@dimen/small_offset"
+            android:id="@+id/list_item_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_offset"
             android:gravity="center_horizontal"
             android:text="@string/default_text" />
     </LinearLayout>

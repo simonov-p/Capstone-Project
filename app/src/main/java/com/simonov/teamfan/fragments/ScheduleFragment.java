@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
-import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
 
 /**
@@ -96,7 +95,6 @@ public class ScheduleFragment extends Fragment
         final AppBarLayout appbarView = (AppBarLayout) root.findViewById(R.id.appbar);
         if (null != appbarView) {
             ViewCompat.setElevation(appbarView, 0);
-            Log.d("mytag app", "here");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -147,7 +145,7 @@ public class ScheduleFragment extends Fragment
                 Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
 
         return new CursorLoader(getActivity(),
-                GamesContract.GamesEntry.buildGamesUri(id),
+                GamesContract.GamesEntry.buildScheduleUri(),
                 null,
                 selection,
                 null,
@@ -157,14 +155,9 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("mytag", "onLoadFinished0 data:" + data.getCount());
+        Log.d("mytag", "onLoadFinished0");
         mAdapter.swapCursor(data);
         updateEmptyView();
-        if (data.getCount() == 0) {
-            getLoaderManager().initLoader(0, null, null);
-        } else {
-
-        }
         scrollToLastGame();
     }
 
@@ -190,6 +183,8 @@ public class ScheduleFragment extends Fragment
             int lastGamePosition = cursorAllGames.getCount() - cursorUnfinishedGames.getCount();
             if (lastGamePosition > 0) lastGamePosition--;
             mRecyclerView.scrollToPosition(lastGamePosition);
+            cursorAllGames.close();
+            cursorUnfinishedGames.close();
         }
     }
 
@@ -248,6 +243,7 @@ public class ScheduleFragment extends Fragment
     }
 
     public void onTeamChanged() {
+        Log.d("mytag: ", "onTeamChanged");
         getLoaderManager().restartLoader(0,null,this);
     }
 

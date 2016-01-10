@@ -3,8 +3,10 @@
     <string name="action_change_team">Change team</string>
 
     <!-- SyncAdapter related -->
-    <string name="sync_account_type">com.simonov.teamfan</string>
-    <string name="content_authority">teamfan.simonov.com</string>
+    <!--<string name="sync_account_type">com.simonov.teamfan</string>-->
+    <!--<string name="content_authority">teamfan.simonov.com</string>-->
+    <string name="sync_account_type">teamfan.simonov.com</string>
+    <string name="content_authority">com.simonov.teamfan</string>
 
     <!--Settings and prefs-->
     <string name="title_activity_settings">SettingsActivity</string>
@@ -123,5 +125,9 @@
     <string name="content_description_best_players" formatted="false">Game leaders %s %d points and %s %d points</string>
     <string name="shot_made_attempted_divider" formatted="false">%d/%d</string>
     <string name="content_description_main_game_info" formatted="false">NBA event %s at %s. Field goal percent %d %s, %d %s.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_widget_next_game">#Next Game</string>
 
 </resources>

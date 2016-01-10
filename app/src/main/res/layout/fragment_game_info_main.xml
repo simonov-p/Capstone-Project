@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/logo_small_size"
+        android:layout_height="@dimen/logo_middle_size"
         android:orientation="horizontal">
 
         <ImageView

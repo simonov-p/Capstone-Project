@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +32,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public void swapCursor(Cursor cursor) {
         mCursor = cursor;
-
         notifyDataSetChanged();
-        Log.d("mytag", "onLoadFinished-notifyDataSetChanged");
+        mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+
+        if (mCursor != null) Log.d("mytag", "onLoadFinished-notifyDataSetChanged, count:"+ mCursor.getCount());
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         public TextView mAwayTeamScore;
         public TextView mHomeTeamScore;
         public TextView mAwayTeamName;
@@ -48,13 +49,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         public ImageView mAwayTeamLogo;
         public ImageView mHomeTeamLogo;
         public CardView mCard;
+
         public ViewHolder(View v) {
             super(v);
             mAwayTeamName = (TextView) v.findViewById(R.id.list_item_name_away_team);
             mHomeTeamName = (TextView) v.findViewById(R.id.list_item_name_home_team);
             mAwayTeamScore = (TextView) v.findViewById(R.id.list_item_score_away_team);
             mHomeTeamScore = (TextView) v.findViewById(R.id.list_item_score_home_team);
-            mTextDate = (TextView) v.findViewById(R.id.list_item__date);
+            mTextDate = (TextView) v.findViewById(R.id.list_item_date);
             mAwayTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_away_team);
             mHomeTeamLogo = (ImageView) v.findViewById(R.id.list_item_logo_home_team);
             mCard = (CardView) v.findViewById(R.id.card_view);
@@ -84,8 +86,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
+        int resource = mIsSmallIcons ? R.layout.list_item_games_privious : R.layout.list_item_games;
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_games, parent, false);
+                .inflate(resource, parent, false);
+        v.setFocusable(true);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -140,24 +144,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             mICM.onBindViewHolder(holder, position);
 
             if (mIsSmallIcons){
-                holder.mHomeTeamName.setVisibility(View.GONE);
-                holder.mAwayTeamName.setVisibility(View.GONE);
-                holder.mHomeTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
-                holder.mAwayTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
+//                holder.mHomeTeamName.setVisibility(View.GONE);
+//                holder.mAwayTeamName.setVisibility(View.GONE);
+//                holder.mHomeTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
+//                holder.mAwayTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
                 holder.mTextDate.setText(Utilities.convertDateToDate(dateText));
                 if (holder.mAwayTeamScore.getText().toString().contains("-")){
                     holder.mHomeTeamScore.setVisibility(View.GONE);
                     holder.mAwayTeamScore.setVisibility(View.GONE);
                 } else {
-                    holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
-                    holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+//                    holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
+//                    holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
                 }
             }
 
         } catch (NullPointerException e) {
             Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
+            e.printStackTrace();
         } catch (CursorIndexOutOfBoundsException c) {
             Log.e("mytag", "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
+            c.printStackTrace();
 //        } catch (IllegalStateException e){
 //            Log.e("mytag", "Illegal exception:" + String.valueOf(position) + "  " + e.getMessage());
 
@@ -173,16 +179,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.mAwayTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
             holder.mAwayTeamScore.setText(String.format("%s-%s", gamesWon, gamesLost));
-            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+//            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
 
             holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game start at %s",
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE))
-                    ));
+            ));
         } else {
             holder.mAwayTeamScore.setText(score);
-            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
+//            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
 
             holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game score %d %s %d %s",
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
@@ -191,7 +197,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
                     mCursor.getInt(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME))
-                    ));
+            ));
         }
     }
     private void fillHomeTeam(String teamFullName, String score, ViewHolder holder, String gamesWon, String gamesLost){
@@ -203,10 +209,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.mHomeTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
             holder.mHomeTeamScore.setText(String.format("%s-%s",gamesWon,gamesLost));
-            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+//            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
         } else {
             holder.mHomeTeamScore.setText(score);
-            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
+//            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
         }
     }
 
@@ -230,5 +236,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         return mICM.getSelectedItemPosition();
     }
 
+    public Cursor getCursor() {
+        return mCursor;
+    }
+
+    public void selectView(RecyclerView.ViewHolder viewHolder) {
+        if ( viewHolder instanceof ViewHolder ) {
+            ViewHolder vfh = (ViewHolder)viewHolder;
+            vfh.onClick(vfh.itemView);
+        }
+    }
 }
 

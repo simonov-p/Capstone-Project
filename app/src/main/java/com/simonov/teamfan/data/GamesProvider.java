@@ -15,7 +15,8 @@ import android.util.Log;
 public class GamesProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private static final String TAG = GamesProvider.class.getSimpleName();
+//    private static final String TAG = GamesProvider.class.getSimpleName();
+    private static final String TAG = "mytag";
 
     private GamesDbHelper mOpenHelper;
 
@@ -45,6 +46,7 @@ public class GamesProvider extends ContentProvider {
                 null,
                 sortOrder
         );
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri); // that`s why data don`t fill at the first start of app
         return retCursor;
     }
 
@@ -63,7 +65,7 @@ public class GamesProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         long _id  = db.insert(GamesContract.GamesEntry.TABLE_NAME,null, values);
-        Uri returnUri = GamesContract.GamesEntry.buildGamesUri(_id);
+        Uri returnUri = GamesContract.GamesEntry.buildScheduleUri();
         return returnUri;
     }
 
@@ -107,8 +109,8 @@ public class GamesProvider extends ContentProvider {
             db.endTransaction();
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        Log.e(TAG, "    insert: " + returnCount + " uri:" + uri);
-        Log.e(TAG, "    getContext().getContentResolver: " + getContext().getContentResolver().toString());
+        Log.d(TAG, "    insert: " + returnCount + " uri:" + uri);
+        Log.e(TAG, "    getContext().getContentResolver().getType: " + getContext().getContentResolver().getType(uri));
         return  returnCount;
     }
 }

@@ -9,6 +9,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -298,6 +299,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                             cvArray);
                     Log.e(TAG, "Parse JSON elements: " + cvArray.length);
                 }
+                updateWidgets();
                 setGamesStatus(getContext(), GAMES_STATUS_OK);
             } catch (IOException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());
@@ -310,7 +312,14 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor spe = sp.edit();
         spe.putInt(c.getString(R.string.pref_games_status_key), gamesStatus);
-        spe.commit();
+        spe.apply();
     }
-
+    private void updateWidgets() {
+        Context context = getContext();
+        Log.e(TAG, "update widgets");
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+    }
 }

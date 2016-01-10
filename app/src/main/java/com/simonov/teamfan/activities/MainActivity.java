@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ implements ScheduleFragment.DetailFragmentCallback {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("mytag: ", "onResume Activity");
 
         String team = Utilities.getPreferredTeam(this);
         // update the location in our second pane using the fragment manager

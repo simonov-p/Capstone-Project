@@ -139,7 +139,29 @@ public class Utilities {
         return date.before(today);
     }
 
+    public static String getDaysBefore(String s) {
+        // All date-time strings for xmlstats use the ISO 8601 format
+        String ISO_8601_FMT = "yyyy-MM-dd'T'HH:mm:mmZ";
+        SimpleDateFormat sdfISO8691_FMT = new SimpleDateFormat(ISO_8601_FMT);
+        Date date = null;
+        try {
+            date = sdfISO8691_FMT.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date today = new Date();
 
+        int days = date.getDay() - today.getDay();
+        int hours = date.getHours() - today.getHours();
+
+        if (days == 0) {
+            return String.format("%d hours", hours);
+        } else if (days == 1) {
+            return "one day";
+        } else {
+            return String.format("%d days", days);
+        }
+    }
 
     public static int getTeamLogo(Context context, String team) {
         if (team.equals(context.getResources().getString(R.string.atlanta_hawks))) {
@@ -203,7 +225,7 @@ public class Utilities {
         } else if (team.equals(context.getResources().getString(R.string.washington_wizards))) {
             return R.mipmap.washington_capitals;
         } else {
-            return R.mipmap.ic_launcher;
+            return R.mipmap.utah_jazz;
         }
     }
 

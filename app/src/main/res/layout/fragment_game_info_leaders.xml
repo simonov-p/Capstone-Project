@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/middle_offset"
-    tools:context="com.simonov.teamfan.fragments.GameInfoLeadersFragment">
+    tools:context=".fragments.GameInfoLeadersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/logo_small_size"
+        android:layout_height="@dimen/logo_middle_size"
         android:orientation="horizontal">
 
         <ImageView
