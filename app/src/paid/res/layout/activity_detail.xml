@@ -43,7 +43,7 @@
             android:layout_height="fill_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <TextView
+        <com.simonov.teamfan.ui.CustomTextView
             android:id="@+id/empty_text_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_player_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                     android:gravity="center"
                     android:textSize="@dimen/big_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_player_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     android:gravity="center"
                     android:textSize="@dimen/biggest_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -91,19 +91,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_minutes"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/minutes"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_minutes"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -116,7 +116,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_field_goal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -124,14 +124,14 @@
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/field_goal"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_field_goal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_FG_per"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -154,14 +154,14 @@
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/field_goal_per"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_FG_per"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -175,19 +175,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_3P"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/three_point"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_3P"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -200,19 +200,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_3P_per"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/three_point_per"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_3P_per"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -225,19 +225,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_FT"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/free_throws"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_FT"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -250,19 +250,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_FT_per"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/free_throws_per"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_FT_per"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -275,19 +275,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_rebounds"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/rebounds"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_rebounds"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -300,19 +300,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_assists"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/assists"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_assists"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -325,19 +325,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_steals"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/steals"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_steals"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -350,19 +350,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_blocks"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/blocks"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_blocks"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -375,19 +375,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_TO"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/turnovers"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_TO"
                     android:layout_width="0dp"
                     android:gravity="center"
@@ -400,19 +400,19 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/away_fouls"
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:text="@string/fouls"
                     android:textSize="@dimen/middle_text_size" />
 
-                <TextView
+                <com.simonov.teamfan.ui.CustomTextView
                     android:id="@+id/home_fouls"
                     android:layout_width="0dp"
                     android:gravity="center"

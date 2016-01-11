@@ -37,14 +37,14 @@
         android:padding="@dimen/middle_offset"
         android:orientation="horizontal">
 
-        <TextView
+        <com.simonov.teamfan.ui.CustomTextView
             android:id="@+id/away_games_status"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textSize="@dimen/big_text_size"
             android:gravity="center"/>
-        <TextView
+        <com.simonov.teamfan.ui.CustomTextView
             android:textSize="@dimen/big_text_size"
             android:id="@+id/home_games_status"
             android:layout_weight="1"
@@ -52,14 +52,14 @@
             android:layout_height="wrap_content"
             android:gravity="center" />
     </LinearLayout>
-    <TextView
+    <com.simonov.teamfan.ui.CustomTextView
         android:textSize="@dimen/biggest_text_size"
         android:id="@+id/game_date"
         android:layout_below="@+id/status_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" />
-    <TextView
+    <com.simonov.teamfan.ui.CustomTextView
         android:layout_below="@+id/game_date"
         android:textSize="@dimen/big_text_size"
         android:id="@+id/game_time"

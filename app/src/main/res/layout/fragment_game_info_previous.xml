@@ -5,7 +5,7 @@
     android:padding="@dimen/big_offset"
     tools:context=".fragments.GameInfoPreviousFragment">
 
-    <TextView
+    <com.simonov.teamfan.ui.CustomTextView
         android:layout_width="match_parent"
         android:id="@+id/empty_text_view"
         android:layout_height="match_parent" />
