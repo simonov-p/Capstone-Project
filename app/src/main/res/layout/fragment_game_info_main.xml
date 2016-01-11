@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:isScrollContainer="true"
+    android:padding="@dimen/middle_offset"
+    tools:context=".fragments.GameInfoMainFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/logo_middle_size"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/away_logo"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:id="@+id/home_logo"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:stretchColumns="0,2"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/small_offset"
+        android:layout_height="wrap_content">
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.simonov.teamfan.ui.CustomTextView
+                android:id="@+id/away_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/biggest_text_size"
+                android:layout_column="0"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView
+                android:layout_column="2"
+                android:id="@+id/home_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/biggest_text_size"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.simonov.teamfan.ui.CustomTextView
+                android:id="@+id/away_games_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center"
+                android:layout_column="0" />
+            <com.simonov.teamfan.ui.CustomTextView android:text="@string/win_loss"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+            <com.simonov.teamfan.ui.CustomTextView
+                android:layout_column="2"
+                android:textSize="@dimen/middle_text_size"
+                android:id="@+id/home_games_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/away_FG_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:text="@string/field_goal_per"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/middle_text_size"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/home_FG_per"
+                android:layout_width="0dp"
+                android:text="2"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/away_3P_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:text="@string/three_point_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/home_3P_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/away_TO_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:text="@string/turnovers"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+
+            <com.simonov.teamfan.ui.CustomTextView android:id="@+id/home_TO_per"
+                android:layout_width="0dp"
+                android:textSize="@dimen/middle_text_size"
+                android:gravity="center" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

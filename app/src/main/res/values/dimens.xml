@@ -1,9 +1,36 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="logo_size">150dp</dimen>
+    <dimen name="logo_small_size">40dp</dimen>
+    <dimen name="logo_middle_size">80dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 
-    <!--list item-->
-    <dimen name="logo_size">64dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
+
+    <dimen name="big_text_size">30sp</dimen>
+    <dimen name="biggest_text_size">40sp</dimen>
+    <dimen name="middle_text_size">16sp</dimen>
+    <dimen name="small_text_size">10sp</dimen>
+
+    <dimen name="small_offset">4dp</dimen>
+    <dimen name="middle_offset">8dp</dimen>
+    <dimen name="big_offset">16dp</dimen>
+    <dimen name="fab_bottom_offset">70dp</dimen>
+
+    <dimen name="cardview_radius">6dp</dimen>
+    <dimen name="appbar_elevation">8dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_detail_default_width">110dp</dimen>
+    <dimen name="widget_detail_default_height">40dp</dimen>
+    <dimen name="widget_detail_min_resize_width">110dp</dimen>
+    <dimen name="widget_detail_min_resize_height">@dimen/widget_detail_default_height</dimen>
+    <dimen name="widget_last_game_small_width">200dp</dimen>
+    <dimen name="widget_last_game_middle_width">300dp</dimen>
+    <dimen name="widget_logo_size">80dp</dimen>
 </resources>

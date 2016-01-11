@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_teams_values">
+        <item>@string/query_atlanta_hawks</item>
+        <item>@string/query_boston_celtics</item>
+        <item>@string/query_brooklyn_nets</item>
+        <item>@string/query_charlotte_hornets</item>
+        <item>@string/query_chicago_bulls</item>
+        <item>@string/query_cleveland_cavaliers</item>
+        <item>@string/query_dallas_mavericks</item>
+        <item>@string/query_denver_nuggets</item>
+        <item>@string/query_detroit_pistons</item>
+        <item>@string/query_golden_state_warriors</item>
+        <item>@string/query_houston_rockets</item>
+        <item>@string/query_indiana_pacers</item>
+        <item>@string/query_los_angeles_clippers</item>
+        <item>@string/query_los_angeles_lakers</item>
+        <item>@string/query_memphis_grizzlies</item>
+        <item>@string/query_miami_heat</item>
+        <item>@string/query_milwaukee_bucks</item>
+        <item>@string/query_minnesota_timberwolves</item>
+        <item>@string/query_new_orleans_pelicans</item>
+        <item>@string/query_new_york_knicks</item>
+        <item>@string/query_oklahoma_city_thunder</item>
+        <item>@string/query_orlando_magic</item>
+        <item>@string/query_philadelphia_76ers</item>
+        <item>@string/query_phoenix_suns</item>
+        <item>@string/query_portland_trail_blazers</item>
+        <item>@string/query_sacramento_kings</item>
+        <item>@string/query_san_antonio_spurs</item>
+        <item>@string/query_toronto_raptors</item>
+        <item>@string/query_utah_jazz</item>
+        <item>@string/query_washington_wizards</item>
+    </string-array>
+    <string-array name="pref_teams_entries">
+        <item>@string/atlanta_hawks</item>
+        <item>@string/boston_celtics</item>
+        <item>@string/brooklyn_nets</item>
+        <item>@string/charlotte_hornets</item>
+        <item>@string/chicago_bulls</item>
+        <item>@string/cleveland_cavaliers</item>
+        <item>@string/dallas_mavericks</item>
+        <item>@string/denver_nuggets</item>
+        <item>@string/detroit_pistons</item>
+        <item>@string/golden_state_warriors</item>
+        <item>@string/houston_rockets</item>
+        <item>@string/indiana_pacers</item>
+        <item>@string/los_angeles_clippers</item>
+        <item>@string/los_angeles_lakers</item>
+        <item>@string/memphis_grizzlies</item>
+        <item>@string/miami_heat</item>
+        <item>@string/milwaukee_bucks</item>
+        <item>@string/minnesota_timberwolves</item>
+        <item>@string/new_orleans_pelicans</item>
+        <item>@string/new_york_knicks</item>
+        <item>@string/oklahoma_city_thunder</item>
+        <item>@string/orlando_magic</item>
+        <item>@string/philadelphia_76ers</item>
+        <item>@string/phoenix_suns</item>
+        <item>@string/portland_trail_blazers</item>
+        <item>@string/sacramento_kings</item>
+        <item>@string/san_antonio_spurs</item>
+        <item>@string/toronto_raptors</item>
+        <item>@string/utah_jazz</item>
+        <item>@string/washington_wizards</item>
+    </string-array>
+</resources>

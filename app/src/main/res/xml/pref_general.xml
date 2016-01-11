@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:title="@string/pref_choose_team_label"
+        android:key="@string/pref_choose_team_key"
+        android:defaultValue="@string/los_angeles_clippers"
+        android:entryValues="@array/pref_teams_values"
+        android:entries="@array/pref_teams_entries" />
+</PreferenceScreen>
