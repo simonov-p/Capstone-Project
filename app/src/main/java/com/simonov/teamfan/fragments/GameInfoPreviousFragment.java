@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.activities.DetailActivity;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
@@ -29,9 +30,7 @@ public class GameInfoPreviousFragment extends Fragment {
     private int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
     private Event mEvent;
 
-    public GameInfoPreviousFragment(Event event) {
-        // Required empty public constructor
-        mEvent = event;
+    public GameInfoPreviousFragment() {
     }
 
 
@@ -40,6 +39,9 @@ public class GameInfoPreviousFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_game_info_previous, container, false);
+
+        Bundle bundle = this.getArguments();
+        mEvent = bundle.getParcelable(DetailActivity.sendEvent);
 
         mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 

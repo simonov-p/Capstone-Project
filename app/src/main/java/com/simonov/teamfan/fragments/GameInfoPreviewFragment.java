@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.activities.DetailActivity;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
@@ -25,10 +26,10 @@ import butterknife.ButterKnife;
  */
 public class GameInfoPreviewFragment extends Fragment {
     public GameInfoPreviewFragment() {
-        mEvent = null;
     }
 
-    private final Event mEvent;
+    private Event mEvent;
+
     @Bind(R.id.away_logo) ImageView mAwayLogo;
     @Bind(R.id.home_logo) ImageView mHomeLogo;
     @Bind(R.id.away_games_status) TextView mAwayTeamStatus;
@@ -38,14 +39,17 @@ public class GameInfoPreviewFragment extends Fragment {
     @Bind(R.id.game_location) TextView mGameLocation;
     @Bind(R.id.fab) FloatingActionButton mFloatButton;
 
-    public GameInfoPreviewFragment(Event event) {
-        mEvent = event;
-    }
+//    public GameInfoPreviewFragment(Event event) {
+//        mEvent = event;
+////    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_game_info_preview, container, false);
+
+        Bundle bundle = this.getArguments();
+        mEvent = bundle.getParcelable(DetailActivity.sendEvent);
 
         ButterKnife.bind(this, root);
 

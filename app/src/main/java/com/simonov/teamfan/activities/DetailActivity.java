@@ -57,6 +57,8 @@ implements ScheduleFragment.DetailFragmentCallback {
 
     private ArrayList<Fragment> mListFragment = new ArrayList<>();
 
+    public static String sendEvent = "send event";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,8 @@ implements ScheduleFragment.DetailFragmentCallback {
         mEmptyView = (TextView) findViewById(R.id.empty_text_view);
 
         mGameEvent = getIntent().getParcelableExtra(MainActivity.SEND_GAME_ID);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(sendEvent, mGameEvent);
         Log.d("mytag", mGameEvent.getEventId());
         mGameFinished = Utilities.compareDate(mGameEvent.getEventStartDateTime()) && mGameEvent.getOpponentPointsScored() >= 0;
         if (mGameFinished) {
@@ -83,11 +87,19 @@ implements ScheduleFragment.DetailFragmentCallback {
                 updateEmptyView();
             }
         } else {
-            mListFragment.add(new GameInfoPreviewFragment(mGameEvent));
-            mListFragment.add(new GamesInfoMapFragment(mGameEvent));
-        }
-        mListFragment.add(new GameInfoPreviousFragment(mGameEvent));
 
+            Fragment previewFragment = new GameInfoPreviewFragment();
+            previewFragment.setArguments(bundle);
+            mListFragment.add(previewFragment);
+
+            Fragment mapFragment = new GamesInfoMapFragment();
+            mapFragment.setArguments(bundle);
+            mListFragment.add(mapFragment);
+        }
+
+        Fragment previousFragment = new GameInfoPreviousFragment();
+        previousFragment.setArguments(bundle);
+        mListFragment.add(previousFragment);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

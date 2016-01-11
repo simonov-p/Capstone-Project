@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'teamfan'
             keyPassword 'password'
-            storeFile file('$rootdir/keystore.jks')
+            storeFile file('D:/android/study/udacity/Capstone-Project/keystore.jks')
             storePassword 'password'
         }
     }
@@ -28,14 +28,14 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'XMLSTATS_ACCESS_TOKEN', MyAccessTokenXMLStats
     }
-//    productFlavors {
-//        free {
-//            applicationId "com.simonov.teamfan.free"
-//        }
-//        paid {
-//            applicationId "com.simonov.teamfan.paid"
-//        }
-//    }
+    productFlavors {
+        free {
+            applicationId "com.simonov.teamfan.free"
+        }
+        paid {
+            applicationId "com.simonov.teamfan.paid"
+        }
+    }
 }
 
 dependencies {

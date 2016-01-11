@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.activities.DetailActivity;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
 
@@ -32,13 +33,15 @@ import java.util.List;
 public class GamesInfoMapFragment extends Fragment {
     Event mEvent;
 
-    public GamesInfoMapFragment(Event mEvent) {
-        this.mEvent = mEvent;
+    public GamesInfoMapFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_game_info_map, container, false);
+
+        Bundle bundle = this.getArguments();
+        mEvent = bundle.getParcelable(DetailActivity.sendEvent);
 
         GoogleMap mMap = ((SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
@@ -75,6 +78,9 @@ public class GamesInfoMapFragment extends Fragment {
                             .icon(BitmapDescriptorFactory.fromBitmap(bhalfsize));
 
                     mMap.addMarker(marker);
+
+                    Log.d("mytag:marker:", marker.toString());
+
                 }
             } catch (IOException e) {
                 // handle the exception
