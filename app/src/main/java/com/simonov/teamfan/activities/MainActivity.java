@@ -24,7 +24,7 @@ import com.simonov.teamfan.utils.Utilities;
 public class MainActivity extends AppCompatActivity
 implements ScheduleFragment.DetailFragmentCallback {
 
-    public static String SEND_GAME_ID = "send_game_id";
+    public static String SEND_GAME_ID = "send_game_id_from_main_activity";
     private String mTeam;
 
     @Override

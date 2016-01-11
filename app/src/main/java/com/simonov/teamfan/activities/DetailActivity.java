@@ -139,12 +139,10 @@ implements ScheduleFragment.DetailFragmentCallback {
         return shareIntent;
     }
 
-    public static String SEND_GAME_ID = "send_game_id";
-
     @Override
     public void onGameSelected(Event gameEvent, ScheduleAdapter.ViewHolder vh) {
         Intent intent = new Intent(this, DetailActivity.class)
-                .putExtra(SEND_GAME_ID, gameEvent);
+                .putExtra(MainActivity.SEND_GAME_ID, gameEvent);
 
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,
