@@ -17,22 +17,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.simonov.teamfan.BuildConfig;
+import com.simonov.teamfan.R;
+import com.simonov.teamfan.api.GameApi;
+import com.simonov.teamfan.api.RestError;
 import com.simonov.teamfan.fragments.GameInfoLeadersFragment;
 import com.simonov.teamfan.fragments.GameInfoMainFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviewFragment;
 import com.simonov.teamfan.fragments.GameInfoPreviousFragment;
-import com.simonov.teamfan.R;
 import com.simonov.teamfan.fragments.GamesInfoMapFragment;
 import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
-import com.simonov.teamfan.api.GameApi;
-import com.simonov.teamfan.api.RestError;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.objects.Game;
 import com.simonov.teamfan.utils.Utilities;
@@ -116,21 +114,17 @@ implements ScheduleFragment.DetailFragmentCallback {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        menuItem.setIntent(createShareForecastIntent());
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private Intent createShareForecastIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mGameEvent.toString());
+        return shareIntent;
     }
 
     public static String SEND_GAME_ID = "send_game_id";
@@ -181,7 +175,7 @@ implements ScheduleFragment.DetailFragmentCallback {
                 .setEndpoint(getString(R.string.base_url))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
-                    public void intercept(RequestInterceptor.RequestFacade request) {
+                    public void intercept(RequestFacade request) {
                         request.addHeader("Authorization", "Bearer " + BuildConfig.XMLSTATS_ACCESS_TOKEN);
                         request.addHeader("User-agent", "simonovP/0.1 (https://pk.simonov@gmail.com/)");
 //                        request.addHeader("Accept-encoding", "gzip"); //com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $

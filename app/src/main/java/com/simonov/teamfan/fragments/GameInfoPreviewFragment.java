@@ -14,11 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonov.teamfan.R;
-import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
-
-import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +24,9 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class GameInfoPreviewFragment extends Fragment {
+    public GameInfoPreviewFragment() {
+        mEvent = null;
+    }
 
     private final Event mEvent;
     @Bind(R.id.away_logo) ImageView mAwayLogo;

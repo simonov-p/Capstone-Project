@@ -138,6 +138,7 @@
     <string name="device_id">33a771c405438d23</string>
     <string name="server_url">http://10.0.2.2:8080/_ah/api/</string>
     <string name="label_map_game_fragment">Location</string>
+    <string name="action_share">Share</string>
 
 
 </resources>

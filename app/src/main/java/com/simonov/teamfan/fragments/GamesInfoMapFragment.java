@@ -2,8 +2,6 @@ package com.simonov.teamfan.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;

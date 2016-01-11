@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.data.GamesContract;
@@ -150,7 +149,7 @@ public class ScheduleFragment extends Fragment
     }
 
     private static final String[] GAMES_COLUMNS = {
-            GamesContract.GamesEntry.TABLE_NAME + "." + GamesContract.GamesEntry.COLUMN_GAME_ID,
+            GamesContract.GamesEntry.TABLE_NAME + "" + GamesContract.GamesEntry.COLUMN_GAME_ID,
             GamesContract.GamesEntry.COLUMN_DATE,
             GamesContract.GamesEntry.COLUMN_TEAM_NAME,
             GamesContract.GamesEntry.COLUMN_OPPONENT_NAME,

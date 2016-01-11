@@ -180,4 +180,29 @@ public class Event implements Parcelable {
     public String opponentName;
     public String eventLocationName;
     public String eventLocationNameTeam;
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventId='" + eventId + '\'' +
+                ", eventStatus='" + eventStatus + '\'' +
+                ", eventStartDateTime='" + eventStartDateTime + '\'' +
+                ", eventSeasonType='" + eventSeasonType + '\'' +
+                ", teamEventNumberInSeason='" + teamEventNumberInSeason + '\'' +
+                ", teamEventLocationType='" + teamEventLocationType + '\'' +
+                ", teamPointsScored=" + teamPointsScored +
+                ", team_events_won='" + team_events_won + '\'' +
+                ", team_events_lost='" + team_events_lost + '\'' +
+                ", opponent_events_lost='" + opponent_events_lost + '\'' +
+                ", opponent_events_won='" + opponent_events_won + '\'' +
+                ", opponentPointsScored=" + opponentPointsScored +
+                ", team=" + team +
+                ", opponent=" + opponent +
+                ", site=" + site +
+                ", teamName='" + teamName + '\'' +
+                ", opponentName='" + opponentName + '\'' +
+                ", eventLocationName='" + eventLocationName + '\'' +
+                ", eventLocationNameTeam='" + eventLocationNameTeam + '\'' +
+                '}';
+    }
 }
