@@ -62,10 +62,7 @@ implements ScheduleFragment.DetailFragmentCallback {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("mytag: ", "onResume Activity");
-
         String team = Utilities.getPreferredTeam(this);
-        // update the location in our second pane using the fragment manager
         if (team != null && !team.equals(mTeam)) {
             ScheduleFragment scheduleFragment = (ScheduleFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
             if ( null != scheduleFragment ) {
@@ -80,9 +77,6 @@ implements ScheduleFragment.DetailFragmentCallback {
         Intent intent = new Intent(this, DetailActivity.class)
                 .putExtra(SEND_GAME_ID, gameEvent);
 
-        ActivityOptionsCompat activityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        new Pair<View, String>(vh.mAwayTeamLogo, getString(R.string.detail_icon_transition_name)));
-        ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+        ActivityCompat.startActivity(this, intent, null);
     }
 }

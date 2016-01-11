@@ -4,17 +4,16 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,16 +33,29 @@ import com.simonov.teamfan.utils.Utilities;
  */
 public class ScheduleFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
-        SharedPreferences.OnSharedPreferenceChangeListener
-{
-    private static final String TAG = ScheduleFragment.class.getSimpleName();
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String TAG = ScheduleFragment.class.getSimpleName();
+    private static final String[] GAMES_COLUMNS = {
+            GamesContract.GamesEntry.TABLE_NAME + "" + GamesContract.GamesEntry.COLUMN_GAME_ID,
+            GamesContract.GamesEntry.COLUMN_DATE,
+            GamesContract.GamesEntry.COLUMN_TEAM_NAME,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_NAME,
+            GamesContract.GamesEntry.COLUMN_TEAM_SCORE,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE,
+            GamesContract.GamesEntry.COLUMN_GAME_NBA_ID,
+            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON,
+            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON,
+            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST,
+            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE,
+            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_NAME
+    };
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ScheduleAdapter mAdapter;
     private int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
     private InterstitialAd mInterstitialAd;
-
 
     public ScheduleFragment() {
     }
@@ -79,10 +91,10 @@ public class ScheduleFragment extends Fragment
 //                if (mInterstitialAd.isLoaded()) {
 ////                    mInterstitialAd.show();
 //                } else {
-                    ((DetailFragmentCallback) getActivity())
-                            .onGameSelected(gameEvent,
-                                    vh
-                            );
+                ((DetailFragmentCallback) getActivity())
+                        .onGameSelected(gameEvent,
+                                vh
+                        );
 //                }
             }
         }, emptyView, mChoiceMode, false);
@@ -128,7 +140,6 @@ public class ScheduleFragment extends Fragment
                 });
             }
         }
-
         return root;
 
     }
@@ -148,22 +159,6 @@ public class ScheduleFragment extends Fragment
         super.onSaveInstanceState(outState);
     }
 
-    private static final String[] GAMES_COLUMNS = {
-            GamesContract.GamesEntry.TABLE_NAME + "" + GamesContract.GamesEntry.COLUMN_GAME_ID,
-            GamesContract.GamesEntry.COLUMN_DATE,
-            GamesContract.GamesEntry.COLUMN_TEAM_NAME,
-            GamesContract.GamesEntry.COLUMN_OPPONENT_NAME,
-            GamesContract.GamesEntry.COLUMN_TEAM_SCORE,
-            GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE,
-            GamesContract.GamesEntry.COLUMN_GAME_NBA_ID,
-            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_WON,
-            GamesContract.GamesEntry.COLUMN_TEAM_EVENTS_LOST,
-            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_WON,
-            GamesContract.GamesEntry.COLUMN_OPPONENT_EVENTS_LOST,
-            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE,
-            GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_NAME
-    };
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
@@ -182,13 +177,12 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("mytag", "onLoadFinished0");
         mAdapter.swapCursor(data);
         updateEmptyView();
         scrollToLastGame();
     }
 
-    private void scrollToLastGame(){
+    private void scrollToLastGame() {
         String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
         String selectionAllGames = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +
                 Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
@@ -252,7 +246,7 @@ public class ScheduleFragment extends Fragment
         if (mAdapter.getItemCount() == 0) {
             if (null != textView) {
                 // if cursor is empty, why? do we have an invalid location
-                 textView.setText(Utilities.getErrorMessage(getContext()));
+                textView.setText(Utilities.getErrorMessage(getContext()));
                 textView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -270,8 +264,7 @@ public class ScheduleFragment extends Fragment
     }
 
     public void onTeamChanged() {
-        Log.d("mytag: ", "onTeamChanged");
-        getLoaderManager().restartLoader(0,null,this);
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     /**

@@ -29,14 +29,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     final private Context mContext;
     private ScheduleAdapterOnClickHandler mClickHandler;
     final private ItemChoiceManager mICM;
+    private String TAG = ScheduleAdapter.class.getSimpleName();
 
     public void swapCursor(Cursor cursor) {
         mCursor = cursor;
         notifyDataSetChanged();
         mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
-
-        if (mCursor != null) Log.d("mytag", "onLoadFinished-notifyDataSetChanged, count:"+ mCursor.getCount());
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -98,7 +96,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null == mCursor) {
-            Log.e("mytag", "onBindViewHolder Cursor is null, position " + position);
             return;
         }
         try {
@@ -138,35 +135,25 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 );
             }
 
-            holder.mTextDate.setText(Utilities.convertDate(dateText) + " game:" +
-                    String.format("%s/%d", String.valueOf(position + 1), mCursor.getCount()));
+            holder.mTextDate.setText(
+                    String.format(mContext.getString(R.string.date_recycler_view_format),Utilities.convertDate(dateText), String.valueOf(position + 1), mCursor.getCount()));
 
             mICM.onBindViewHolder(holder, position);
 
             if (mIsSmallIcons){
-//                holder.mHomeTeamName.setVisibility(View.GONE);
-//                holder.mAwayTeamName.setVisibility(View.GONE);
-//                holder.mHomeTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
-//                holder.mAwayTeamLogo.getLayoutParams().height = Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.logo_small_size), mContext);
                 holder.mTextDate.setText(Utilities.convertDateToDate(dateText));
                 if (holder.mAwayTeamScore.getText().toString().contains("-")){
                     holder.mHomeTeamScore.setVisibility(View.GONE);
                     holder.mAwayTeamScore.setVisibility(View.GONE);
-                } else {
-//                    holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
-//                    holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
                 }
             }
 
         } catch (NullPointerException e) {
-            Log.e("mytag", "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
+            Log.e(TAG, "No cursor at position:" + String.valueOf(position) + "  " + e.getMessage());
             e.printStackTrace();
         } catch (CursorIndexOutOfBoundsException c) {
-            Log.e("mytag", "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
+            Log.e(TAG, "Cursor out of bounds:" + String.valueOf(position) + "  " + c.getMessage());
             c.printStackTrace();
-//        } catch (IllegalStateException e){
-//            Log.e("mytag", "Illegal exception:" + String.valueOf(position) + "  " + e.getMessage());
-
         }
     }
 
@@ -178,19 +165,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .into(holder.mAwayTeamLogo);
         holder.mAwayTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mAwayTeamScore.setText(String.format("%s-%s", gamesWon, gamesLost));
-//            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+            holder.mAwayTeamScore.setText(String.format(mContext.getString(R.string.win_loss_divider), gamesWon, gamesLost));
 
-            holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game start at %s",
+            holder.mCard.setContentDescription(String.format(mContext.getString(R.string.content_description_recycler_view_item_unfinished),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_DATE))
             ));
         } else {
             holder.mAwayTeamScore.setText(score);
-//            holder.mAwayTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
 
-            holder.mCard.setContentDescription(String.format("NBA event %s versus %s . Game score %d %s %d %s",
+            holder.mCard.setContentDescription(String.format(mContext.getString(R.string.content_description_recycler_view_item),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME)),
                     mCursor.getString(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME)),
                     mCursor.getInt(mCursor.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE)),
@@ -208,11 +193,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 .into(holder.mHomeTeamLogo);
         holder.mHomeTeamName.setText(teamFullName);
         if (score.equals(GamesContract.GamesEntry.NO_SCORE)){
-            holder.mHomeTeamScore.setText(String.format("%s-%s",gamesWon,gamesLost));
-//            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.middle_text_size), mContext));
+            holder.mHomeTeamScore.setText(String.format(mContext.getString(R.string.win_loss_divider),gamesWon,gamesLost));
         } else {
             holder.mHomeTeamScore.setText(score);
-//            holder.mHomeTeamScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, Utilities.getDensSize(mContext.getResources().getDimensionPixelSize(R.dimen.big_text_size), mContext));
         }
     }
 
@@ -230,21 +213,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public void onSaveInstanceState(Bundle outState) {
         mICM.onSaveInstanceState(outState);
-    }
-
-    public int getSelectedItemPosition() {
-        return mICM.getSelectedItemPosition();
-    }
-
-    public Cursor getCursor() {
-        return mCursor;
-    }
-
-    public void selectView(RecyclerView.ViewHolder viewHolder) {
-        if ( viewHolder instanceof ViewHolder ) {
-            ViewHolder vfh = (ViewHolder)viewHolder;
-            vfh.onClick(vfh.itemView);
-        }
     }
 }
 

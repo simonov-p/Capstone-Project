@@ -33,7 +33,6 @@ public class GameInfoPreviousFragment extends Fragment {
     public GameInfoPreviousFragment() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

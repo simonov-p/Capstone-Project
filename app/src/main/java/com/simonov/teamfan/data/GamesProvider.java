@@ -15,8 +15,7 @@ import android.util.Log;
 public class GamesProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-//    private static final String TAG = GamesProvider.class.getSimpleName();
-    private static final String TAG = "mytag";
+    private static final String TAG = GamesProvider.class.getSimpleName();
 
     private GamesDbHelper mOpenHelper;
 
@@ -110,7 +109,6 @@ public class GamesProvider extends ContentProvider {
         }
         getContext().getContentResolver().notifyChange(uri, null);
         Log.d(TAG, "    insert: " + returnCount + " uri:" + uri);
-        Log.e(TAG, "    getContext().getContentResolver().getType: " + getContext().getContentResolver().getType(uri));
         return  returnCount;
     }
 }

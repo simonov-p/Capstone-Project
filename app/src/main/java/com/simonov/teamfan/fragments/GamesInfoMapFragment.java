@@ -50,21 +50,17 @@ public class GamesInfoMapFragment extends Fragment {
             try {
                 Geocoder gc = new Geocoder(getContext());
                 String title = mEvent.eventLocationName.split(",")[0];
-                Log.d("mytag:eventLocationName:",mEvent.eventLocationName.split(",")[0]);
-                Log.d("mytag.eventLocationNameTeam" , mEvent.eventLocationNameTeam);
 
                 List<Address> addresses = gc.getFromLocationName(mEvent.eventLocationName.split(",")[0], 5); // get the found Address Objects
 
                 List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
                 for (Address a : addresses) {
-                    Log.d("mytag: location:", a.toString());
                     if (a.hasLatitude() && a.hasLongitude()) {
                         ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
                     }
                 }
                 if (ll.size() > 0){
                     LatLng latLng = new LatLng(ll.get(0).latitude, ll.get(0).longitude);
-                    Log.d("mytag:LatLng:", latLng.toString());
                     CameraPosition target = CameraPosition.builder().target(latLng).zoom(16).build();
                     mMap.moveCamera((CameraUpdateFactory.newCameraPosition(target)));
 
@@ -78,9 +74,7 @@ public class GamesInfoMapFragment extends Fragment {
                             .icon(BitmapDescriptorFactory.fromBitmap(bhalfsize));
 
                     mMap.addMarker(marker);
-
-                    Log.d("mytag:marker:", marker.toString());
-
+                    Log.d("marker:", marker.toString());
                 }
             } catch (IOException e) {
                 // handle the exception

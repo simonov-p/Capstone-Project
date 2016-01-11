@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class GameInfoPreviewFragment extends Fragment {
+
     public GameInfoPreviewFragment() {
     }
 
@@ -38,10 +39,6 @@ public class GameInfoPreviewFragment extends Fragment {
     @Bind(R.id.game_time) TextView mGameTime;
     @Bind(R.id.game_location) TextView mGameLocation;
     @Bind(R.id.fab) FloatingActionButton mFloatButton;
-
-//    public GameInfoPreviewFragment(Event event) {
-//        mEvent = event;
-////    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -144,5 +144,10 @@
     <string name="pref_enable_notifications_default" translatable="false">true</string>
     <string name="pref_last_notification">last_notifications</string>
     <string name="format_notification" formatted="false">%s %s - %s %s</string>
+    <string name="date_recycler_view_format" formatted="false">%s game:%s/%d</string>
+    <string name="content_description_recycler_view_item" formatted="false">NBA event %s versus %s . Game score %d %s %d %s</string>
+    <string name="content_description_recycler_view_item_unfinished" formatted="false">NBA event %s versus %s . Game start at %s</string>
+
+
 
 </resources>

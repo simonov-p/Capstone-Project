@@ -3,7 +3,6 @@ package com.simonov.teamfan.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +80,11 @@ public class GameInfoMainFragment extends Fragment {
             mAwayTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.team_events_won, event.team_events_lost));
             mHomeTeamStatus.setText(String.format(getString(R.string.win_loss_divider), event.opponent_events_won, event.opponent_events_lost));
         }
-        int ii = 0;
-        for (int i : game.away_period_scores){
-            ii++;
-            Log.d("mytag", " "+ ii+":" + i + "-" + game.home_period_scores.get(ii-1));
-        }
+//        int ii = 0;
+//        for (int i : game.away_period_scores){
+//            ii++;
+//            Log.d("mytag", " "+ ii+":" + i + "-" + game.home_period_scores.get(ii-1));
+//        }
         mMainLayout.setContentDescription(String.format(getString(R.string.content_description_main_game_info),
                 game.away_team.getFullName(),
                 game.home_team.getFullName(),
