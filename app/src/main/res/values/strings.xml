@@ -137,8 +137,12 @@
     <string name="interstitial_ad_unit_name" translatable="false">At Detail</string>
     <string name="device_id">33a771c405438d23</string>
     <string name="server_url">http://10.0.2.2:8080/_ah/api/</string>
+
     <string name="label_map_game_fragment">Location</string>
     <string name="action_share">Share</string>
-
+    <string name="pref_enable_notifications_key">enable_notification_key</string>
+    <string name="pref_enable_notifications_default" translatable="false">true</string>
+    <string name="pref_last_notification">last_notifications</string>
+    <string name="format_notification" formatted="false">%s %s - %s %s</string>
 
 </resources>

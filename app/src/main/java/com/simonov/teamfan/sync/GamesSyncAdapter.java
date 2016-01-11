@@ -3,7 +3,10 @@ package com.simonov.teamfan.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -13,15 +16,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simonov.teamfan.BuildConfig;
 import com.simonov.teamfan.R;
+import com.simonov.teamfan.activities.DetailActivity;
+import com.simonov.teamfan.activities.MainActivity;
 import com.simonov.teamfan.data.GamesContract;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.utils.Utilities;
@@ -35,6 +48,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -52,6 +66,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+    private static final int LAST_GAMES_NOTIFICATION_ID = 1987;
 
     private String mTeamQuery;
 
@@ -300,6 +315,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.e(TAG, "Parse JSON elements: " + cvArray.length);
                 }
                 updateWidgets();
+                notifyLastGame();
                 setGamesStatus(getContext(), GAMES_STATUS_OK);
             } catch (IOException ex) {
                 Log.e(TAG, "Could not parse JSON data: " + ex.getMessage());
@@ -321,5 +337,109 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
         Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
                 .setPackage(context.getPackageName());
         context.sendBroadcast(dataUpdatedIntent);
+    }
+
+    private void notifyLastGame() {
+        Context context = getContext();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+
+        boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
+                Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
+
+        if ( displayNotifications ) {
+
+            String lastNotificationKey = context.getString(R.string.pref_last_notification);
+            long lastSync = prefs.getLong(lastNotificationKey, 0);
+
+            String team = Utilities.getPreferredTeam(context);
+
+            String sortOrder = GamesContract.GamesEntry.COLUMN_DATE + " ASC";
+            String selectionAllGames = GamesContract.GamesEntry.COLUMN_TEAM_NAME + " = " + "'" +
+                    Utilities.getFullNameFromQuery(Utilities.getPreferredTeam(getContext())) + "'";
+            String selectionFinished = selectionAllGames + " and " + GamesContract.GamesEntry.COLUMN_TEAM_SCORE + " > -1";
+
+            Cursor cursorFinishedGames = getContext().getContentResolver().query(GamesContract.GamesEntry.CONTENT_URI,
+                    null,
+                    selectionFinished,
+                    null,
+                    sortOrder
+            );
+
+            if (null != cursorFinishedGames && cursorFinishedGames.getCount() > lastSync) {
+                if (cursorFinishedGames.moveToLast()) {
+                    String homeTeamName;
+                    String awayTeamName;
+                    String homeTeamScore;
+                    String awayTeamScore;
+                    if (cursorFinishedGames.getString(
+                            cursorFinishedGames.getColumnIndex(
+                                    GamesContract.GamesEntry.COLUMN_EVENT_LOCATION_TYPE)).equals("h")) {
+                        homeTeamName = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
+                        awayTeamName = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
+                        homeTeamScore = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE));
+                        awayTeamScore = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
+
+                    } else {
+                        homeTeamName = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_NAME));
+                        awayTeamName = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME));
+                        homeTeamScore = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_OPPONENT_SCORE));
+                        awayTeamScore = cursorFinishedGames.getString(
+                                cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_SCORE));
+                    }
+
+                    String title = context.getString(R.string.app_name);
+
+                    String contentText = String.format(context.getString(R.string.format_notification),
+                            awayTeamName,awayTeamScore,homeTeamScore,homeTeamName);
+
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(getContext())
+                                    .setColor(getContext().getResources().getColor(R.color.colorNotification))
+                                    .setSmallIcon(Utilities.getTeamLogo(getContext(),
+                                            cursorFinishedGames.getString(
+                                                    cursorFinishedGames.getColumnIndex(GamesContract.GamesEntry.COLUMN_TEAM_NAME))))
+                                    .setContentTitle(title)
+                                    .setContentText(contentText);
+
+                    // Make something interesting happen when the user clicks on the notification.
+                    // In this case, opening the app is sufficient.
+                    Intent resultIntent = new Intent(getContext(), DetailActivity.class)
+                            .putExtra(MainActivity.SEND_GAME_ID, new Event(cursorFinishedGames));
+
+                    // The stack builder object will contain an artificial back stack for the
+                    // started Activity.
+                    // This ensures that navigating backward from the Activity leads out of
+                    // your application to the Home screen.
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                    stackBuilder.addNextIntent(resultIntent);
+                    PendingIntent resultPendingIntent =
+                            stackBuilder.getPendingIntent(
+                                    0,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
+                    mBuilder.setContentIntent(resultPendingIntent);
+
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
+                    mNotificationManager.notify(LAST_GAMES_NOTIFICATION_ID, mBuilder.build());
+
+                    //refreshing last sync
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putLong(lastNotificationKey, System.currentTimeMillis());
+                    editor.apply();
+                }
+                cursorFinishedGames.close();
+            }
+        }
     }
 }
