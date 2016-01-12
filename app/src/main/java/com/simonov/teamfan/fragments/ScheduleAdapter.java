@@ -84,7 +84,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public ScheduleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        int resource = mIsSmallIcons ? R.layout.list_item_games_privious : R.layout.list_item_games;
+        int resource = mIsSmallIcons ? R.layout.list_item_games_previous : R.layout.list_item_games;
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(resource, parent, false);
         v.setFocusable(true);

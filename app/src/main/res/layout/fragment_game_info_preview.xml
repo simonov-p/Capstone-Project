@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" />
-    <TextView
+    <com.simonov.teamfan.ui.CustomTextView
         android:layout_below="@+id/game_time"
         android:textSize="@dimen/big_text_size"
         android:id="@+id/game_location"
@@ -85,6 +85,7 @@
         android:layout_marginBottom="@dimen/fab_bottom_offset"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
+        android:contentDescription="@string/content_description_fab_add_to_calendar"
         android:src="@android:drawable/ic_input_add" />
 
 </RelativeLayout>

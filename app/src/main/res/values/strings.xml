@@ -147,7 +147,7 @@
     <string name="date_recycler_view_format" formatted="false">%s game:%s/%d</string>
     <string name="content_description_recycler_view_item" formatted="false">NBA event %s versus %s . Game score %d %s %d %s</string>
     <string name="content_description_recycler_view_item_unfinished" formatted="false">NBA event %s versus %s . Game start at %s</string>
-
+    <string name="content_description_fab_add_to_calendar">Add game to the calendar</string>
 
 
 </resources>

@@ -5,7 +5,8 @@ android {
         config {
             keyAlias 'teamfan'
             keyPassword 'password'
-            storeFile file('D:/android/study/udacity/Capstone-Project/keystore.jks')
+//            storeFile file('D:/android/study/udacity/Capstone-Project/keystore.jks')
+            storeFile file('C:/s/android/study/udacity/Capstone-Project/build.gradle/keystore.jks')
             storePassword 'password'
         }
     }
