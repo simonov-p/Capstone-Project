@@ -38,3 +38,4 @@ proguard/
 
 # my
 gradle.properties
+/gradle.properties
