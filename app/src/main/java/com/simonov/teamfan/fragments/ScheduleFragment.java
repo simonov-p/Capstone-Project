@@ -98,6 +98,7 @@ public class ScheduleFragment extends Fragment
 //                }
             }
         }, emptyView, mChoiceMode, false);
+
         mRecyclerView.setAdapter(mAdapter);
 
         if (savedInstanceState != null) {
@@ -200,12 +201,16 @@ public class ScheduleFragment extends Fragment
                 null,
                 sortOrder
         );
-        if (null != cursorUnfinishedGames && cursorUnfinishedGames.getCount() > 0) {
+        if (null != cursorUnfinishedGames && null != cursorAllGames && cursorUnfinishedGames.getCount() > 0) {
             int lastGamePosition = cursorAllGames.getCount() - cursorUnfinishedGames.getCount();
             if (lastGamePosition > 0) lastGamePosition--;
             mRecyclerView.scrollToPosition(lastGamePosition);
             cursorAllGames.close();
             cursorUnfinishedGames.close();
+
+        } else if (null != cursorAllGames) {
+            mRecyclerView.scrollToPosition(cursorAllGames.getCount() - 1);
+            cursorAllGames.close();
         }
     }
 
