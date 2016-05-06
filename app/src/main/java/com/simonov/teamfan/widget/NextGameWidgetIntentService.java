@@ -139,10 +139,10 @@ public class NextGameWidgetIntentService extends IntentService {
     private int getWidgetWidthFromOptions(AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         if (options.containsKey(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)) {
-            int minWidtDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            int minWidthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             // the width returned is in dp, but we`ll convert it to pixels to match the other widths
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, minWidtDp,
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, minWidthDp,
                     displayMetrics);
         }
         return 0;

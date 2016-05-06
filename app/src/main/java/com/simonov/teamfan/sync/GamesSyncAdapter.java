@@ -301,6 +301,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 for (Event evt : events) {
                     cVVector.add(evt.eventToCV());
+                    Log.d(TAG + " add event:", evt.toString());
                 }
                 if (cVVector.size() > 0) {
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
@@ -312,7 +313,7 @@ public class GamesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     getContext().getContentResolver().bulkInsert(GamesContract.GamesEntry.CONTENT_URI,
                             cvArray);
-                    Log.e(TAG, "Parse JSON elements: " + cvArray.length);
+                    Log.d(TAG, "Parse JSON elements: " + cvArray.length);
                 }
                 updateWidgets();
                 notifyLastGame();

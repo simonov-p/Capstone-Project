@@ -62,6 +62,8 @@ public class GamesInfoMapFragment extends Fragment {
                 if (ll.size() > 0){
                     LatLng latLng = new LatLng(ll.get(0).latitude, ll.get(0).longitude);
                     CameraPosition target = CameraPosition.builder().target(latLng).zoom(16).build();
+
+                    Log.e("mytag:target",target.toString());
                     mMap.moveCamera((CameraUpdateFactory.newCameraPosition(target)));
 
                     Bitmap b = BitmapFactory.decodeResource(getResources(), Utilities.getTeamLogo(getContext(), mEvent.eventLocationNameTeam));
@@ -74,7 +76,6 @@ public class GamesInfoMapFragment extends Fragment {
                             .icon(BitmapDescriptorFactory.fromBitmap(bhalfsize));
 
                     mMap.addMarker(marker);
-                    Log.d("marker:", marker.toString());
                 }
             } catch (IOException e) {
                 // handle the exception

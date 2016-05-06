@@ -78,7 +78,7 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
