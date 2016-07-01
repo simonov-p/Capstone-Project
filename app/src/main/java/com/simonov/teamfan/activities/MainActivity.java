@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.simonov.teamfan.R;
 import com.simonov.teamfan.fragments.ScheduleAdapter;
 import com.simonov.teamfan.fragments.ScheduleFragment;
 import com.simonov.teamfan.objects.Event;
 import com.simonov.teamfan.sync.GamesSyncAdapter;
 import com.simonov.teamfan.utils.Utilities;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
 implements ScheduleFragment.DetailFragmentCallback {
@@ -30,6 +32,7 @@ implements ScheduleFragment.DetailFragmentCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

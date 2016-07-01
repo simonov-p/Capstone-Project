@@ -118,5 +118,8 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="42bd1ab0ff9b35e22fa133e30b6dcbfac9fe340e" />
     </application>
 </manifest>
